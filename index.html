@@ -214,6 +214,9 @@ dialog::backdrop{background:rgba(25,12,30,.45)}
 .arch.entry .orn{margin:2px 0 10px}
 .arch.entry .dear{font-size:19px;margin:0 0 14px;color:var(--muted)}
 .map-btn,.map-btn:visited{color:var(--ink);text-decoration:none}
+.cd-top{text-align:center;margin-bottom:14px}
+.cd-top .cd{margin:0;padding:0;border:0}
+.arch.entry .map-btn{margin-top:14px}
 .g-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:14px}
 .g-card h2{font-size:18px;font-weight:600;margin:0 0 14px;line-height:1.4}
 .choice{display:grid;gap:10px}
@@ -960,8 +963,8 @@ function GuestView(r) {
     else body = form(inv, a);
     if (a > 0 && !editing) {
       const note = r.preview ? `<div class="notice gold" style="font-size:14px">${esc(t("g_preview", { name: inv.name }))}</div>` : "";
-      const details = header.replace(/^[\s\S]*?<section class="arch">/, '<section class="arch rect">');
-      app.innerHTML = `<main class="guest">${top}${note}${body}<p class="below-label">${t("g_moreBelow")}</p>${details}</main>`;
+      const cd = s.eventAt ? `<div class="cd-top">${countdownHtml(s.eventAt)}</div>` : "";
+      app.innerHTML = `<main class="guest">${top}${note}${cd}${body}</main>`;
     } else app.innerHTML = `<main class="guest">${top}${header}${body}</main>`;
     justSaved = false;
   }
@@ -1003,6 +1006,7 @@ function GuestView(r) {
       <p class="help">${t("g_qrHelp2")}</p>
       <button class="btn primary save" data-g="saveimg">${ICON.img}${t("g_saveToPhone")}</button>
       <button class="btn sm ghost" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button>
+      ${/^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true">📍</span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
       <p class="look">${t("g_look")}</p></section>${foot}`;
     return `<div class="g-card done ${justSaved ? "animate" : ""}">
       <svg class="tick" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28"/><path d="M18 31l8 8 16-17"/></svg>
