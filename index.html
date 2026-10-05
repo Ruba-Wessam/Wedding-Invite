@@ -176,6 +176,7 @@ dialog::backdrop{background:rgba(25,12,30,.45)}
 .map-btn small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
 .cd{margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line)}
 .cd-date{margin:0;font-family:var(--display);font-size:20px}
+.cd-hijri{margin:2px 0 12px;font-size:15px;color:var(--gold)}
 .cd-label{margin:0 0 10px;font-size:13px;color:var(--muted)}
 .cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;direction:ltr}
 [dir="rtl"] .cd-grid{direction:rtl}
@@ -183,6 +184,15 @@ dialog::backdrop{background:rgba(25,12,30,.45)}
 .cd-grid b{display:block;font-family:var(--display);font-size:clamp(26px,7vw,34px);line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
 .cd-grid span{display:block;font-size:12px;color:var(--muted);margin-top:4px}
 .cd-now{margin:0;font-family:var(--display);font-size:24px;color:var(--gold)}
+.admin-cd{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:16px}
+.admin-cd .cd{margin:0;padding:0;border:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+.admin-cd .cd-dates{flex:1;min-width:200px}
+.admin-cd .cd-date{font-size:18px}
+.admin-cd .cd-hijri{margin:0}
+.admin-cd .cd-label{display:none}
+.admin-cd .cd-grid{flex:0 1 340px;gap:6px}
+.admin-cd .cd-grid div{padding:7px 4px 6px}
+.admin-cd .cd-grid b{font-size:24px}
 .g-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:14px}
 .g-card h2{font-size:18px;font-weight:600;margin:0 0 14px;line-height:1.4}
 .choice{display:grid;gap:10px}
@@ -321,11 +331,11 @@ const langBtn = () => `<button class="btn ghost sm" data-act="lang">${LANG === "
 const locale = l => l === "ar" ? "ar-SA-u-ca-gregory" : "en-GB";
 function fmtDate(iso, l = LANG, withTime = true) {
   if (!iso) return ""; const d = new Date(iso); if (isNaN(d)) return "";
-  const o = { day: "numeric", month: "long", year: "numeric" }; if (withTime) Object.assign(o, { hour: "numeric", minute: "2-digit" });
+  const o = { day: "numeric", month: "long", year: "numeric" }; if (withTime) Object.assign(o, { hour: "numeric", minute: "2-digit", hour12: true });
   return new Intl.DateTimeFormat(locale(l), o).format(d);
 }
 const fmtDay = iso => new Intl.DateTimeFormat(locale(LANG), { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
-const fmtTime = iso => new Intl.DateTimeFormat(locale(LANG), { hour: "numeric", minute: "2-digit", second: "2-digit" }).format(new Date(iso));
+const fmtTime = iso => new Intl.DateTimeFormat(locale(LANG), { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true }).format(new Date(iso));
 
 /* ---------- toast & dialogs ---------- */
 let toastTimer;
@@ -582,6 +592,7 @@ function AdminView() {
         <button class="btn ghost sm" data-a="signout">${t("signOut")}</button>
         <button class="btn icon" data-a="settings" title="${t("settings")}" aria-label="${t("settings")}">${ICON.gear}</button>
         <a class="btn primary" href="#/scan">${ICON.scan}${t("scan")}</a></div></header>
+      <section class="admin-cd" id="a-cd" hidden></section>
       <div id="a-notes"></div>
       <section class="overview" id="a-over"></section>
       <div class="toolbar">
@@ -597,9 +608,13 @@ function AdminView() {
     app.addEventListener("click", onClick);
     update();
   }
-  function unmount() { app.removeEventListener("click", onClick); }
+  let cdTimer = 0, lastCd = null;
+  function unmount() { clearInterval(cdTimer); app.removeEventListener("click", onClick); }
   function update() {
     if (!$("#a-title")) return;
+    if (!cdTimer) cdTimer = setInterval(tickCountdown, 1000);
+    const cdKey = S.settings.eventAt + "|" + LANG;
+    if (cdKey !== lastCd) { lastCd = cdKey; const el = $("#a-cd"); el.hidden = !S.settings.eventAt; el.innerHTML = countdownHtml(S.settings.eventAt); }
     const s = S.settings, couple = (LANG === "ar" ? s.coupleAr || s.coupleEn : s.coupleEn || s.coupleAr);
     $("#a-title").innerHTML = `${couple ? esc(couple) : `<span class="muted" style="font-weight:400">${t("namesMissing")}</span>`}<small>${t("appSub")}${s.deadline ? " – " + esc(t("replyBy")) + " " + esc(fmtDate(s.deadline)) : ""}</small>`;
     let notes = "";
@@ -871,13 +886,20 @@ function countdownParts(iso) {
 const cdNum = n => new Intl.NumberFormat(locale(LANG), { minimumIntegerDigits: 2, useGrouping: false }).format(n);
 function countdownHtml(iso) {
   if (!iso) return "";
-  const date = new Intl.DateTimeFormat(locale(LANG), { weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(iso));
+  const d = new Date(iso), ar = LANG === "ar", TZ = { timeZone: "Asia/Riyadh" };
+  const hijri = new Intl.DateTimeFormat(ar ? "ar-SA-u-ca-islamic-umalqura" : "en-GB-u-ca-islamic-umalqura", { ...TZ, day: "numeric", month: "long", year: "numeric" }).format(d);
+  const greg = new Intl.DateTimeFormat(ar ? "ar-SA-u-ca-gregory" : "en-GB", { ...TZ, day: "numeric", month: "long", year: "numeric" }).format(d);
+  const wday = new Intl.DateTimeFormat(ar ? "ar-SA" : "en-GB", { ...TZ, weekday: "long" }).format(d);
+  const hm = new Intl.DateTimeFormat(ar ? "ar-SA-u-ca-gregory" : "en-US", { ...TZ, hour: "numeric", minute: "2-digit", hour12: true }).format(d);
+  const time = ar ? `الساعة ${hm.replace(/\s*[صم]$/, "")} ${/ص$/.test(hm) ? "صباحًا" : "مساءً"}` : hm;
+  const line1 = ar ? `${wday} ${hijri}` : `${wday}, ${greg} | ${time}`;
+  const line2 = ar ? `${greg} م | ${time}` : hijri;
   const p = countdownParts(iso);
   const body = p ? `<p class="cd-label">${t("cd_until")}</p><div class="cd-grid" role="timer" aria-live="off">
       <div><b data-cd="d">${cdNum(p.d)}</b><span>${t("cd_d")}</span></div><div><b data-cd="h">${cdNum(p.h)}</b><span>${t("cd_h")}</span></div>
       <div><b data-cd="m">${cdNum(p.m)}</b><span>${t("cd_m")}</span></div><div><b data-cd="s">${cdNum(p.s)}</b><span>${t("cd_s")}</span></div></div>`
     : `<p class="cd-now">${t("cd_now")}</p>`;
-  return `<div class="cd" data-cd-at="${esc(iso)}"><p class="cd-date">${esc(date)}</p>${body}</div>`;
+  return `<div class="cd" data-cd-at="${esc(iso)}"><div class="cd-dates"><p class="cd-date">${esc(line1)}</p><p class="cd-hijri">${esc(line2)}</p></div>${body}</div>`;
 }
 function tickCountdown() {
   const box = document.querySelector("[data-cd-at]"); if (!box) return;
