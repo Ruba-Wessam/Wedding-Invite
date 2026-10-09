@@ -309,6 +309,8 @@ const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TAB = Math.random().toString(36).slice(2);
 const ICON = {
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>',
+  log:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
   copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>',
   msg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg>',
   link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
@@ -352,7 +354,7 @@ g_notFound:"This invitation link is not valid.",g_notFoundSub:"Please check the 
 g_preview:"Preview of {name}'s page. Replies made here are saved to their invitation.",back:"Dashboard",entryPass:"Entry pass",ofSeats:"{c} of {s} reserved seats",
 c_title:"Scan an entry code",c_help:"Point the camera at the guest's QR code.",c_cameraOff:"The camera isn't available here. Scan from a photo or type the invitation ID.",c_startCam:"Start camera",c_photo:"Scan from a photo",c_manual:"Invitation ID or code",c_find:"Find",
 c_notFound:"This code doesn't match any invitation.",c_noQr:"No QR code found in that photo.",c_status:"RSVP status",c_check:"Check-in",c_notYet:"Not checked in",c_checkIn:"Check in",c_already:"✅ Already checked in",c_done:"✅ Checked in",c_date:"Date",c_time:"Time",
-c_next:"Scan next guest",c_noRsvp:"This guest has not replied yet.",c_declined:"This guest declined the invitation.",noReply:"No reply",inviteId:"Invitation",loading:"Loading…",side_bride:"Bride",side_groom:"Groom",side_none:"No side",side:"Side",allSides:"All sides",sideStats:"By side",st_accepted:"Accepted",st_pending:"Pending",cap_title:"Capacity",cap_help:"Leave empty for unlimited. Only you can change these limits.",cap_total:"Total seats",cap_bride:"Bride's side seats",cap_groom:"Groom's side seats",cap_reserved:"Reserved",cap_confirmed:"Confirmed",cap_left:"Remaining",cap_unlimited:"Unlimited",cap_full_total:"This would go over the total capacity. Raise it in Settings first.",cap_full_bride:"This would go over the bride's side capacity. Raise it in Settings first.",cap_full_groom:"This would go over the groom's side capacity. Raise it in Settings first.",cap_onlyLeft:"Only {n} seats left for this side.",imp_side:"Which side is this list?",imp_pickSide:"Choose Bride or Groom first.",imp_tag:"{n} families already on your list will be marked as {side}",imp_conflict:"{n} families are already on the other side’s list (left unchanged)",imp_overcap:"{n} families not added: over capacity",imp_go2:"Import {n}, mark {m}",exportXlsx:"Export Excel report",exporting:"Preparing report…",g_confTitle:"Your attendance is confirmed",g_codeReady:"Your entry code is ready",g_qrHelp2:"Show this code at the entrance. Tap Save to keep it on your phone.",g_saveToPhone:"Save to phone",g_guestsOf:"{a} of {s} guests confirmed",g_moreBelow:"Invitation details",s_event:"Wedding date and time",s_eventHelp:"Guests see a countdown to this moment.",cd_until:"Until the big day",cd_d:"Days",cd_h:"Hours",cd_m:"Minutes",cd_s:"Seconds",cd_now:"The celebration has begun",s_venue:"Venue name",s_venuePh:"e.g. Al Faisaliah Ballroom",s_map:"Venue location (Google Maps link)",s_mapHelp:"In Google Maps, find the venue, tap Share, then Copy link, and paste it here. Guests see a button that opens it.",g_location:"Venue location",g_openMap:"Open in Google Maps",why_phone:"phone number is missing",why_phoneBad:"phone number looks incomplete",phoneReq:"Enter a complete phone number.",g_final:"Replies can't be changed after you send them.",g_confirmYes:"Confirm: we will attend",g_confirmNo:"Confirm: we will not be attending",g_confirmCount:"Confirm {n} attending",g_back:"Go back",g_youChose:"You are replying:",g_attendN:"{n} of {s} guests will attend",g_attend1:"I will attend",g_decline:"We will not be attending",g_contact:"Need to change your reply? Please contact the hosts directly.",imp_dupes:"{n} duplicates skipped (already on your list or repeated in the file)",dupPhone:"This phone number is already used by {name} ({id}).",dupGeneric:"This phone number is already on your list.",imp_none:"No rows could be read. Check that the first row has the column names and that every row has a name and a seat number.",signIn:"Sign in",signInTitle:"Organizer sign in",email:"Email",password:"Password",signInErr:"Email or password is incorrect.",signOut:"Sign out",notAdmin:"This account is not on the organizer list. Add its email to the admins table in Supabase.",g_loadErr:"The invitation could not be loaded. Check your connection and try again.",retry:"Try again",cfgMissing:"Setup is not finished: add your Supabase address and key to config.js, then upload the folder again.",sendInv:"Send invitations",q_title:"Send on WhatsApp",q_help:"Tap the green button, press send in WhatsApp, then come back here. The next guest will be ready.",q_open:"Open WhatsApp for this guest",q_pick:"Open WhatsApp and choose the contact",q_noPhone:"No phone number saved. You will pick the contact in WhatsApp.",q_skip:"Skip",q_of:"{i} of {n}",q_done:"All invitations have been sent",q_doneSub:"Statuses update automatically as guests open their links.",q_none:"Every invitation is already marked as sent.",q_close:"Done",q_showMsg:"Show message",q_resend:"Include already-sent invitations"},
+c_next:"Scan next guest",c_noRsvp:"This guest has not replied yet.",c_declined:"This guest declined the invitation.",noReply:"No reply",inviteId:"Invitation",loading:"Loading…",staff:"Check-in staff",staffHelp:"Staff can only scan codes and check guests in. They can't see your dashboard, the guest list, or phone numbers.",staffName:"Name",staffEmail:"Email (their login)",staffPass:"Password (8+ characters)",staffAdd:"Add staff member",staffNone:"No staff yet.",staffRemove:"Remove",staffAdded:"Staff member added",staffRemoved:"Staff member removed",staffConfirmRemove:"Remove {name}? They will no longer be able to sign in.",se_EMAIL_TAKEN:"That email already has a login. Use a different email.",se_WEAK_PASSWORD:"Use a password of at least 8 characters.",se_BAD_INPUT:"Enter a name and a valid email.",se_IS_ADMIN:"That email is an organizer, not staff.",se_NOT_ALLOWED:"Only organizers can manage staff.",se_missing:"The staff function isn't installed yet in Supabase (Edge Functions → staff-admin).",log:"Check-in log",logNone:"Nothing logged yet.",lg_checkin:"Checked in",lg_undo:"Undone",lg_lookup:"Looked up",lg_time:"Time",lg_family:"Family",lg_action:"Action",lg_people:"People",lg_by:"By",lg_via:"How",via_scan:"Scan",via_manual:"Typed",via_dashboard:"Dashboard",staffMode:"Check-in staff",ci_of:"{a} of {m} arrived",ci_all:"Check in all ({n})",ci_some:"Arriving now:",ci_full:"✅ All {n} checked in",ci_first:"First arrival",ci_last:"Last update",ci_undo1:"Undo 1",ci_undone:"Undone",ci_allIn:"Everyone from this invitation has already checked in.",ci_maxNote:"Up to {n} can enter (reserved seats).",side_bride:"Bride",side_groom:"Groom",side_none:"No side",side:"Side",allSides:"All sides",sideStats:"By side",st_accepted:"Accepted",st_pending:"Pending",cap_title:"Capacity",cap_help:"Leave empty for unlimited. Only you can change these limits.",cap_total:"Total seats",cap_bride:"Bride's side seats",cap_groom:"Groom's side seats",cap_reserved:"Reserved",cap_confirmed:"Confirmed",cap_left:"Remaining",cap_unlimited:"Unlimited",cap_full_total:"This would go over the total capacity. Raise it in Settings first.",cap_full_bride:"This would go over the bride's side capacity. Raise it in Settings first.",cap_full_groom:"This would go over the groom's side capacity. Raise it in Settings first.",cap_onlyLeft:"Only {n} seats left for this side.",imp_side:"Which side is this list?",imp_pickSide:"Choose Bride or Groom first.",imp_tag:"{n} families already on your list will be marked as {side}",imp_conflict:"{n} families are already on the other side’s list (left unchanged)",imp_overcap:"{n} families not added: over capacity",imp_go2:"Import {n}, mark {m}",exportXlsx:"Export Excel report",exporting:"Preparing report…",g_confTitle:"Your attendance is confirmed",g_codeReady:"Your entry code is ready",g_qrHelp2:"Show this code at the entrance. Tap Save to keep it on your phone.",g_saveToPhone:"Save to phone",g_guestsOf:"{a} of {s} guests confirmed",g_moreBelow:"Invitation details",s_event:"Wedding date and time",s_eventHelp:"Guests see a countdown to this moment.",cd_until:"Until the big day",cd_d:"Days",cd_h:"Hours",cd_m:"Minutes",cd_s:"Seconds",cd_now:"The celebration has begun",s_venue:"Venue name",s_venuePh:"e.g. Al Faisaliah Ballroom",s_map:"Venue location (Google Maps link)",s_mapHelp:"In Google Maps, find the venue, tap Share, then Copy link, and paste it here. Guests see a button that opens it.",g_location:"Venue location",g_openMap:"Open in Google Maps",why_phone:"phone number is missing",why_phoneBad:"phone number looks incomplete",phoneReq:"Enter a complete phone number.",g_final:"Replies can't be changed after you send them.",g_confirmYes:"Confirm: we will attend",g_confirmNo:"Confirm: we will not be attending",g_confirmCount:"Confirm {n} attending",g_back:"Go back",g_youChose:"You are replying:",g_attendN:"{n} of {s} guests will attend",g_attend1:"I will attend",g_decline:"We will not be attending",g_contact:"Need to change your reply? Please contact the hosts directly.",imp_dupes:"{n} duplicates skipped (already on your list or repeated in the file)",dupPhone:"This phone number is already used by {name} ({id}).",dupGeneric:"This phone number is already on your list.",imp_none:"No rows could be read. Check that the first row has the column names and that every row has a name and a seat number.",signIn:"Sign in",signInTitle:"Organizer sign in",email:"Email",password:"Password",signInErr:"Email or password is incorrect.",signOut:"Sign out",notAdmin:"This account is not on the organizer list. Add its email to the admins table in Supabase.",g_loadErr:"The invitation could not be loaded. Check your connection and try again.",retry:"Try again",cfgMissing:"Setup is not finished: add your Supabase address and key to config.js, then upload the folder again.",sendInv:"Send invitations",q_title:"Send on WhatsApp",q_help:"Tap the green button, press send in WhatsApp, then come back here. The next guest will be ready.",q_open:"Open WhatsApp for this guest",q_pick:"Open WhatsApp and choose the contact",q_noPhone:"No phone number saved. You will pick the contact in WhatsApp.",q_skip:"Skip",q_of:"{i} of {n}",q_done:"All invitations have been sent",q_doneSub:"Statuses update automatically as guests open their links.",q_none:"Every invitation is already marked as sent.",q_close:"Done",q_showMsg:"Show message",q_resend:"Include already-sent invitations"},
 ar:{appSub:"تأكيد حضور الزفاف",namesMissing:"أضيفوا أسماءكم من الإعدادات",scan:"مسح الدخول",settings:"الإعدادات",addInv:"إضافة دعوة",importList:"استيراد القائمة",exportCsv:"تصدير CSV",
 search:"ابحث بالاسم أو رقم الدعوة أو الجوال",all:"الكل",st_draft:"مسودة",st_sent:"أُرسلت",st_viewed:"شوهدت",st_confirmed:"مؤكدة",st_partial:"مؤكدة جزئيًا",st_declined:"معتذر",st_checkedin:"تم الدخول",
 invitations:"الدعوات",reservedSeats:"المقاعد المحجوزة",confirmedAtt:"الحضور المؤكد",arrived:"الضيوف الواصلون",copyMsg:"نسخ الرسالة",copyLink:"نسخ الرابط",openWa:"إرسال عبر واتساب",waOpenBtn:"فتح واتساب",waNoPhone:"لا يوجد رقم محفوظ، ستختار جهة الاتصال في واتساب",waHelp:"إذا لم يفتح واتساب، انسخ الرسالة والصقها في محادثة الضيف.",downloadQr:"تنزيل رمز QR",
@@ -373,7 +375,7 @@ g_notFound:"رابط الدعوة غير صالح.",g_notFoundSub:"يُرجى ا
 g_preview:"معاينة صفحة {name}. الردود هنا تُحفظ في دعوتهم.",back:"لوحة التحكم",entryPass:"بطاقة الدخول",ofSeats:"{c} من {s} مقاعد محجوزة",
 c_title:"امسح رمز الدخول",c_help:"وجّه الكاميرا إلى رمز QR الخاص بالضيف.",c_cameraOff:"الكاميرا غير متاحة هنا. امسح من صورة أو اكتب رقم الدعوة.",c_startCam:"تشغيل الكاميرا",c_photo:"المسح من صورة",c_manual:"رقم الدعوة أو الرمز",c_find:"بحث",
 c_notFound:"هذا الرمز لا يطابق أي دعوة.",c_noQr:"لم يُعثر على رمز QR في الصورة.",c_status:"حالة الرد",c_check:"الدخول",c_notYet:"لم يسجّل الدخول",c_checkIn:"تسجيل الدخول",c_already:"✅ تم تسجيل الدخول مسبقًا",c_done:"✅ تم تسجيل الدخول",c_date:"التاريخ",c_time:"الوقت",
-c_next:"مسح الضيف التالي",c_noRsvp:"لم يرد هذا الضيف بعد.",c_declined:"اعتذر هذا الضيف عن الحضور.",noReply:"لا يوجد رد",inviteId:"الدعوة",loading:"جارٍ التحميل…",side_bride:"العروس",side_groom:"العريس",side_none:"بدون جهة",side:"الجهة",allSides:"كل الجهات",sideStats:"حسب الجهة",st_accepted:"مقبول",st_pending:"بانتظار الرد",cap_title:"السعة",cap_help:"اتركه فارغًا لعدد غير محدود. أنت فقط من يغيّر هذه الحدود.",cap_total:"إجمالي المقاعد",cap_bride:"مقاعد أهل العروس",cap_groom:"مقاعد أهل العريس",cap_reserved:"محجوز",cap_confirmed:"مؤكد",cap_left:"المتبقي",cap_unlimited:"غير محدود",cap_full_total:"هذا يتجاوز السعة الإجمالية. ارفع الحد من الإعدادات أولًا.",cap_full_bride:"هذا يتجاوز سعة أهل العروس. ارفع الحد من الإعدادات أولًا.",cap_full_groom:"هذا يتجاوز سعة أهل العريس. ارفع الحد من الإعدادات أولًا.",cap_onlyLeft:"تبقّى {n} مقاعد فقط لهذه الجهة.",imp_side:"لأي جهة هذه القائمة؟",imp_pickSide:"اختر العروس أو العريس أولًا.",imp_tag:"سيتم تصنيف {n} عائلة موجودة مسبقًا ضمن {side}",imp_conflict:"{n} عائلة موجودة في قائمة الجهة الأخرى (لم تتغير)",imp_overcap:"لم تُضف {n} عائلة: تجاوز السعة",imp_go2:"استيراد {n} وتصنيف {m}",exportXlsx:"تصدير تقرير Excel",exporting:"جارٍ تجهيز التقرير…",g_confTitle:"تم تأكيد حضوركم",g_codeReady:"رمز الدخول الخاص بكم جاهز",g_qrHelp2:"أبرزوا هذا الرمز عند المدخل، واضغطوا «حفظ في الجوال» للاحتفاظ به.",g_saveToPhone:"حفظ في الجوال",g_guestsOf:"تم تأكيد حضور {a} من أصل {s}",g_moreBelow:"تفاصيل الدعوة",s_event:"تاريخ ووقت الحفل",s_eventHelp:"يظهر للضيوف عدّ تنازلي حتى هذا الموعد.",cd_until:"على موعد الفرح",cd_d:"يوم",cd_h:"ساعة",cd_m:"دقيقة",cd_s:"ثانية",cd_now:"بدأ الاحتفال",s_venue:"اسم قاعة الحفل",s_venuePh:"مثال: قاعة الفيصلية",s_map:"موقع الحفل (رابط خرائط Google)",s_mapHelp:"افتح خرائط Google وابحث عن القاعة، ثم اضغط مشاركة ثم نسخ الرابط والصقه هنا. سيظهر للضيوف زر يفتح الموقع.",g_location:"موقع الحفل",g_openMap:"فتح في خرائط Google",why_phone:"رقم الجوال مفقود",why_phoneBad:"رقم الجوال غير مكتمل",phoneReq:"أدخل رقم جوال كاملًا.",g_final:"لا يمكن تعديل الرد بعد إرساله.",g_confirmYes:"تأكيد: سنحضر",g_confirmNo:"تأكيد: لن نتمكن من الحضور",g_confirmCount:"تأكيد حضور {n}",g_back:"رجوع",g_youChose:"ردّكم:",g_attendN:"سيحضر {n} من أصل {s}",g_attend1:"سأحضر",g_decline:"لن نتمكن من الحضور",g_contact:"لتعديل الرد، يُرجى التواصل مع أصحاب الدعوة مباشرة.",imp_dupes:"تم تجاوز {n} مكررات (موجودة مسبقًا أو مكررة في الملف)",dupPhone:"رقم الجوال مستخدم مسبقًا في دعوة {name} ({id}).",dupGeneric:"رقم الجوال موجود مسبقًا في القائمة.",imp_none:"تعذّرت قراءة أي صف. تأكد أن الصف الأول يحتوي أسماء الأعمدة وأن كل صف فيه اسم وعدد مقاعد.",signIn:"تسجيل الدخول",signInTitle:"دخول المنظِّم",email:"البريد الإلكتروني",password:"كلمة المرور",signInErr:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",signOut:"تسجيل الخروج",notAdmin:"هذا الحساب ليس ضمن قائمة المنظمين. أضف بريده إلى جدول admins في Supabase.",g_loadErr:"تعذّر تحميل الدعوة. تحقق من الاتصال وحاول مجددًا.",retry:"إعادة المحاولة",cfgMissing:"الإعداد غير مكتمل: أضف عنوان Supabase والمفتاح في config.js ثم ارفع المجلد مجددًا.",sendInv:"إرسال الدعوات",q_title:"الإرسال عبر واتساب",q_help:"اضغط الزر الأخضر، ثم اضغط إرسال في واتساب، وعُد إلى هنا. سيكون الضيف التالي جاهزًا.",q_open:"فتح واتساب لهذا الضيف",q_pick:"فتح واتساب واختيار جهة الاتصال",q_noPhone:"لا يوجد رقم جوال محفوظ. ستختار جهة الاتصال في واتساب.",q_skip:"تخطي",q_of:"{i} من {n}",q_done:"تم إرسال جميع الدعوات",q_doneSub:"تتحدث الحالات تلقائيًا عند فتح الضيوف لروابطهم.",q_none:"جميع الدعوات مُعلَّمة كمُرسلة.",q_close:"تم",q_showMsg:"عرض الرسالة",q_resend:"تضمين الدعوات المرسلة سابقًا"}
+c_next:"مسح الضيف التالي",c_noRsvp:"لم يرد هذا الضيف بعد.",c_declined:"اعتذر هذا الضيف عن الحضور.",noReply:"لا يوجد رد",inviteId:"الدعوة",loading:"جارٍ التحميل…",staff:"فريق الاستقبال",staffHelp:"يستطيع فريق الاستقبال مسح الرموز وتسجيل دخول الضيوف فقط، دون رؤية لوحتك أو قائمة الضيوف أو أرقام الجوال.",staffName:"الاسم",staffEmail:"البريد الإلكتروني (لتسجيل الدخول)",staffPass:"كلمة المرور (8 أحرف أو أكثر)",staffAdd:"إضافة عضو",staffNone:"لا يوجد أعضاء بعد.",staffRemove:"إزالة",staffAdded:"تمت إضافة العضو",staffRemoved:"تمت إزالة العضو",staffConfirmRemove:"إزالة {name}؟ لن يتمكن من تسجيل الدخول بعد ذلك.",se_EMAIL_TAKEN:"هذا البريد لديه حساب مسبقًا. استخدم بريدًا آخر.",se_WEAK_PASSWORD:"استخدم كلمة مرور من 8 أحرف على الأقل.",se_BAD_INPUT:"أدخل الاسم وبريدًا إلكترونيًا صحيحًا.",se_IS_ADMIN:"هذا البريد لمنظِّم وليس لعضو استقبال.",se_NOT_ALLOWED:"المنظمون فقط يديرون فريق الاستقبال.",se_missing:"وظيفة الفريق غير مثبتة بعد في Supabase ‏(Edge Functions ← staff-admin).",log:"سجل الدخول",logNone:"لا يوجد سجل بعد.",lg_checkin:"دخول",lg_undo:"تراجع",lg_lookup:"بحث",lg_time:"الوقت",lg_family:"العائلة",lg_action:"الإجراء",lg_people:"الأشخاص",lg_by:"بواسطة",lg_via:"الطريقة",via_scan:"مسح",via_manual:"إدخال يدوي",via_dashboard:"اللوحة",staffMode:"فريق الاستقبال",ci_of:"وصل {a} من {m}",ci_all:"تسجيل دخول الجميع ({n})",ci_some:"الواصلون الآن:",ci_full:"✅ تم دخول الجميع ({n})",ci_first:"أول وصول",ci_last:"آخر تحديث",ci_undo1:"تراجع عن 1",ci_undone:"تم التراجع",ci_allIn:"تم تسجيل دخول جميع أفراد هذه الدعوة مسبقًا.",ci_maxNote:"يمكن دخول {n} كحد أقصى (المقاعد المحجوزة).",side_bride:"العروس",side_groom:"العريس",side_none:"بدون جهة",side:"الجهة",allSides:"كل الجهات",sideStats:"حسب الجهة",st_accepted:"مقبول",st_pending:"بانتظار الرد",cap_title:"السعة",cap_help:"اتركه فارغًا لعدد غير محدود. أنت فقط من يغيّر هذه الحدود.",cap_total:"إجمالي المقاعد",cap_bride:"مقاعد أهل العروس",cap_groom:"مقاعد أهل العريس",cap_reserved:"محجوز",cap_confirmed:"مؤكد",cap_left:"المتبقي",cap_unlimited:"غير محدود",cap_full_total:"هذا يتجاوز السعة الإجمالية. ارفع الحد من الإعدادات أولًا.",cap_full_bride:"هذا يتجاوز سعة أهل العروس. ارفع الحد من الإعدادات أولًا.",cap_full_groom:"هذا يتجاوز سعة أهل العريس. ارفع الحد من الإعدادات أولًا.",cap_onlyLeft:"تبقّى {n} مقاعد فقط لهذه الجهة.",imp_side:"لأي جهة هذه القائمة؟",imp_pickSide:"اختر العروس أو العريس أولًا.",imp_tag:"سيتم تصنيف {n} عائلة موجودة مسبقًا ضمن {side}",imp_conflict:"{n} عائلة موجودة في قائمة الجهة الأخرى (لم تتغير)",imp_overcap:"لم تُضف {n} عائلة: تجاوز السعة",imp_go2:"استيراد {n} وتصنيف {m}",exportXlsx:"تصدير تقرير Excel",exporting:"جارٍ تجهيز التقرير…",g_confTitle:"تم تأكيد حضوركم",g_codeReady:"رمز الدخول الخاص بكم جاهز",g_qrHelp2:"أبرزوا هذا الرمز عند المدخل، واضغطوا «حفظ في الجوال» للاحتفاظ به.",g_saveToPhone:"حفظ في الجوال",g_guestsOf:"تم تأكيد حضور {a} من أصل {s}",g_moreBelow:"تفاصيل الدعوة",s_event:"تاريخ ووقت الحفل",s_eventHelp:"يظهر للضيوف عدّ تنازلي حتى هذا الموعد.",cd_until:"على موعد الفرح",cd_d:"يوم",cd_h:"ساعة",cd_m:"دقيقة",cd_s:"ثانية",cd_now:"بدأ الاحتفال",s_venue:"اسم قاعة الحفل",s_venuePh:"مثال: قاعة الفيصلية",s_map:"موقع الحفل (رابط خرائط Google)",s_mapHelp:"افتح خرائط Google وابحث عن القاعة، ثم اضغط مشاركة ثم نسخ الرابط والصقه هنا. سيظهر للضيوف زر يفتح الموقع.",g_location:"موقع الحفل",g_openMap:"فتح في خرائط Google",why_phone:"رقم الجوال مفقود",why_phoneBad:"رقم الجوال غير مكتمل",phoneReq:"أدخل رقم جوال كاملًا.",g_final:"لا يمكن تعديل الرد بعد إرساله.",g_confirmYes:"تأكيد: سنحضر",g_confirmNo:"تأكيد: لن نتمكن من الحضور",g_confirmCount:"تأكيد حضور {n}",g_back:"رجوع",g_youChose:"ردّكم:",g_attendN:"سيحضر {n} من أصل {s}",g_attend1:"سأحضر",g_decline:"لن نتمكن من الحضور",g_contact:"لتعديل الرد، يُرجى التواصل مع أصحاب الدعوة مباشرة.",imp_dupes:"تم تجاوز {n} مكررات (موجودة مسبقًا أو مكررة في الملف)",dupPhone:"رقم الجوال مستخدم مسبقًا في دعوة {name} ({id}).",dupGeneric:"رقم الجوال موجود مسبقًا في القائمة.",imp_none:"تعذّرت قراءة أي صف. تأكد أن الصف الأول يحتوي أسماء الأعمدة وأن كل صف فيه اسم وعدد مقاعد.",signIn:"تسجيل الدخول",signInTitle:"دخول المنظِّم",email:"البريد الإلكتروني",password:"كلمة المرور",signInErr:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",signOut:"تسجيل الخروج",notAdmin:"هذا الحساب ليس ضمن قائمة المنظمين. أضف بريده إلى جدول admins في Supabase.",g_loadErr:"تعذّر تحميل الدعوة. تحقق من الاتصال وحاول مجددًا.",retry:"إعادة المحاولة",cfgMissing:"الإعداد غير مكتمل: أضف عنوان Supabase والمفتاح في config.js ثم ارفع المجلد مجددًا.",sendInv:"إرسال الدعوات",q_title:"الإرسال عبر واتساب",q_help:"اضغط الزر الأخضر، ثم اضغط إرسال في واتساب، وعُد إلى هنا. سيكون الضيف التالي جاهزًا.",q_open:"فتح واتساب لهذا الضيف",q_pick:"فتح واتساب واختيار جهة الاتصال",q_noPhone:"لا يوجد رقم جوال محفوظ. ستختار جهة الاتصال في واتساب.",q_skip:"تخطي",q_of:"{i} من {n}",q_done:"تم إرسال جميع الدعوات",q_doneSub:"تتحدث الحالات تلقائيًا عند فتح الضيوف لروابطهم.",q_none:"جميع الدعوات مُعلَّمة كمُرسلة.",q_close:"تم",q_showMsg:"عرض الرسالة",q_resend:"تضمين الدعوات المرسلة سابقًا"}
 };
 let LANG = (() => { try { const l = localStorage.getItem("rsvp-lang"); if (l) return l; } catch (e) {} if (/[?&]i=/.test(location.search) || /^#\/?preview\//.test(location.hash)) return "ar"; return (navigator.language || "").startsWith("ar") ? "ar" : "en"; })();
 const t = (k, v = {}) => (T[LANG][k] ?? T.en[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? "");
@@ -414,7 +416,7 @@ const DEFAULT_SETTINGS = { coupleEn: "", coupleAr: "", deadline: "", baseUrl: ""
 const S = { mode: "loading", sb: null, session: null, invites: new Map(), settings: { ...DEFAULT_SETTINGS }, allLoaded: false, oneLoaded: {}, guestErr: {}, canWrite: true, notAdmin: false, subs: {} };
 const pad2 = n => String(n).padStart(2, "0");
 function toLocalInput(iso) { if (!iso) return ""; const d = new Date(iso); if (isNaN(d)) return ""; return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
-const fromRow = r => ({ token: r.token, id: r.inv_id, name: r.name, seats: r.seats, phone: r.phone || "", notes: r.notes || "", createdAt: r.created_at, sentAt: r.sent_at, viewedAt: r.viewed_at, rsvp: r.rsvp_count == null ? null : { count: r.rsvp_count, at: r.rsvp_at }, checkedInAt: r.checked_in_at, side: r.side || null });
+const fromRow = r => ({ token: r.token, id: r.inv_id, name: r.name, seats: r.seats, phone: r.phone || "", notes: r.notes || "", createdAt: r.created_at, sentAt: r.sent_at, viewedAt: r.viewed_at, rsvp: r.rsvp_count == null ? null : { count: r.rsvp_count, at: r.rsvp_at }, checkedInAt: r.checked_in_at, side: r.side || null, arrived: r.arrived || 0 });
 const COLS = { token: "token", id: "inv_id", name: "name", seats: "seats", phone: "phone", notes: "notes", createdAt: "created_at", sentAt: "sent_at", viewedAt: "viewed_at", checkedInAt: "checked_in_at", side: "side" };
 function toRow(p) { const o = {}; for (const k in p) { if (k === "rsvp") { o.rsvp_count = p.rsvp ? p.rsvp.count : null; o.rsvp_at = p.rsvp ? p.rsvp.at : null; } else if (COLS[k]) o[COLS[k]] = p[k]; } return o; }
 const settingsFrom = r => ({ coupleEn: r.couple_en || "", coupleAr: r.couple_ar || "", deadline: toLocalInput(r.deadline), baseUrl: r.base_url || "", msgLang: r.msg_lang || "both", venueName: r.venue_name || "", venueMap: r.venue_map_url || "", eventAt: toLocalInput(r.event_at), capTotal: r.cap_total ?? null, capBride: r.cap_bride ?? null, capGroom: r.cap_groom ?? null });
@@ -435,11 +437,22 @@ async function init() {
   S.sb = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseKey);
   S.mode = "db";
   try { const { data } = await S.sb.auth.getSession(); S.session = data.session; } catch (e) {}
-  S.sb.auth.onAuthStateChange((ev, session) => {
+  if (S.session) await loadRole();
+  S.sb.auth.onAuthStateChange(async (ev, session) => {
     const had = !!S.session; S.session = session;
-    if (!!session !== had) { resetAdminData(); mount(); }
+    if (!!session !== had) { resetAdminData(); S.role = undefined; if (session) await loadRole(); mount(); }
   });
   mount();
+}
+async function loadRole() {
+  let role = null;
+  try {
+    const r1 = await S.sb.rpc("my_role");
+    if (!r1.error) role = r1.data || null;
+    else { const r2 = await S.sb.rpc("is_admin"); role = r2.data === true ? "admin" : null; }
+  } catch (e) {}
+  S.role = role; S.notAdmin = role !== "admin"; S.canWrite = role === "admin";
+  if (role === "staff") { try { const { data } = await S.sb.from("staff").select("name").maybeSingle(); S.staffName = data && data.name || ""; } catch (e) {} }
 }
 async function loadAll() {
   const { data, error } = await S.sb.from("invites").select("*").order("inv_id");
@@ -451,8 +464,7 @@ async function loadSettings() {
   if (data) S.settings = settingsFrom(data); refresh();
 }
 function ensureAll() {
-  if (S.subs.all || !S.session) return; S.subs.all = true;
-  S.sb.rpc("is_admin").then(({ data }) => { S.notAdmin = data !== true; S.canWrite = data === true; refresh(); });
+  if (S.subs.all || !S.session || S.role === "staff") return; S.subs.all = true;
   loadSettings(); loadAll();
   S.subs.ch = S.sb.channel("invites-live").on("postgres_changes", { event: "*", schema: "public", table: "invites" }, () => { clearTimeout(S.subs.t); S.subs.t = setTimeout(loadAll, 400); }).subscribe();
   S.subs.poll = setInterval(() => { if (!document.hidden) loadAll(); }, 30000);
@@ -508,13 +520,13 @@ function capErrText(e) { const m = String(e && e.message || ""); if (/CAPACITY_B
 const replyOf = i => { const a = attending(i); return a == null ? "pending" : a > 0 ? "accepted" : "declined"; };
 function sideStats(side) {
   const r = { inv: 0, seats: 0, accepted: 0, declined: 0, pending: 0, conf: 0, arrived: 0 };
-  S.invites.forEach(i => { if (side !== undefined && (side === "none" ? i.side : i.side !== side)) return; r.inv++; r.seats += +i.seats || 0; r[replyOf(i)]++; const a = attending(i) || 0; r.conf += a; if (i.checkedInAt) r.arrived += a; });
+  S.invites.forEach(i => { if (side !== undefined && (side === "none" ? i.side : i.side !== side)) return; r.inv++; r.seats += +i.seats || 0; r[replyOf(i)]++; const a = attending(i) || 0; r.conf += a; r.arrived += i.arrived || 0; });
   return r;
 }
 const STATUSES = ["draft", "sent", "viewed", "confirmed", "partial", "declined", "checkedin"];
 const STATUS_COLOR = { draft: "var(--line)", sent: "var(--slate)", viewed: "var(--rose)", confirmed: "var(--ok)", partial: "var(--amber)", declined: "var(--bad)", checkedin: "var(--gold)" };
 function statusOf(inv) {
-  if (inv.checkedInAt) return "checkedin";
+  if (inv.arrived > 0 || inv.checkedInAt) return "checkedin";
   const r = inv.rsvp;
   if (r && typeof r.count === "number") { if (r.count === 0) return "declined"; if (r.count < inv.seats) return "partial"; return "confirmed"; }
   if (inv.viewedAt) return "viewed";
@@ -620,6 +632,8 @@ function mount() {
   if (view && view.unmount) view.unmount();
   closeDialog();
   const r = route();
+  const staff = S.session && S.role === "staff";
+  if (staff && r.name === "admin") { location.replace("#/scan"); return; }
   view = r.name === "guest" ? GuestView(r) : !S.session ? LoginView() : r.name === "scan" ? ScanView() : r.name === "checkin" ? CheckinView(r) : AdminView();
   view.mount(); window.scrollTo(0, 0);
 }
@@ -660,6 +674,8 @@ function AdminView() {
       <header class="top"><h1 id="a-title"></h1><div class="actions">
         ${langBtn()}
         <button class="btn ghost sm" data-a="signout">${t("signOut")}</button>
+        <button class="btn icon" data-a="log" title="${t("log")}" aria-label="${t("log")}">${ICON.log}</button>
+        <button class="btn icon" data-a="staff" title="${t("staff")}" aria-label="${t("staff")}">${ICON.users}</button>
         <button class="btn icon" data-a="settings" title="${t("settings")}" aria-label="${t("settings")}">${ICON.gear}</button>
         <a class="btn primary" href="#/scan">${ICON.scan}${t("scan")}</a></div></header>
       <section class="admin-cd" id="a-cd" hidden></section>
@@ -699,7 +715,7 @@ function AdminView() {
     const everyone = [...S.invites.values()];
     const all = everyone.filter(i => sideF === "all" || (sideF === "none" ? !i.side : i.side === sideF)), counts = {}; STATUSES.forEach(x => counts[x] = 0);
     let seats = 0, conf = 0, arrived = 0;
-    all.forEach(i => { const st = statusOf(i); counts[st]++; seats += +i.seats || 0; const a = attending(i) || 0; conf += a; if (i.checkedInAt) arrived += a || 0; });
+    all.forEach(i => { const st = statusOf(i); counts[st]++; seats += +i.seats || 0; const a = attending(i) || 0; conf += a; arrived += i.arrived || 0; });
     const noneCount = everyone.filter(i => !i.side).length;
     const sideChips = `<div class="chips sidechips" role="group">
         <button class="chip" data-sf="all" aria-pressed="${sideF === "all"}">${t("allSides")} <em>${everyone.length}</em></button>
@@ -759,7 +775,7 @@ function AdminView() {
             <button data-r="checkin">${ICON.scan}${t("checkinPage")}</button>
             ${ro ? "" : `<hr><button data-r="edit">${ICON.edit}${t("edit")}</button>
             <button data-r="reset">${ICON.reset}${t("resetRsvp")}</button>
-            ${i.checkedInAt ? `<button data-r="undo">${ICON.undo}${t("undoCheckin")}</button>` : ""}
+            ${i.arrived > 0 || i.checkedInAt ? `<button data-r="undo">${ICON.undo}${t("undoCheckin")}</button>` : ""}
             <button data-r="del" class="danger">${ICON.trash}${t("del")}</button>`}
           </div></details>
         </div></div>`;
@@ -770,7 +786,7 @@ function AdminView() {
     const sfb = e.target.closest("[data-sf]"); if (sfb) { sideF = sfb.dataset.sf; renderOverview(); renderList(); return; }
     const f = e.target.closest("[data-f]"); if (f) { filter = f.dataset.f; renderOverview(); renderList(); return; }
     const a = e.target.closest("[data-a]");
-    if (a) { const x = a.dataset.a; if (x === "add") editDialog(); if (x === "import") importDialog(); if (x === "settings") settingsDialog(); if (x === "export") exportReport(a); if (x === "signout") S.sb.auth.signOut(); if (x === "send") sendQueue(); return; }
+    if (a) { const x = a.dataset.a; if (x === "add") editDialog(); if (x === "import") importDialog(); if (x === "settings") settingsDialog(); if (x === "export") exportReport(a); if (x === "signout") S.sb.auth.signOut(); if (x === "staff") staffDialog(); if (x === "log") logDialog(); if (x === "send") sendQueue(); return; }
     const r = e.target.closest("[data-r]"); if (!r) return;
     const tok = r.closest("[data-tok]").dataset.tok, inv = S.invites.get(tok); if (!inv) return;
     const d = r.closest("details"); if (d) d.removeAttribute("open");
@@ -784,7 +800,7 @@ function AdminView() {
         case "checkin": location.hash = `#/checkin/${inv.token}`; break;
         case "edit": editDialog(inv); break;
         case "reset": if (await confirmDialog(t("confirmReset", { name: inv.name }), t("resetRsvp"))) { await patchInvite(tok, { rsvp: null }); toast(t("resetDone")); } break;
-        case "undo": if (await confirmDialog(t("confirmUndo", { name: inv.name }), t("undoCheckin"))) { await patchInvite(tok, { checkedInAt: null }); toast(t("undoDone")); } break;
+        case "undo": if (await confirmDialog(t("confirmUndo", { name: inv.name }), t("undoCheckin"))) { const { error } = await S.sb.rpc("ci_undo", { p_token: tok, p_count: null, p_via: "dashboard" }); if (error) throw error; S.invites.set(tok, { ...inv, arrived: 0, checkedInAt: null }); refresh(); toast(t("undoDone")); } break;
         case "del": if (await confirmDialog(t("confirmDelete", { name: inv.name }), t("del"), true)) { await removeInvite(tok); toast(t("deleted")); } break;
       }
     } catch (err) { writeFailed(err); }
@@ -1016,6 +1032,56 @@ function importDialog() {
     };
   });
 }
+/* ---------- staff & log ---------- */
+async function staffDialog() {
+  openDialog(`<h2>${t("staff")}</h2><p class="muted" style="margin-top:0">${t("staffHelp")}</p><div id="stl" class="report" style="max-height:220px;color:var(--ink)">${t("loading")}</div>
+    <form id="stf" style="margin-top:12px">
+      <label class="field"><span>${t("staffName")}</span><input name="name" required maxlength="60"></label>
+      <label class="field"><span>${t("staffEmail")}</span><input name="email" type="email" dir="ltr" required autocomplete="off"></label>
+      <label class="field"><span>${t("staffPass")}</span><input name="password" type="text" dir="ltr" required minlength="8" autocomplete="new-password"></label>
+      <p id="sterr" style="color:var(--bad);margin:0 0 8px;font-size:14px"></p>
+      <div class="dlg-acts"><button type="button" class="btn" data-x="c">${t("q_close")}</button><button class="btn primary">${t("staffAdd")}</button></div></form>`, d => {
+    $('[data-x="c"]', d).onclick = closeDialog;
+    const list = async () => {
+      const { data, error } = await S.sb.from("staff").select("*").order("created_at");
+      const el = $("#stl", d); if (!el) return;
+      if (error) { el.textContent = t("writeErr"); return; }
+      el.innerHTML = !data.length ? `<p class="muted" style="margin:0">${t("staffNone")}</p>` : data.map(s => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)"><div style="flex:1;min-width:0"><b>${esc(s.name)}</b><div class="muted" dir="ltr" style="font-size:13px;text-align:start">${esc(s.email)}</div></div><button class="btn sm" data-rm="${esc(s.user_id)}" data-nm="${esc(s.name)}">${t("staffRemove")}</button></div>`).join("");
+    };
+    const callFn = async body => {
+      const { data, error } = await S.sb.functions.invoke("staff-admin", { body });
+      if (!error) return null;
+      let code = "";
+      try { const j = await error.context.json(); code = j && j.error || ""; } catch (e) {}
+      if (!code) return t("se_missing");
+      return t("se_" + code) !== "se_" + code ? t("se_" + code) : code;
+    };
+    $("#stl", d).addEventListener("click", async e => {
+      const b = e.target.closest("[data-rm]"); if (!b) return;
+      if (!(await confirmDialog(t("staffConfirmRemove", { name: b.dataset.nm }), t("staffRemove"), true))) { staffDialog(); return; }
+      const err = await callFn({ action: "remove", user_id: b.dataset.rm });
+      toast(err || t("staffRemoved")); staffDialog();
+    });
+    $("#stf", d).onsubmit = async e => {
+      e.preventDefault(); const fd = new FormData(e.target), btn = $("button.primary", e.target); btn.disabled = true; $("#sterr", d).textContent = "";
+      const err = await callFn({ action: "create", name: String(fd.get("name")).trim(), email: String(fd.get("email")).trim(), password: String(fd.get("password")) });
+      btn.disabled = false;
+      if (err) { $("#sterr", d).textContent = err; return; }
+      toast(t("staffAdded")); e.target.reset(); list();
+    };
+    list();
+  });
+}
+async function fetchLog(limit) { const { data, error } = await S.sb.from("checkin_log").select("*").order("at", { ascending: false }).limit(limit); if (error) throw error; return data || []; }
+async function logDialog() {
+  openDialog(`<h2>${t("log")}</h2><div id="lgl" class="tblwrap" style="max-height:60vh;overflow:auto">${t("loading")}</div><div class="dlg-acts"><button class="btn" data-x="c">${t("q_close")}</button></div>`, async d => {
+    $('[data-x="c"]', d).onclick = closeDialog;
+    try {
+      const rows = await fetchLog(300), el = $("#lgl", d); if (!el) return;
+      el.innerHTML = !rows.length ? `<p class="muted">${t("logNone")}</p>` : `<table class="sidetbl"><thead><tr><th>${t("lg_time")}</th><th>${t("lg_family")}</th><th>${t("lg_action")}</th><th>${t("lg_people")}</th><th>${t("lg_by")}</th><th>${t("lg_via")}</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(fmtTime(r.at))}</td><td style="text-align:start">${esc((r.inv_id ? r.inv_id + " " : "") + (r.family || ""))}</td><td>${esc(t("lg_" + r.action))}</td><td>${r.action === "lookup" ? "" : (r.delta > 0 ? "+" : "") + r.delta}${r.arrived != null && r.action !== "lookup" ? ` <span class="muted">(${r.arrived})</span>` : ""}</td><td>${esc(r.by_name || "")}</td><td>${esc(t("via_" + r.via))}</td></tr>`).join("")}</tbody></table>`;
+    } catch (e) { const el = $("#lgl", d); if (el) el.textContent = t("writeErr"); }
+  });
+}
 /* ---------- Excel report & template (ExcelJS) ---------- */
 const XL = { green: "FFE3F1E7", red: "FFF6E0E0", blue: "FFE3EAF6", head: "FF2A1B2D", gold: "FFEFE5D2" };
 const REPLY_BIL = { accepted: "مقبول / Accepted", declined: "معتذر / Declined", pending: "بانتظار الرد / Pending" };
@@ -1027,15 +1093,15 @@ function styleHead(row) {
 }
 function guestSheet(wb, name, list) {
   const ws = wb.addWorksheet(name, { views: [{ rightToLeft: true, state: "frozen", ySplit: 1 }] });
-  ws.columns = [["رقم الدعوة / ID", 12], ["اسم العائلة / Family", 30], ["الجهة / Side", 16], ["الجوال / Phone", 16], ["المقاعد المحجوزة / Reserved", 15], ["الحضور المؤكد / Confirmed", 15], ["الحالة / Status", 24], ["وقت الدخول / Checked in", 20], ["ملاحظات / Notes", 26]].map(([header, width]) => ({ header, width }));
+  ws.columns = [["رقم الدعوة / ID", 12], ["اسم العائلة / Family", 30], ["الجهة / Side", 16], ["الجوال / Phone", 16], ["المقاعد المحجوزة / Reserved", 15], ["الحضور المؤكد / Confirmed", 15], ["الحالة / Status", 24], ["الواصلون / Arrived", 12], ["وقت الدخول / Checked in", 20], ["ملاحظات / Notes", 26]].map(([header, width]) => ({ header, width }));
   styleHead(ws.getRow(1));
-  list.forEach(i => ws.addRow([i.id, i.name, SIDE_BIL[i.side] || "—", i.phone, +i.seats, attending(i) ?? "", REPLY_BIL[replyOf(i)], xlDate(i.checkedInAt), i.notes || ""]));
+  list.forEach(i => ws.addRow([i.id, i.name, SIDE_BIL[i.side] || "—", i.phone, +i.seats, attending(i) ?? "", REPLY_BIL[replyOf(i)], i.arrived || 0, xlDate(i.checkedInAt), i.notes || ""]));
   ws.getColumn(4).numFmt = "@";
   const last = list.length + 1;
   if (list.length) {
-    ws.autoFilter = { from: "A1", to: `I${last}` };
+    ws.autoFilter = { from: "A1", to: `J${last}` };
     const rule = (word, argb) => ({ type: "expression", formulae: [`ISNUMBER(SEARCH("${word}",$G2))`], style: { fill: { type: "pattern", pattern: "solid", bgColor: { argb } } } });
-    ws.addConditionalFormatting({ ref: `A2:I${last}`, rules: [rule("Accepted", XL.green), rule("Declined", XL.red), rule("Pending", XL.blue)] });
+    ws.addConditionalFormatting({ ref: `A2:J${last}`, rules: [rule("Accepted", XL.green), rule("Declined", XL.red), rule("Pending", XL.blue)] });
   }
   return ws;
 }
@@ -1080,6 +1146,14 @@ async function exportReport(btn) {
     guestSheet(wb, "العروس - Bride", all.filter(i => i.side === "bride"));
     guestSheet(wb, "العريس - Groom", all.filter(i => i.side === "groom"));
     if (hasNone) guestSheet(wb, "بدون جهة - No side", all.filter(i => !i.side));
+    try {
+      const log = await fetchLog(5000);
+      const lw = wb.addWorksheet("سجل الدخول - Check-in log", { views: [{ rightToLeft: true, state: "frozen", ySplit: 1 }] });
+      lw.columns = [["الوقت / Time", 20], ["رقم الدعوة / ID", 12], ["العائلة / Family", 30], ["الإجراء / Action", 16], ["الأشخاص / People", 10], ["الواصلون بعدها / Arrived after", 14], ["بواسطة / By", 18], ["الطريقة / How", 14]].map(([header, width]) => ({ header, width }));
+      styleHead(lw.getRow(1));
+      const ACT = { checkin: "دخول / Check-in", undo: "تراجع / Undo", lookup: "بحث / Lookup" }, VIA = { scan: "مسح / Scan", manual: "يدوي / Typed", dashboard: "اللوحة / Dashboard" };
+      log.forEach(r => lw.addRow([xlDate(r.at), r.inv_id || "", r.family || "", ACT[r.action] || r.action, r.action === "lookup" ? "" : r.delta, r.action === "lookup" ? "" : r.arrived, r.by_name || "", VIA[r.via] || r.via || ""]));
+    } catch (e) {}
     const buf = await wb.xlsx.writeBuffer();
     await deliver(`wedding-report-${toLocalInput(new Date().toISOString()).slice(0, 10)}.xlsx`, new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
   } catch (e) { console.error(e); toast(t("writeErr")); }
@@ -1268,11 +1342,16 @@ function findInvite(text) {
   for (const i of S.invites.values()) { if (String(i.id).toLowerCase() === low) return i; if (num && /^(inv-?)?\d+$/.test(low) && parseInt(String(i.id).replace(/\D/g, ""), 10) === num) return i; }
   return null;
 }
+function stationTop() {
+  if (S.role === "staff") return `<div class="g-top"><span class="muted" style="font-size:14px">${esc(t("staffMode"))}${S.staffName ? " | " + esc(S.staffName) : ""}</span><span style="display:flex;gap:6px">${langBtn()}<button class="btn ghost sm" data-ci="signout">${t("signOut")}</button></span></div>`;
+  return `<div class="g-top"><a class="btn ghost sm" href="./#/">${ICON.back}${t("back")}</a>${langBtn()}</div>`;
+}
+document.addEventListener("click", e => { if (e.target.closest('[data-ci="signout"]')) S.sb.auth.signOut(); });
 function ScanView() {
   let stream = null, raf = 0, alive = true;
   function mount() {
     ensureAll();
-    app.innerHTML = `<main class="station"><div class="g-top"><a class="btn ghost sm" href="#/">${ICON.back}${t("back")}</a>${langBtn()}</div>
+    app.innerHTML = `<main class="station">${stationTop()}
       <h1>${t("c_title")}</h1><p class="muted" style="margin:0">${t("c_help")}</p>
       <div class="cam" id="cam"><video id="vid" playsinline muted></video><div class="frame" aria-hidden="true"></div><p id="camMsg" hidden></p></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -1302,24 +1381,29 @@ function ScanView() {
       const scale = Math.min(1, 720 / Math.max(v.videoWidth, v.videoHeight));
       cv.width = v.videoWidth * scale; cv.height = v.videoHeight * scale; cx.drawImage(v, 0, 0, cv.width, cv.height);
       const code = jsQR(cx.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height, { inversionAttempts: "dontInvert" });
-      if (code && code.data) { if (go(code.data, true)) return; }
+      if (code && code.data && !looking && code.data !== lastBad) { go(code.data, true); }
     }
     raf = requestAnimationFrame(loop);
   }
   let lastBad = "";
-  function go(text, fromCam) {
-    if (!S.allLoaded && S.mode === "db") { toast(t("loading")); return false; }
-    const inv = findInvite(text);
-    if (!inv) { if (!fromCam || text !== lastBad) toast(t("c_notFound")); lastBad = text; return false; }
+  let looking = false;
+  async function go(text, fromCam) {
+    if (looking) return false; looking = true;
+    let code = String(text || "").trim();
+    try { const u = new URL(code); const qi = u.searchParams.get("i"); if (qi) code = qi; else { const parts = u.pathname.split("/").filter(Boolean); if (parts.length) code = parts[parts.length - 1]; } } catch (e) {}
+    const { data, error } = await S.sb.rpc("ci_lookup", { p_code: asciiDigits(code), p_via: fromCam === true ? "scan" : fromCam === "photo" ? "scan" : "manual" });
+    looking = false;
+    if (error || !data) { if (fromCam !== true || text !== lastBad) toast(error ? t("writeErr") : t("c_notFound")); lastBad = text; return false; }
+    S.ci = S.ci || {}; S.ci[data.token] = data;
     if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {}
-    location.hash = "#/checkin/" + inv.token; return true;
+    location.hash = "#/checkin/" + data.token; return true;
   }
   function scanPhoto(e) {
     const f = e.target.files[0]; if (!f) return; const img = new Image();
     img.onload = () => {
       const scale = Math.min(1, 1400 / Math.max(img.width, img.height)); cv.width = img.width * scale; cv.height = img.height * scale;
       cx.drawImage(img, 0, 0, cv.width, cv.height); const code = jsQR(cx.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height);
-      URL.revokeObjectURL(img.src); if (code && code.data) go(code.data); else toast(t("c_noQr"));
+      URL.revokeObjectURL(img.src); if (code && code.data) go(code.data, "photo"); else toast(t("c_noQr"));
     };
     img.src = URL.createObjectURL(f); e.target.value = "";
   }
@@ -1330,40 +1414,57 @@ function ScanView() {
 
 /* ======================= CHECK-IN ======================= */
 function CheckinView(r) {
-  let busy = false, fresh = false;
-  function mount() { ensureAll(); app.addEventListener("click", onClick); update(); }
+  let busy = false, flash = "";
+  function mount() { app.addEventListener("click", onClick); update(); if (!(S.ci && S.ci[r.token])) load(); }
   function unmount() { app.removeEventListener("click", onClick); }
+  async function load() {
+    const { data, error } = await S.sb.rpc("ci_lookup", { p_code: r.token, p_via: "scan" });
+    S.ci = S.ci || {}; S.ci[r.token] = error ? { error: true } : (data || { missing: true }); update();
+  }
   function update() {
-    const top = `<div class="g-top"><a class="btn ghost sm" href="#/">${ICON.back}${t("back")}</a>${langBtn()}</div>`;
-    if (!S.allLoaded) { app.innerHTML = `<main class="station">${top}<div class="loading">${t("loading")}</div></main>`; return; }
-    const inv = S.invites.get(r.token);
-    if (!inv) { app.innerHTML = `<main class="station">${top}<div class="ci"><p class="nm" style="font-size:26px">${t("c_notFound")}</p></div><p style="margin-top:14px"><a class="btn primary big" href="#/scan">${ICON.scan}${t("c_next")}</a></p></main>`; return; }
-    const st = statusOf(inv), a = attending(inv), rsvpSt = a == null ? "noReply" : (a === 0 ? "declined" : a < inv.seats ? "partial" : "confirmed");
+    const top = stationTop(), c = S.ci && S.ci[r.token];
+    const next = `<p style="margin-top:14px"><a class="btn primary big" href="#/scan">${ICON.scan}${t("c_next")}</a></p>`;
+    if (!c) { app.innerHTML = `<main class="station">${top}<div class="loading">${t("loading")}</div></main>`; return; }
+    if (c.error || c.missing) { app.innerHTML = `<main class="station">${top}<div class="ci"><p class="nm" style="font-size:26px">${c.error ? t("writeErr") : t("c_notFound")}</p></div>${next}</main>`; return; }
+    const a = c.rsvp_count, m = c.max_in, left = m - c.arrived, full = left <= 0;
+    const rsvpSt = a == null ? "noReply" : a === 0 ? "declined" : a < c.seats ? "partial" : "confirmed";
     const warn = a == null ? t("c_noRsvp") : a === 0 ? t("c_declined") : "";
-    const action = inv.checkedInAt
-      ? `<div class="already"><b>${fresh ? t("c_done") : t("c_already")}</b><div>${t("c_date")}: ${esc(fmtDay(inv.checkedInAt))}</div><div>${t("c_time")}: ${esc(fmtTime(inv.checkedInAt))}</div></div>`
-      : `${warn ? `<div class="warn">${esc(warn)}</div>` : ""}<button class="btn gold checkin-btn" data-c="in" ${busy || !S.canWrite ? "disabled" : ""}>${ICON.scan}${t("c_checkIn")}</button>`;
+    let action;
+    if (full) action = `<div class="already"><b>${t("ci_full", { n: m })}</b>${c.checked_in_at ? `<div>${t("ci_first")}: ${esc(fmtTime(c.checked_in_at))}</div>` : ""}${c.last_at ? `<div>${t("ci_last")}: ${esc(fmtTime(c.last_at))}</div>` : ""}</div>`;
+    else {
+      const some = []; for (let k = 1; k < left && k <= 8; k++) some.push(`<button class="btn" data-c="add" data-n="${k}" ${busy ? "disabled" : ""} style="min-width:56px;min-height:52px;font-size:18px">+${k}</button>`);
+      action = `${warn ? `<div class="warn">${esc(warn)}${a == null || a === 0 ? `<br><small>${esc(t("ci_maxNote", { n: m }))}</small>` : ""}</div>` : ""}
+        <button class="btn gold checkin-btn" data-c="all" ${busy ? "disabled" : ""}>${ICON.scan}${t("ci_all", { n: left })}</button>
+        ${some.length ? `<p class="muted" style="margin:14px 0 8px;font-size:14px">${t("ci_some")}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${some.join("")}</div>` : ""}`;
+    }
     app.innerHTML = `<main class="station">${top}<div class="ci">
-      <p class="muted" style="margin:0">${t("inviteId")} ${esc(inv.id)}</p>
-      <p class="nm">${esc(inv.name)}</p>
+      <p class="muted" style="margin:0">${t("inviteId")} ${esc(c.inv_id)} ${c.side ? sidePill(c.side) : ""}</p>
+      <p class="nm">${esc(c.name)}</p>
+      ${flash ? `<div class="already" style="margin:8px 0">${esc(flash)}</div>` : ""}
       <dl>
-        <div><dt>${t("reservedSeats")}</dt><dd>${inv.seats}</dd></div>
+        <div><dt>${t("reservedSeats")}</dt><dd>${c.seats}</dd></div>
         <div><dt>${t("confirmedAtt")}</dt><dd>${a ?? "–"}</dd></div>
         <div><dt>${t("c_status")}</dt><dd>${rsvpSt === "noReply" ? `<span class="pill draft">${t("noReply")}</span>` : pill(rsvpSt)}</dd></div>
-        <div><dt>${t("c_check")}</dt><dd>${inv.checkedInAt ? pill("checkedin") : `<span class="pill draft">${t("c_notYet")}</span>`}</dd></div>
-      </dl>${action}</div>
-      <p style="margin-top:14px"><a class="btn primary big" href="#/scan">${ICON.scan}${t("c_next")}</a></p></main>`;
+        <div><dt>${t("c_check")}</dt><dd><b style="font-size:22px">${esc(t("ci_of", { a: c.arrived, m }))}</b></dd></div>
+      </dl>${action}
+      ${c.arrived > 0 ? `<p style="margin:14px 0 0;text-align:center"><button class="linkbtn" data-c="undo" ${busy ? "disabled" : ""}>${t("ci_undo1")}</button></p>` : ""}
+      </div>${next}</main>`;
   }
-  async function onClick(e) {
-    if (!e.target.closest('[data-c="in"]') || busy) return;
-    busy = true; update();
-    try {
-      const { data, error } = await S.sb.rpc("check_in", { p_token: r.token });
-      if (error) throw error;
-      const cur = S.invites.get(r.token); if (cur) S.invites.set(r.token, { ...cur, checkedInAt: data.checked_in_at });
-      fresh = !data.already;
-    } catch (err) { writeFailed(err); }
-    busy = false; update();
+  async function act(fn, args, msg) {
+    busy = true; flash = ""; update();
+    const { data, error } = await S.sb.rpc(fn, { p_token: r.token, p_via: "scan", ...args });
+    busy = false;
+    if (error) { if (/ALL_IN/.test(error.message || "")) { toast(t("ci_allIn")); await load(); return; } writeFailed(error); update(); return; }
+    S.ci[r.token] = data; flash = msg(data);
+    if (S.invites.has(r.token)) { const cur = S.invites.get(r.token); S.invites.set(r.token, { ...cur, arrived: data.arrived, checkedInAt: data.checked_in_at }); }
+    if (navigator.vibrate) try { navigator.vibrate(40); } catch (e) {}
+    update();
+  }
+  function onClick(e) {
+    const b = e.target.closest("[data-c]"); if (!b || busy) return;
+    if (b.dataset.c === "all") act("ci_admit", { p_count: null }, d => t("ci_of", { a: d.arrived, m: d.max_in }));
+    if (b.dataset.c === "add") act("ci_admit", { p_count: +b.dataset.n }, d => t("ci_of", { a: d.arrived, m: d.max_in }));
+    if (b.dataset.c === "undo") act("ci_undo", { p_count: 1 }, () => t("ci_undone"));
   }
   return { mount, update, unmount };
 }
