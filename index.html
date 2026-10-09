@@ -13,6 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
 <script src="config.js"></script>
 <style>
@@ -217,6 +218,31 @@ dialog::backdrop{background:rgba(25,12,30,.45)}
 .cd-top{text-align:center;margin-bottom:14px}
 .cd-top .cd{margin:0;padding:0;border:0}
 .arch.entry .map-btn{margin-top:14px}
+.side-pill{display:inline-block;font-size:12px;font-weight:500;padding:1px 8px;border-radius:99px;margin-inline-start:6px;vertical-align:1px}
+.side-pill.bride{background:var(--rose-soft);color:var(--rose)}
+.side-pill.groom{background:var(--slate-soft);color:var(--slate)}
+.side-pill.none{background:var(--grey-soft);color:var(--muted)}
+.sidechips{margin-bottom:10px}
+.capgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 14px}
+.cap{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.cap h3{margin:0 0 6px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.cap h3 em{font-style:normal;color:var(--muted);font-weight:500}
+.capbar{height:8px;border-radius:99px;background:var(--grey-soft);overflow:hidden;position:relative;margin-bottom:6px}
+.capbar i{position:absolute;inset-block:0;inset-inline-start:0;display:block}
+.capbar .r{background:var(--gold-soft);border-inline-end:2px solid var(--gold)}
+.capbar .c{background:var(--ok)}
+.capbar.over .r{background:var(--bad-soft);border-color:var(--bad)}
+.cap p{margin:0;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px}
+.cap p b{color:var(--ink);font-weight:600}
+.sidetbl{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 14px}
+.sidetbl th,.sidetbl td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.sidetbl th:first-child,.sidetbl td:first-child{text-align:start}
+.sidetbl th{font-weight:500;color:var(--muted);font-size:13px}
+.tblwrap{overflow-x:auto}
+.seg{display:flex;gap:8px;margin:0 0 12px}
+.seg label{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-weight:500}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}
 .g-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:14px}
 .g-card h2{font-size:18px;font-weight:600;margin:0 0 14px;line-height:1.4}
 .choice{display:grid;gap:10px}
@@ -326,7 +352,7 @@ g_notFound:"This invitation link is not valid.",g_notFoundSub:"Please check the 
 g_preview:"Preview of {name}'s page. Replies made here are saved to their invitation.",back:"Dashboard",entryPass:"Entry pass",ofSeats:"{c} of {s} reserved seats",
 c_title:"Scan an entry code",c_help:"Point the camera at the guest's QR code.",c_cameraOff:"The camera isn't available here. Scan from a photo or type the invitation ID.",c_startCam:"Start camera",c_photo:"Scan from a photo",c_manual:"Invitation ID or code",c_find:"Find",
 c_notFound:"This code doesn't match any invitation.",c_noQr:"No QR code found in that photo.",c_status:"RSVP status",c_check:"Check-in",c_notYet:"Not checked in",c_checkIn:"Check in",c_already:"✅ Already checked in",c_done:"✅ Checked in",c_date:"Date",c_time:"Time",
-c_next:"Scan next guest",c_noRsvp:"This guest has not replied yet.",c_declined:"This guest declined the invitation.",noReply:"No reply",inviteId:"Invitation",loading:"Loading…",g_confTitle:"Your attendance is confirmed",g_codeReady:"Your entry code is ready",g_qrHelp2:"Show this code at the entrance. Tap Save to keep it on your phone.",g_saveToPhone:"Save to phone",g_guestsOf:"{a} of {s} guests confirmed",g_moreBelow:"Invitation details",s_event:"Wedding date and time",s_eventHelp:"Guests see a countdown to this moment.",cd_until:"Until the big day",cd_d:"Days",cd_h:"Hours",cd_m:"Minutes",cd_s:"Seconds",cd_now:"The celebration has begun",s_venue:"Venue name",s_venuePh:"e.g. Al Faisaliah Ballroom",s_map:"Venue location (Google Maps link)",s_mapHelp:"In Google Maps, find the venue, tap Share, then Copy link, and paste it here. Guests see a button that opens it.",g_location:"Venue location",g_openMap:"Open in Google Maps",why_phone:"phone number is missing",why_phoneBad:"phone number looks incomplete",phoneReq:"Enter a complete phone number.",g_final:"Replies can't be changed after you send them.",g_confirmYes:"Confirm: we will attend",g_confirmNo:"Confirm: we will not be attending",g_confirmCount:"Confirm {n} attending",g_back:"Go back",g_youChose:"You are replying:",g_attendN:"{n} of {s} guests will attend",g_attend1:"I will attend",g_decline:"We will not be attending",g_contact:"Need to change your reply? Please contact the hosts directly.",imp_dupes:"{n} duplicates skipped (already on your list or repeated in the file)",dupPhone:"This phone number is already used by {name} ({id}).",dupGeneric:"This phone number is already on your list.",imp_none:"No rows could be read. Check that the first row has the column names and that every row has a name and a seat number.",signIn:"Sign in",signInTitle:"Organizer sign in",email:"Email",password:"Password",signInErr:"Email or password is incorrect.",signOut:"Sign out",notAdmin:"This account is not on the organizer list. Add its email to the admins table in Supabase.",g_loadErr:"The invitation could not be loaded. Check your connection and try again.",retry:"Try again",cfgMissing:"Setup is not finished: add your Supabase address and key to config.js, then upload the folder again.",sendInv:"Send invitations",q_title:"Send on WhatsApp",q_help:"Tap the green button, press send in WhatsApp, then come back here. The next guest will be ready.",q_open:"Open WhatsApp for this guest",q_pick:"Open WhatsApp and choose the contact",q_noPhone:"No phone number saved. You will pick the contact in WhatsApp.",q_skip:"Skip",q_of:"{i} of {n}",q_done:"All invitations have been sent",q_doneSub:"Statuses update automatically as guests open their links.",q_none:"Every invitation is already marked as sent.",q_close:"Done",q_showMsg:"Show message",q_resend:"Include already-sent invitations"},
+c_next:"Scan next guest",c_noRsvp:"This guest has not replied yet.",c_declined:"This guest declined the invitation.",noReply:"No reply",inviteId:"Invitation",loading:"Loading…",side_bride:"Bride",side_groom:"Groom",side_none:"No side",side:"Side",allSides:"All sides",sideStats:"By side",st_accepted:"Accepted",st_pending:"Pending",cap_title:"Capacity",cap_help:"Leave empty for unlimited. Only you can change these limits.",cap_total:"Total seats",cap_bride:"Bride's side seats",cap_groom:"Groom's side seats",cap_reserved:"Reserved",cap_confirmed:"Confirmed",cap_left:"Remaining",cap_unlimited:"Unlimited",cap_full_total:"This would go over the total capacity. Raise it in Settings first.",cap_full_bride:"This would go over the bride's side capacity. Raise it in Settings first.",cap_full_groom:"This would go over the groom's side capacity. Raise it in Settings first.",cap_onlyLeft:"Only {n} seats left for this side.",imp_side:"Which side is this list?",imp_pickSide:"Choose Bride or Groom first.",imp_tag:"{n} families already on your list will be marked as {side}",imp_conflict:"{n} families are already on the other side’s list (left unchanged)",imp_overcap:"{n} families not added: over capacity",imp_go2:"Import {n}, mark {m}",exportXlsx:"Export Excel report",exporting:"Preparing report…",g_confTitle:"Your attendance is confirmed",g_codeReady:"Your entry code is ready",g_qrHelp2:"Show this code at the entrance. Tap Save to keep it on your phone.",g_saveToPhone:"Save to phone",g_guestsOf:"{a} of {s} guests confirmed",g_moreBelow:"Invitation details",s_event:"Wedding date and time",s_eventHelp:"Guests see a countdown to this moment.",cd_until:"Until the big day",cd_d:"Days",cd_h:"Hours",cd_m:"Minutes",cd_s:"Seconds",cd_now:"The celebration has begun",s_venue:"Venue name",s_venuePh:"e.g. Al Faisaliah Ballroom",s_map:"Venue location (Google Maps link)",s_mapHelp:"In Google Maps, find the venue, tap Share, then Copy link, and paste it here. Guests see a button that opens it.",g_location:"Venue location",g_openMap:"Open in Google Maps",why_phone:"phone number is missing",why_phoneBad:"phone number looks incomplete",phoneReq:"Enter a complete phone number.",g_final:"Replies can't be changed after you send them.",g_confirmYes:"Confirm: we will attend",g_confirmNo:"Confirm: we will not be attending",g_confirmCount:"Confirm {n} attending",g_back:"Go back",g_youChose:"You are replying:",g_attendN:"{n} of {s} guests will attend",g_attend1:"I will attend",g_decline:"We will not be attending",g_contact:"Need to change your reply? Please contact the hosts directly.",imp_dupes:"{n} duplicates skipped (already on your list or repeated in the file)",dupPhone:"This phone number is already used by {name} ({id}).",dupGeneric:"This phone number is already on your list.",imp_none:"No rows could be read. Check that the first row has the column names and that every row has a name and a seat number.",signIn:"Sign in",signInTitle:"Organizer sign in",email:"Email",password:"Password",signInErr:"Email or password is incorrect.",signOut:"Sign out",notAdmin:"This account is not on the organizer list. Add its email to the admins table in Supabase.",g_loadErr:"The invitation could not be loaded. Check your connection and try again.",retry:"Try again",cfgMissing:"Setup is not finished: add your Supabase address and key to config.js, then upload the folder again.",sendInv:"Send invitations",q_title:"Send on WhatsApp",q_help:"Tap the green button, press send in WhatsApp, then come back here. The next guest will be ready.",q_open:"Open WhatsApp for this guest",q_pick:"Open WhatsApp and choose the contact",q_noPhone:"No phone number saved. You will pick the contact in WhatsApp.",q_skip:"Skip",q_of:"{i} of {n}",q_done:"All invitations have been sent",q_doneSub:"Statuses update automatically as guests open their links.",q_none:"Every invitation is already marked as sent.",q_close:"Done",q_showMsg:"Show message",q_resend:"Include already-sent invitations"},
 ar:{appSub:"تأكيد حضور الزفاف",namesMissing:"أضيفوا أسماءكم من الإعدادات",scan:"مسح الدخول",settings:"الإعدادات",addInv:"إضافة دعوة",importList:"استيراد القائمة",exportCsv:"تصدير CSV",
 search:"ابحث بالاسم أو رقم الدعوة أو الجوال",all:"الكل",st_draft:"مسودة",st_sent:"أُرسلت",st_viewed:"شوهدت",st_confirmed:"مؤكدة",st_partial:"مؤكدة جزئيًا",st_declined:"معتذر",st_checkedin:"تم الدخول",
 invitations:"الدعوات",reservedSeats:"المقاعد المحجوزة",confirmedAtt:"الحضور المؤكد",arrived:"الضيوف الواصلون",copyMsg:"نسخ الرسالة",copyLink:"نسخ الرابط",openWa:"إرسال عبر واتساب",waOpenBtn:"فتح واتساب",waNoPhone:"لا يوجد رقم محفوظ، ستختار جهة الاتصال في واتساب",waHelp:"إذا لم يفتح واتساب، انسخ الرسالة والصقها في محادثة الضيف.",downloadQr:"تنزيل رمز QR",
@@ -347,9 +373,9 @@ g_notFound:"رابط الدعوة غير صالح.",g_notFoundSub:"يُرجى ا
 g_preview:"معاينة صفحة {name}. الردود هنا تُحفظ في دعوتهم.",back:"لوحة التحكم",entryPass:"بطاقة الدخول",ofSeats:"{c} من {s} مقاعد محجوزة",
 c_title:"امسح رمز الدخول",c_help:"وجّه الكاميرا إلى رمز QR الخاص بالضيف.",c_cameraOff:"الكاميرا غير متاحة هنا. امسح من صورة أو اكتب رقم الدعوة.",c_startCam:"تشغيل الكاميرا",c_photo:"المسح من صورة",c_manual:"رقم الدعوة أو الرمز",c_find:"بحث",
 c_notFound:"هذا الرمز لا يطابق أي دعوة.",c_noQr:"لم يُعثر على رمز QR في الصورة.",c_status:"حالة الرد",c_check:"الدخول",c_notYet:"لم يسجّل الدخول",c_checkIn:"تسجيل الدخول",c_already:"✅ تم تسجيل الدخول مسبقًا",c_done:"✅ تم تسجيل الدخول",c_date:"التاريخ",c_time:"الوقت",
-c_next:"مسح الضيف التالي",c_noRsvp:"لم يرد هذا الضيف بعد.",c_declined:"اعتذر هذا الضيف عن الحضور.",noReply:"لا يوجد رد",inviteId:"الدعوة",loading:"جارٍ التحميل…",g_confTitle:"تم تأكيد حضوركم",g_codeReady:"رمز الدخول الخاص بكم جاهز",g_qrHelp2:"أبرزوا هذا الرمز عند المدخل، واضغطوا «حفظ في الجوال» للاحتفاظ به.",g_saveToPhone:"حفظ في الجوال",g_guestsOf:"تم تأكيد حضور {a} من أصل {s}",g_moreBelow:"تفاصيل الدعوة",s_event:"تاريخ ووقت الحفل",s_eventHelp:"يظهر للضيوف عدّ تنازلي حتى هذا الموعد.",cd_until:"على موعد الفرح",cd_d:"يوم",cd_h:"ساعة",cd_m:"دقيقة",cd_s:"ثانية",cd_now:"بدأ الاحتفال",s_venue:"اسم قاعة الحفل",s_venuePh:"مثال: قاعة الفيصلية",s_map:"موقع الحفل (رابط خرائط Google)",s_mapHelp:"افتح خرائط Google وابحث عن القاعة، ثم اضغط مشاركة ثم نسخ الرابط والصقه هنا. سيظهر للضيوف زر يفتح الموقع.",g_location:"موقع الحفل",g_openMap:"فتح في خرائط Google",why_phone:"رقم الجوال مفقود",why_phoneBad:"رقم الجوال غير مكتمل",phoneReq:"أدخل رقم جوال كاملًا.",g_final:"لا يمكن تعديل الرد بعد إرساله.",g_confirmYes:"تأكيد: سنحضر",g_confirmNo:"تأكيد: لن نتمكن من الحضور",g_confirmCount:"تأكيد حضور {n}",g_back:"رجوع",g_youChose:"ردّكم:",g_attendN:"سيحضر {n} من أصل {s}",g_attend1:"سأحضر",g_decline:"لن نتمكن من الحضور",g_contact:"لتعديل الرد، يُرجى التواصل مع أصحاب الدعوة مباشرة.",imp_dupes:"تم تجاوز {n} مكررات (موجودة مسبقًا أو مكررة في الملف)",dupPhone:"رقم الجوال مستخدم مسبقًا في دعوة {name} ({id}).",dupGeneric:"رقم الجوال موجود مسبقًا في القائمة.",imp_none:"تعذّرت قراءة أي صف. تأكد أن الصف الأول يحتوي أسماء الأعمدة وأن كل صف فيه اسم وعدد مقاعد.",signIn:"تسجيل الدخول",signInTitle:"دخول المنظِّم",email:"البريد الإلكتروني",password:"كلمة المرور",signInErr:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",signOut:"تسجيل الخروج",notAdmin:"هذا الحساب ليس ضمن قائمة المنظمين. أضف بريده إلى جدول admins في Supabase.",g_loadErr:"تعذّر تحميل الدعوة. تحقق من الاتصال وحاول مجددًا.",retry:"إعادة المحاولة",cfgMissing:"الإعداد غير مكتمل: أضف عنوان Supabase والمفتاح في config.js ثم ارفع المجلد مجددًا.",sendInv:"إرسال الدعوات",q_title:"الإرسال عبر واتساب",q_help:"اضغط الزر الأخضر، ثم اضغط إرسال في واتساب، وعُد إلى هنا. سيكون الضيف التالي جاهزًا.",q_open:"فتح واتساب لهذا الضيف",q_pick:"فتح واتساب واختيار جهة الاتصال",q_noPhone:"لا يوجد رقم جوال محفوظ. ستختار جهة الاتصال في واتساب.",q_skip:"تخطي",q_of:"{i} من {n}",q_done:"تم إرسال جميع الدعوات",q_doneSub:"تتحدث الحالات تلقائيًا عند فتح الضيوف لروابطهم.",q_none:"جميع الدعوات مُعلَّمة كمُرسلة.",q_close:"تم",q_showMsg:"عرض الرسالة",q_resend:"تضمين الدعوات المرسلة سابقًا"}
+c_next:"مسح الضيف التالي",c_noRsvp:"لم يرد هذا الضيف بعد.",c_declined:"اعتذر هذا الضيف عن الحضور.",noReply:"لا يوجد رد",inviteId:"الدعوة",loading:"جارٍ التحميل…",side_bride:"العروس",side_groom:"العريس",side_none:"بدون جهة",side:"الجهة",allSides:"كل الجهات",sideStats:"حسب الجهة",st_accepted:"مقبول",st_pending:"بانتظار الرد",cap_title:"السعة",cap_help:"اتركه فارغًا لعدد غير محدود. أنت فقط من يغيّر هذه الحدود.",cap_total:"إجمالي المقاعد",cap_bride:"مقاعد أهل العروس",cap_groom:"مقاعد أهل العريس",cap_reserved:"محجوز",cap_confirmed:"مؤكد",cap_left:"المتبقي",cap_unlimited:"غير محدود",cap_full_total:"هذا يتجاوز السعة الإجمالية. ارفع الحد من الإعدادات أولًا.",cap_full_bride:"هذا يتجاوز سعة أهل العروس. ارفع الحد من الإعدادات أولًا.",cap_full_groom:"هذا يتجاوز سعة أهل العريس. ارفع الحد من الإعدادات أولًا.",cap_onlyLeft:"تبقّى {n} مقاعد فقط لهذه الجهة.",imp_side:"لأي جهة هذه القائمة؟",imp_pickSide:"اختر العروس أو العريس أولًا.",imp_tag:"سيتم تصنيف {n} عائلة موجودة مسبقًا ضمن {side}",imp_conflict:"{n} عائلة موجودة في قائمة الجهة الأخرى (لم تتغير)",imp_overcap:"لم تُضف {n} عائلة: تجاوز السعة",imp_go2:"استيراد {n} وتصنيف {m}",exportXlsx:"تصدير تقرير Excel",exporting:"جارٍ تجهيز التقرير…",g_confTitle:"تم تأكيد حضوركم",g_codeReady:"رمز الدخول الخاص بكم جاهز",g_qrHelp2:"أبرزوا هذا الرمز عند المدخل، واضغطوا «حفظ في الجوال» للاحتفاظ به.",g_saveToPhone:"حفظ في الجوال",g_guestsOf:"تم تأكيد حضور {a} من أصل {s}",g_moreBelow:"تفاصيل الدعوة",s_event:"تاريخ ووقت الحفل",s_eventHelp:"يظهر للضيوف عدّ تنازلي حتى هذا الموعد.",cd_until:"على موعد الفرح",cd_d:"يوم",cd_h:"ساعة",cd_m:"دقيقة",cd_s:"ثانية",cd_now:"بدأ الاحتفال",s_venue:"اسم قاعة الحفل",s_venuePh:"مثال: قاعة الفيصلية",s_map:"موقع الحفل (رابط خرائط Google)",s_mapHelp:"افتح خرائط Google وابحث عن القاعة، ثم اضغط مشاركة ثم نسخ الرابط والصقه هنا. سيظهر للضيوف زر يفتح الموقع.",g_location:"موقع الحفل",g_openMap:"فتح في خرائط Google",why_phone:"رقم الجوال مفقود",why_phoneBad:"رقم الجوال غير مكتمل",phoneReq:"أدخل رقم جوال كاملًا.",g_final:"لا يمكن تعديل الرد بعد إرساله.",g_confirmYes:"تأكيد: سنحضر",g_confirmNo:"تأكيد: لن نتمكن من الحضور",g_confirmCount:"تأكيد حضور {n}",g_back:"رجوع",g_youChose:"ردّكم:",g_attendN:"سيحضر {n} من أصل {s}",g_attend1:"سأحضر",g_decline:"لن نتمكن من الحضور",g_contact:"لتعديل الرد، يُرجى التواصل مع أصحاب الدعوة مباشرة.",imp_dupes:"تم تجاوز {n} مكررات (موجودة مسبقًا أو مكررة في الملف)",dupPhone:"رقم الجوال مستخدم مسبقًا في دعوة {name} ({id}).",dupGeneric:"رقم الجوال موجود مسبقًا في القائمة.",imp_none:"تعذّرت قراءة أي صف. تأكد أن الصف الأول يحتوي أسماء الأعمدة وأن كل صف فيه اسم وعدد مقاعد.",signIn:"تسجيل الدخول",signInTitle:"دخول المنظِّم",email:"البريد الإلكتروني",password:"كلمة المرور",signInErr:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",signOut:"تسجيل الخروج",notAdmin:"هذا الحساب ليس ضمن قائمة المنظمين. أضف بريده إلى جدول admins في Supabase.",g_loadErr:"تعذّر تحميل الدعوة. تحقق من الاتصال وحاول مجددًا.",retry:"إعادة المحاولة",cfgMissing:"الإعداد غير مكتمل: أضف عنوان Supabase والمفتاح في config.js ثم ارفع المجلد مجددًا.",sendInv:"إرسال الدعوات",q_title:"الإرسال عبر واتساب",q_help:"اضغط الزر الأخضر، ثم اضغط إرسال في واتساب، وعُد إلى هنا. سيكون الضيف التالي جاهزًا.",q_open:"فتح واتساب لهذا الضيف",q_pick:"فتح واتساب واختيار جهة الاتصال",q_noPhone:"لا يوجد رقم جوال محفوظ. ستختار جهة الاتصال في واتساب.",q_skip:"تخطي",q_of:"{i} من {n}",q_done:"تم إرسال جميع الدعوات",q_doneSub:"تتحدث الحالات تلقائيًا عند فتح الضيوف لروابطهم.",q_none:"جميع الدعوات مُعلَّمة كمُرسلة.",q_close:"تم",q_showMsg:"عرض الرسالة",q_resend:"تضمين الدعوات المرسلة سابقًا"}
 };
-let LANG = (() => { try { const l = localStorage.getItem("rsvp-lang"); if (l) return l; } catch (e) {} return (navigator.language || "").startsWith("ar") ? "ar" : "en"; })();
+let LANG = (() => { try { const l = localStorage.getItem("rsvp-lang"); if (l) return l; } catch (e) {} if (/[?&]i=/.test(location.search) || /^#\/?preview\//.test(location.hash)) return "ar"; return (navigator.language || "").startsWith("ar") ? "ar" : "en"; })();
 const t = (k, v = {}) => (T[LANG][k] ?? T.en[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? "");
 function setLang(l) { LANG = l; try { localStorage.setItem("rsvp-lang", l); } catch (e) {} applyDir(); mount(); }
 function applyDir() { document.documentElement.lang = LANG; document.documentElement.dir = LANG === "ar" ? "rtl" : "ltr"; }
@@ -388,10 +414,10 @@ const DEFAULT_SETTINGS = { coupleEn: "", coupleAr: "", deadline: "", baseUrl: ""
 const S = { mode: "loading", sb: null, session: null, invites: new Map(), settings: { ...DEFAULT_SETTINGS }, allLoaded: false, oneLoaded: {}, guestErr: {}, canWrite: true, notAdmin: false, subs: {} };
 const pad2 = n => String(n).padStart(2, "0");
 function toLocalInput(iso) { if (!iso) return ""; const d = new Date(iso); if (isNaN(d)) return ""; return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
-const fromRow = r => ({ token: r.token, id: r.inv_id, name: r.name, seats: r.seats, phone: r.phone || "", notes: r.notes || "", createdAt: r.created_at, sentAt: r.sent_at, viewedAt: r.viewed_at, rsvp: r.rsvp_count == null ? null : { count: r.rsvp_count, at: r.rsvp_at }, checkedInAt: r.checked_in_at });
-const COLS = { token: "token", id: "inv_id", name: "name", seats: "seats", phone: "phone", notes: "notes", createdAt: "created_at", sentAt: "sent_at", viewedAt: "viewed_at", checkedInAt: "checked_in_at" };
+const fromRow = r => ({ token: r.token, id: r.inv_id, name: r.name, seats: r.seats, phone: r.phone || "", notes: r.notes || "", createdAt: r.created_at, sentAt: r.sent_at, viewedAt: r.viewed_at, rsvp: r.rsvp_count == null ? null : { count: r.rsvp_count, at: r.rsvp_at }, checkedInAt: r.checked_in_at, side: r.side || null });
+const COLS = { token: "token", id: "inv_id", name: "name", seats: "seats", phone: "phone", notes: "notes", createdAt: "created_at", sentAt: "sent_at", viewedAt: "viewed_at", checkedInAt: "checked_in_at", side: "side" };
 function toRow(p) { const o = {}; for (const k in p) { if (k === "rsvp") { o.rsvp_count = p.rsvp ? p.rsvp.count : null; o.rsvp_at = p.rsvp ? p.rsvp.at : null; } else if (COLS[k]) o[COLS[k]] = p[k]; } return o; }
-const settingsFrom = r => ({ coupleEn: r.couple_en || "", coupleAr: r.couple_ar || "", deadline: toLocalInput(r.deadline), baseUrl: r.base_url || "", msgLang: r.msg_lang || "both", venueName: r.venue_name || "", venueMap: r.venue_map_url || "", eventAt: toLocalInput(r.event_at) });
+const settingsFrom = r => ({ coupleEn: r.couple_en || "", coupleAr: r.couple_ar || "", deadline: toLocalInput(r.deadline), baseUrl: r.base_url || "", msgLang: r.msg_lang || "both", venueName: r.venue_name || "", venueMap: r.venue_map_url || "", eventAt: toLocalInput(r.event_at), capTotal: r.cap_total ?? null, capBride: r.cap_bride ?? null, capGroom: r.cap_groom ?? null });
 
 function atobSafe(s) { try { return atob((s || "").replace(/-/g, "+").replace(/_/g, "/")); } catch (e) { return ""; } }
 async function init() {
@@ -449,8 +475,8 @@ async function putInvite(inv) { const { error } = await S.sb.from("invites").ins
 async function putInvites(list, onProgress) {
   for (let i = 0; i < list.length; i += 200) {
     const chunk = list.slice(i, i + 200), { error } = await S.sb.from("invites").insert(chunk.map(toRow));
-    if (error && error.code === "23505") {
-      for (const x of chunk) { const r1 = await S.sb.from("invites").insert(toRow(x)); if (!r1.error) S.invites.set(x.token, x); else if (r1.error.code !== "23505") throw r1.error; }
+    if (error && (error.code === "23505" || /CAPACITY_/.test(error.message || ""))) {
+      for (const x of chunk) { const r1 = await S.sb.from("invites").insert(toRow(x)); if (!r1.error) S.invites.set(x.token, x); else if (r1.error.code !== "23505" && !/CAPACITY_/.test(r1.error.message || "")) throw r1.error; }
     } else if (error) throw error;
     else chunk.forEach(x => S.invites.set(x.token, x)); onProgress && onProgress(Math.min(i + 200, list.length));
   }
@@ -462,11 +488,29 @@ async function patchInvite(token, patch) {
 }
 async function removeInvite(token) { const { error } = await S.sb.from("invites").delete().eq("token", token); if (error) throw error; S.invites.delete(token); refresh(); }
 async function putSettings(s) {
-  const { error } = await S.sb.from("settings").upsert({ id: 1, couple_en: s.coupleEn, couple_ar: s.coupleAr, deadline: s.deadline ? new Date(s.deadline).toISOString() : null, base_url: s.baseUrl, msg_lang: s.msgLang, venue_name: s.venueName || "", venue_map_url: s.venueMap || "", event_at: s.eventAt ? new Date(s.eventAt).toISOString() : null });
+  const { error } = await S.sb.from("settings").upsert({ id: 1, couple_en: s.coupleEn, couple_ar: s.coupleAr, deadline: s.deadline ? new Date(s.deadline).toISOString() : null, base_url: s.baseUrl, msg_lang: s.msgLang, venue_name: s.venueName || "", venue_map_url: s.venueMap || "", event_at: s.eventAt ? new Date(s.eventAt).toISOString() : null, cap_total: s.capTotal ?? null, cap_bride: s.capBride ?? null, cap_groom: s.capGroom ?? null });
   if (error) throw error; S.settings = s; refresh();
 }
 
 /* ---------- domain ---------- */
+const SIDES = ["bride", "groom"];
+const sideLabel = s => s ? t("side_" + s) : t("side_none");
+const sidePill = s => `<span class="side-pill ${s || "none"}">${esc(sideLabel(s))}</span>`;
+function seatsUsed(side, exceptToken) { let n = 0; S.invites.forEach(i => { if (i.token !== exceptToken && (!side || i.side === side)) n += +i.seats || 0; }); return n; }
+function capOf(side) { const s = S.settings; const v = side === "bride" ? s.capBride : side === "groom" ? s.capGroom : s.capTotal; return v == null || v === "" ? null : +v; }
+// how many more seats can go to this side right now (null = unlimited)
+function seatsLeft(side, exceptToken) {
+  let left = null; const tot = capOf(null); if (tot != null) left = tot - seatsUsed(null, exceptToken);
+  const sc = side ? capOf(side) : null; if (sc != null) { const l2 = sc - seatsUsed(side, exceptToken); left = left == null ? l2 : Math.min(left, l2); }
+  return left;
+}
+function capErrText(e) { const m = String(e && e.message || ""); if (/CAPACITY_BRIDE/.test(m)) return t("cap_full_bride"); if (/CAPACITY_GROOM/.test(m)) return t("cap_full_groom"); if (/CAPACITY_TOTAL/.test(m)) return t("cap_full_total"); return ""; }
+const replyOf = i => { const a = attending(i); return a == null ? "pending" : a > 0 ? "accepted" : "declined"; };
+function sideStats(side) {
+  const r = { inv: 0, seats: 0, accepted: 0, declined: 0, pending: 0, conf: 0, arrived: 0 };
+  S.invites.forEach(i => { if (side !== undefined && (side === "none" ? i.side : i.side !== side)) return; r.inv++; r.seats += +i.seats || 0; r[replyOf(i)]++; const a = attending(i) || 0; r.conf += a; if (i.checkedInAt) r.arrived += a; });
+  return r;
+}
 const STATUSES = ["draft", "sent", "viewed", "confirmed", "partial", "declined", "checkedin"];
 const STATUS_COLOR = { draft: "var(--line)", sent: "var(--slate)", viewed: "var(--rose)", confirmed: "var(--ok)", partial: "var(--amber)", declined: "var(--bad)", checkedin: "var(--gold)" };
 function statusOf(inv) {
@@ -608,7 +652,7 @@ function LoginView() {
 
 /* ======================= ADMIN ======================= */
 function AdminView() {
-  let filter = "all", q = "";
+  let filter = "all", q = "", sideF = "all";
   function mount() {
     if (S.subs.all) loadAll();
     ensureAll();
@@ -628,7 +672,7 @@ function AdminView() {
         <button class="btn gold" data-a="send" id="a-send">${ICON.wa}${t("sendInv")}</button>
       </div>
       <section class="list" id="a-list"></section>
-      <p style="text-align:end;margin-top:10px"><button class="btn ghost sm" data-a="export">${ICON.dl}${t("exportCsv")}</button></p>
+      <p style="text-align:end;margin-top:10px"><button class="btn ghost sm" data-a="export">${ICON.dl}${t("exportXlsx")}</button></p>
     </div>`;
     $("#a-q").addEventListener("input", e => { q = e.target.value.trim().toLowerCase(); renderList(); });
     app.addEventListener("click", onClick);
@@ -652,11 +696,31 @@ function AdminView() {
   }
   function renderOverview() {
     if (!S.allLoaded) { $("#a-over").innerHTML = `<div class="muted">${t("loading")}</div>`; return; }
-    const all = [...S.invites.values()], counts = {}; STATUSES.forEach(x => counts[x] = 0);
+    const everyone = [...S.invites.values()];
+    const all = everyone.filter(i => sideF === "all" || (sideF === "none" ? !i.side : i.side === sideF)), counts = {}; STATUSES.forEach(x => counts[x] = 0);
     let seats = 0, conf = 0, arrived = 0;
     all.forEach(i => { const st = statusOf(i); counts[st]++; seats += +i.seats || 0; const a = attending(i) || 0; conf += a; if (i.checkedInAt) arrived += a || 0; });
+    const noneCount = everyone.filter(i => !i.side).length;
+    const sideChips = `<div class="chips sidechips" role="group">
+        <button class="chip" data-sf="all" aria-pressed="${sideF === "all"}">${t("allSides")} <em>${everyone.length}</em></button>
+        ${SIDES.map(sd => `<button class="chip" data-sf="${sd}" aria-pressed="${sideF === sd}">${t("side_" + sd)} <em>${everyone.filter(i => i.side === sd).length}</em></button>`).join("")}
+        ${noneCount ? `<button class="chip" data-sf="none" aria-pressed="${sideF === "none"}">${t("side_none")} <em>${noneCount}</em></button>` : ""}
+      </div>`;
+    const capCard = (label, side) => {
+      const cap = capOf(side), st = sideStats(side === null ? undefined : side);
+      if (cap == null) return "";
+      const pr = Math.round(st.seats / cap * 100), pc = Math.min(100, st.conf / cap * 100);
+      return `<div class="cap"><h3>${esc(label)} <em>${pr}%</em></h3>
+        <div class="capbar ${st.seats > cap ? "over" : ""}"><i class="r" style="width:${Math.min(100, st.seats / cap * 100)}%"></i><i class="c" style="width:${pc}%"></i></div>
+        <p><span>${t("cap_title")} <b>${cap}</b></span><span>${t("cap_reserved")} <b>${st.seats}</b></span><span>${t("cap_confirmed")} <b>${st.conf}</b></span><span>${t("cap_left")} <b>${cap - st.seats}</b></span></p></div>`;
+    };
+    const caps = capCard(t("cap_total"), null) + capCard(t("cap_bride"), "bride") + capCard(t("cap_groom"), "groom");
+    const rowsFor = [["bride", sideStats("bride")], ["groom", sideStats("groom")]].concat(noneCount ? [["none", sideStats("none")]] : []);
+    const sideTable = everyone.length ? `<div class="tblwrap"><table class="sidetbl"><thead><tr><th>${t("sideStats")}</th><th>${t("invitations")}</th><th>${t("reservedSeats")}</th><th>${t("st_accepted")}</th><th>${t("st_declined")}</th><th>${t("st_pending")}</th><th>${t("confirmedAtt")}</th></tr></thead><tbody>
+        ${rowsFor.map(([sd, r]) => `<tr><td>${sidePill(sd === "none" ? null : sd)}</td><td>${r.inv}</td><td>${r.seats}</td><td>${r.accepted}</td><td>${r.declined}</td><td>${r.pending}</td><td>${r.conf}</td></tr>`).join("")}
+      </tbody></table></div>` : "";
     const total = all.length || 1;
-    $("#a-over").innerHTML = `
+    $("#a-over").innerHTML = `${sideChips}${caps ? `<div class="capgrid">${caps}</div>` : ""}
       <div class="seatline">
         <div><b>${all.length}</b><span>${t("invitations")}</span></div>
         <div><b>${seats}</b><span>${t("reservedSeats")}</span></div>
@@ -667,7 +731,7 @@ function AdminView() {
       <div class="chips" role="group">
         <button class="chip" data-f="all" aria-pressed="${filter === "all"}">${t("all")} <em>${all.length}</em></button>
         ${STATUSES.map(x => `<button class="chip" data-f="${x}" aria-pressed="${filter === x}"><span class="dot" style="background:${STATUS_COLOR[x]}"></span>${t("st_" + x)} <em>${counts[x]}</em></button>`).join("")}
-      </div>`;
+      </div>${sideF === "all" ? `<div style="margin-top:14px">${sideTable}</div>` : ""}`;
   }
   function renderList() {
     const el = $("#a-list"); if (!el) return;
@@ -677,12 +741,12 @@ function AdminView() {
       el.innerHTML = `<div class="empty"><h2>${t("noInv")}</h2><p>${t("noInvSub")}</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn" data-a="import">${ICON.up}${t("importList")}</button><button class="btn gold" data-a="add">${ICON.plus}${t("addInv")}</button></div></div>`;
       return;
     }
-    const rows = all.filter(i => (filter === "all" || statusOf(i) === filter) && (!q || [i.name, i.id, i.phone, i.notes].join(" ").toLowerCase().includes(q)));
+    const rows = all.filter(i => (sideF === "all" || (sideF === "none" ? !i.side : i.side === sideF)) && (filter === "all" || statusOf(i) === filter) && (!q || [i.name, i.id, i.phone, i.notes].join(" ").toLowerCase().includes(q)));
     if (!rows.length) { el.innerHTML = `<div class="empty muted">${t("noMatch")}</div>`; return; }
     el.innerHTML = rows.map(i => {
       const st = statusOf(i), a = attending(i), ro = !S.canWrite;
       return `<div class="row" data-tok="${esc(i.token)}">
-        <div class="who"><b>${esc(i.name)}</b><span>${esc(i.id)}${i.phone ? " | " + esc(i.phone) : ""}${i.notes ? " | " + esc(i.notes) : ""}</span></div>
+        <div class="who"><b>${esc(i.name)}${sidePill(i.side)}</b><span>${esc(i.id)}${i.phone ? " | " + esc(i.phone) : ""}${i.notes ? " | " + esc(i.notes) : ""}</span></div>
         <div class="seats"><b>${a ?? "–"}</b> <small>/ ${i.seats}</small></div>
         <div class="st">${pill(st)}</div>
         <div class="acts">
@@ -703,9 +767,10 @@ function AdminView() {
   }
   async function markSent(inv) { if (!inv.sentAt && S.canWrite) { try { await patchInvite(inv.token, { sentAt: new Date().toISOString() }); } catch (e) {} } }
   async function onClick(e) {
+    const sfb = e.target.closest("[data-sf]"); if (sfb) { sideF = sfb.dataset.sf; renderOverview(); renderList(); return; }
     const f = e.target.closest("[data-f]"); if (f) { filter = f.dataset.f; renderOverview(); renderList(); return; }
     const a = e.target.closest("[data-a]");
-    if (a) { const x = a.dataset.a; if (x === "add") editDialog(); if (x === "import") importDialog(); if (x === "settings") settingsDialog(); if (x === "export") exportCsv(); if (x === "signout") S.sb.auth.signOut(); if (x === "send") sendQueue(); return; }
+    if (a) { const x = a.dataset.a; if (x === "add") editDialog(); if (x === "import") importDialog(); if (x === "settings") settingsDialog(); if (x === "export") exportReport(a); if (x === "signout") S.sb.auth.signOut(); if (x === "send") sendQueue(); return; }
     const r = e.target.closest("[data-r]"); if (!r) return;
     const tok = r.closest("[data-tok]").dataset.tok, inv = S.invites.get(tok); if (!inv) return;
     const d = r.closest("details"); if (d) d.removeAttribute("open");
@@ -781,6 +846,7 @@ function sendQueue(includeSent) {
 function editDialog(inv) {
   const isNew = !inv;
   openDialog(`<h2>${isNew ? t("addInv") : t("edit")}</h2><form id="ef">
+    <div class="seg" role="radiogroup" aria-label="${t("side")}">${SIDES.map(sd => `<label><input type="radio" name="side" value="${sd}" ${inv?.side === sd ? "checked" : ""} required>${t("side_" + sd)}</label>`).join("")}</div>
     <label class="field"><span>${t("f_name")}</span><input name="name" required maxlength="120" value="${esc(inv?.name)}"></label>
     <label class="field"><span>${t("f_seats")}</span><input name="seats" type="number" inputmode="numeric" min="1" max="99" required value="${esc(inv?.seats ?? 2)}"></label>
     <label class="field"><span>${t("f_phone")}</span><input name="phone" type="tel" dir="ltr" required value="${esc(inv?.phone)}"></label>
@@ -790,8 +856,11 @@ function editDialog(inv) {
     $("#ef", d).onsubmit = async e => {
       e.preventDefault(); const fd = new FormData(e.target);
       const seats = Math.max(1, Math.min(99, parseInt(fd.get("seats"), 10) || 1));
-      const base = { name: String(fd.get("name")).trim(), seats, phone: asciiDigits(String(fd.get("phone")).trim()), notes: String(fd.get("notes")).trim() };
+      const base = { name: String(fd.get("name")).trim(), seats, phone: asciiDigits(String(fd.get("phone")).trim()), notes: String(fd.get("notes")).trim(), side: fd.get("side") || null };
       if (!base.name) return;
+      if (!base.side) { toast(t("imp_pickSide")); return; }
+      const left = seatsLeft(base.side, inv?.token), growing = !inv || seats > inv.seats || base.side !== inv.side;
+      if (growing && left != null && seats > left) { toast(t("cap_onlyLeft", { n: Math.max(0, left) })); return; }
       if (normPhone(base.phone).length < 9) { toast(t("phoneReq")); return; }
       const owner = findPhoneOwner(base.phone, inv?.token);
       if (owner) { toast(t("dupPhone", { name: owner.name, id: owner.id })); return; }
@@ -803,7 +872,7 @@ function editDialog(inv) {
           await patchInvite(inv.token, patch); toast(t("saved"));
         }
         closeDialog();
-      } catch (err) { if (err && err.code === "23505") toast(t("dupGeneric")); else writeFailed(err); }
+      } catch (err) { if (err && err.code === "23505") toast(t("dupGeneric")); else if (capErrText(err)) toast(capErrText(err)); else writeFailed(err); }
     };
   });
 }
@@ -818,6 +887,12 @@ function settingsDialog() {
     <label class="field"><span>${t("s_base")}</span><input name="baseUrl" dir="ltr" type="url" value="${esc(s.baseUrl)}"><small>${t("s_baseHelp")}</small></label>
     <label class="field"><span>${t("s_venue")}</span><input name="venueName" maxlength="120" placeholder="${t("s_venuePh")}" value="${esc(s.venueName)}"></label>
     <label class="field"><span>${t("s_map")}</span><input name="venueMap" type="url" dir="ltr" placeholder="https://maps.app.goo.gl/…" value="${esc(s.venueMap)}"><small>${t("s_mapHelp")}</small></label>
+    <fieldset class="field" style="border:1px solid var(--line);border-radius:12px;padding:10px 12px 2px"><legend style="font-weight:600;padding:0 6px">${t("cap_title")}</legend>
+      <small style="display:block;margin:0 0 10px">${t("cap_help")}</small>
+      <label class="field"><span>${t("cap_total")}</span><input name="capTotal" type="number" inputmode="numeric" min="1" placeholder="${t("cap_unlimited")}" value="${esc(s.capTotal ?? "")}"></label>
+      <label class="field"><span>${t("cap_bride")}</span><input name="capBride" type="number" inputmode="numeric" min="1" placeholder="${t("cap_unlimited")}" value="${esc(s.capBride ?? "")}"></label>
+      <label class="field"><span>${t("cap_groom")}</span><input name="capGroom" type="number" inputmode="numeric" min="1" placeholder="${t("cap_unlimited")}" value="${esc(s.capGroom ?? "")}"></label>
+    </fieldset>
     <label class="field"><span>${t("s_msgLang")}</span><select name="msgLang">
       <option value="both" ${s.msgLang === "both" ? "selected" : ""}>${t("both")}</option>
       <option value="ar" ${s.msgLang === "ar" ? "selected" : ""}>${t("arabic")}</option>
@@ -828,6 +903,7 @@ function settingsDialog() {
       e.preventDefault(); const fd = new FormData(e.target), n = {};
       ["coupleEn", "coupleAr", "deadline", "eventAt", "baseUrl", "msgLang", "venueName", "venueMap"].forEach(k => n[k] = String(fd.get(k) || "").trim());
       if (!n.baseUrl) n.baseUrl = DEFAULT_SETTINGS.baseUrl;
+      for (const k of ["capTotal", "capBride", "capGroom"]) { const v = parseInt(asciiDigits(String(fd.get(k) || "")), 10); n[k] = v > 0 ? v : null; }
       try { await putSettings({ ...DEFAULT_SETTINGS, ...n }); toast(t("saved")); closeDialog(); } catch (err) { writeFailed(err); }
     };
   });
@@ -847,14 +923,15 @@ function mapHeader(row) {
   });
   return idx.name != null ? idx : null;
 }
-function parseRows(aoa) {
+function parseRows(aoa, side) {
   aoa = aoa.filter(r => r && r.some(c => String(c ?? "").trim() !== ""));
-  if (!aoa.length) return { ok: [], bad: [] };
+  if (!aoa.length) return { ok: [], tag: [], conflicts: [], overcap: [], bad: [], dupes: 0 };
   let idx = mapHeader(aoa[0]), start = 1;
   if (!idx) { idx = { name: 0, seats: 1, phone: 2, notes: 3 }; start = 0; }
   const ok = [], bad = [];
   for (let r = start; r < aoa.length; r++) {
     const row = aoa[r], name = String(row[idx.name] ?? "").trim(), seatsRaw = String(row[idx.seats] ?? "").trim().replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0) - 0x0660).replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 0x06F0), mNum = seatsRaw.match(/\d+(\.0+)?/), seats = mNum ? Number(mNum[0]) : NaN;
+    if (/^(الإجمالي|المجموع|total)/i.test(name)) continue;
     if (!name) { bad.push(`${t("row")} ${r + 1}: ${t("why_name")}`); continue; }
     if (!Number.isInteger(seats) || seats < 1) { bad.push(`${t("row")} ${r + 1}: ${t("why_seats")}`); continue; }
     const phoneRaw = idx.phone != null ? asciiDigits(String(row[idx.phone] ?? "").trim()) : "";
@@ -862,45 +939,178 @@ function parseRows(aoa) {
     if (normPhone(phoneRaw).length < 9) { bad.push(`${t("row")} ${r + 1}: ${t("why_phoneBad")}`); continue; }
     ok.push({ name, seats: Math.min(seats, 99), phone: idx.phone != null ? asciiDigits(String(row[idx.phone] ?? "").trim()) : "", notes: idx.notes != null ? String(row[idx.notes] ?? "").trim() : "" });
   }
-  const phones = new Set(); let dupes = 0;
-  S.invites.forEach(i => { const p = normPhone(i.phone); if (p) phones.add(p); });
-  const unique = ok.filter(x => { const p = normPhone(x.phone); if (phones.has(p)) { dupes++; return false; } phones.add(p); return true; });
-  return { ok: unique, bad, dupes };
+  return planImport(ok, bad, side);
+}
+// decide, for one side's list: new families to add, existing families to tag, conflicts, duplicates, over-capacity
+function planImport(rows, bad, side) {
+  const byPhone = new Map(); S.invites.forEach(i => { const p = normPhone(i.phone); if (p) byPhone.set(p, i); });
+  const seen = new Set(); let dupes = 0; const tag = [], conflicts = [], fresh = [], overcap = [];
+  const used = { total: seatsUsed(null), bride: seatsUsed("bride"), groom: seatsUsed("groom") };
+  const fits = n => { const tc = capOf(null), sc = capOf(side); return (tc == null || used.total + n <= tc) && (sc == null || used[side] + n <= sc); };
+  for (const x of rows) {
+    const p = normPhone(x.phone); if (seen.has(p)) { dupes++; continue; } seen.add(p);
+    const ex = byPhone.get(p);
+    if (ex) {
+      if (ex.side === side) { dupes++; continue; }
+      if (ex.side && ex.side !== side) { conflicts.push(ex); continue; }
+      const sc = capOf(side);
+      if (sc != null && used[side] + (+ex.seats || 0) > sc) { overcap.push(x); continue; }
+      used[side] += +ex.seats || 0; tag.push(ex); continue;
+    }
+    if (!fits(x.seats)) { overcap.push(x); continue; }
+    used.total += x.seats; used[side] += x.seats; fresh.push({ ...x, side });
+  }
+  return { ok: fresh, tag, conflicts, overcap, bad, dupes };
 }
 function importDialog() {
-  let parsed = null;
-  openDialog(`<h2>${t("imp_title")}</h2><p class="muted" style="margin-top:0">${t("imp_help")}</p>
+  let parsed = null, side = null, lastAoa = null;
+  openDialog(`<h2>${t("imp_title")}</h2>
+    <p style="margin:0 0 8px;font-weight:600">${t("imp_side")}</p>
+    <div class="seg" role="radiogroup">${SIDES.map(sd => `<label><input type="radio" name="impside" value="${sd}">${t("side_" + sd)}</label>`).join("")}</div>
+    <p class="muted" style="margin-top:0">${t("imp_help")}</p>
     <label class="drop"><input type="file" id="imf" class="sr" accept=".xlsx,.xls,.csv">${ICON.up.replace("<svg", '<svg style="width:28px;height:28px;color:var(--gold)"')}<div style="margin-top:6px;font-weight:500" id="imname">${t("imp_choose")}</div></label>
     <div id="imrep" class="report"></div>
     <div class="dlg-acts"><button class="btn ghost" data-x="tpl">${ICON.dl}${t("imp_template")}</button><span style="flex:1"></span><button class="btn" data-x="c">${t("cancel")}</button><button class="btn primary" data-x="go" disabled>${t("imp_go", { n: 0 })}</button></div>`, d => {
     $('[data-x="c"]', d).onclick = closeDialog;
-    $('[data-x="tpl"]', d).onclick = () => deliver("guest-list-template.csv", new Blob(["\uFEFFFamily / Guest Name,Reserved Seats,Phone Number,Notes\nAl-Harbi Family,7,0551234567,Groom's side\nNoura Al-Qahtani,1,0509876543,\n"], { type: "text/csv" }));
+    $('[data-x="tpl"]', d).onclick = () => downloadTemplate();
+    const show = () => {
+      const rep = $("#imrep", d), go = $('[data-x="go"]', d);
+      if (!lastAoa) { rep.innerHTML = ""; go.disabled = true; return; }
+      if (!side) { rep.innerHTML = `<p style="color:var(--bad);margin:0">${t("imp_pickSide")}</p>`; go.disabled = true; return; }
+      parsed = lastAoa.err ? { ok: [], tag: [], conflicts: [], overcap: [], bad: [lastAoa.err], dupes: 0 } : parseRows(lastAoa, side);
+      const line = (txt, color) => `<p style="margin:0 0 4px${color ? ";color:" + color : ""}">${esc(txt)}</p>`;
+      rep.innerHTML = `<p style="color:var(--ink);font-weight:500;margin:0 0 4px">${t("imp_ready", { n: parsed.ok.length })}</p>`
+        + (parsed.tag.length ? line(t("imp_tag", { n: parsed.tag.length, side: t("side_" + side) }), "var(--ink)") : "")
+        + (parsed.dupes ? line(t("imp_dupes", { n: parsed.dupes })) : "")
+        + (parsed.conflicts.length ? line(t("imp_conflict", { n: parsed.conflicts.length }), "var(--amber)") + parsed.conflicts.map(c => `<div>${esc(c.id + " " + c.name)}</div>`).join("") : "")
+        + (parsed.overcap.length ? line(t("imp_overcap", { n: parsed.overcap.length }), "var(--bad)") + parsed.overcap.map(c => `<div>${esc(c.name)} (${c.seats})</div>`).join("") : "")
+        + (parsed.bad.length ? line(t("imp_skipped", { n: parsed.bad.length })) + parsed.bad.map(b => `<div>${esc(b)}</div>`).join("") : "");
+      const n = parsed.ok.length, m = parsed.tag.length;
+      go.disabled = !(n + m) || !S.canWrite; go.textContent = m ? t("imp_go2", { n, m }) : t("imp_go", { n });
+      if (!S.canWrite) rep.insertAdjacentHTML("beforeend", `<p style="color:var(--bad);margin:8px 0 0">${esc(t("notAdmin"))}</p>`);
+      else if (!(n + m) && !parsed.dupes && !parsed.conflicts.length && !parsed.overcap.length) rep.insertAdjacentHTML("beforeend", `<p style="color:var(--bad);margin:8px 0 0">${esc(t("imp_none"))}</p>`);
+    };
+    d.querySelectorAll('input[name="impside"]').forEach(r => r.onchange = () => { side = r.value; show(); });
     $("#imf", d).onchange = async e => {
       const file = e.target.files[0]; if (!file) return; $("#imname", d).textContent = file.name;
       try {
-        const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
-        parsed = parseRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: false, defval: "" }));
-      } catch (err) { parsed = { ok: [], bad: [String(err.message || err)] }; }
-      $("#imrep", d).innerHTML = `<p style="color:var(--ink);font-weight:500;margin:0 0 4px">${t("imp_ready", { n: parsed.ok.length })}</p>${parsed.dupes ? `<p style="margin:0 0 4px">${t("imp_dupes", { n: parsed.dupes })}</p>` : ""}${parsed.bad.length ? `<p style="margin:0 0 4px">${t("imp_skipped", { n: parsed.bad.length })}</p>` + parsed.bad.map(b => `<div>${esc(b)}</div>`).join("") : ""}`;
-      const go = $('[data-x="go"]', d); go.disabled = !parsed.ok.length || !S.canWrite; go.textContent = t("imp_go", { n: parsed.ok.length });
-      if (!S.canWrite) $("#imrep", d).insertAdjacentHTML("beforeend", `<p style="color:var(--bad);margin:8px 0 0">${esc(t("notAdmin"))}</p>`);
-      else if (!parsed.ok.length) $("#imrep", d).insertAdjacentHTML("beforeend", `<p style="color:var(--bad);margin:8px 0 0">${esc(t("imp_none"))}</p>`);
+        const buf = await file.arrayBuffer();
+        const wb = /\.csv$/i.test(file.name) ? XLSX.read(new TextDecoder("utf-8").decode(buf).replace(/^\uFEFF/, ""), { type: "string" }) : XLSX.read(buf, { type: "array" });
+        lastAoa = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: false, defval: "" });
+      } catch (err) { lastAoa = { err: String(err.message || err) }; }
+      show();
     };
     $('[data-x="go"]', d).onclick = async ev => {
       const go = ev.currentTarget; go.disabled = true; let n = nextIdNum(), done = 0; const now = new Date().toISOString();
       const items = parsed.ok.map(r => ({ token: newToken(), id: fmtId(n++), ...r, createdAt: now, sentAt: null, viewedAt: null, rsvp: null, checkedInAt: null }));
       try {
-        await putInvites(items, n2 => { done = n2; go.textContent = t("imp_working", { i: n2, n: items.length }); });
-        toast(t("imp_done", { n: done })); closeDialog();
+        for (let i = 0; i < parsed.tag.length; i += 100) {
+          const toks = parsed.tag.slice(i, i + 100).map(x => x.token);
+          const { error } = await S.sb.from("invites").update({ side }).in("token", toks);
+          if (error && /CAPACITY_/.test(error.message || "")) { for (const tk of toks) { const r1 = await S.sb.from("invites").update({ side }).eq("token", tk); if (!r1.error) { const c = S.invites.get(tk); if (c) c.side = side; } } }
+          else if (error) throw error; else toks.forEach(tk => { const c = S.invites.get(tk); if (c) c.side = side; });
+        }
+        if (items.length) await putInvites(items, n2 => { done = n2; go.textContent = t("imp_working", { i: n2, n: items.length }); });
+        refresh(); toast(t("imp_done", { n: done + parsed.tag.length })); closeDialog();
       } catch (err) { writeFailed(err); toast(t("imp_done", { n: done })); }
     };
   });
 }
-function exportCsv() {
-  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const head = ["Invitation ID", "Family / Guest Name", "Reserved Seats", "Confirmed Attendees", "Status", "Checked In At", "Phone Number", "Notes", "RSVP Link"];
-  const lines = [...S.invites.values()].sort((a, b) => String(a.id).localeCompare(String(b.id))).map(i => [i.id, i.name, i.seats, attending(i) ?? "", T.en["st_" + statusOf(i)], i.checkedInAt || "", i.phone, i.notes, linkFor(i)].map(q).join(","));
-  deliver("wedding-rsvp.csv", new Blob(["\uFEFF" + [head.map(q).join(","), ...lines].join("\n")], { type: "text/csv" }));
+/* ---------- Excel report & template (ExcelJS) ---------- */
+const XL = { green: "FFE3F1E7", red: "FFF6E0E0", blue: "FFE3EAF6", head: "FF2A1B2D", gold: "FFEFE5D2" };
+const REPLY_BIL = { accepted: "مقبول / Accepted", declined: "معتذر / Declined", pending: "بانتظار الرد / Pending" };
+const SIDE_BIL = { bride: "العروس / Bride", groom: "العريس / Groom" };
+const xlDate = iso => iso ? toLocalInput(iso).replace("T", " ") : "";
+function styleHead(row) {
+  row.eachCell(c => { c.font = { bold: true, color: { argb: "FFFFFFFF" } }; c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: XL.head } }; c.alignment = { vertical: "middle", horizontal: "center", wrapText: true }; });
+  row.height = 34;
+}
+function guestSheet(wb, name, list) {
+  const ws = wb.addWorksheet(name, { views: [{ rightToLeft: true, state: "frozen", ySplit: 1 }] });
+  ws.columns = [["رقم الدعوة / ID", 12], ["اسم العائلة / Family", 30], ["الجهة / Side", 16], ["الجوال / Phone", 16], ["المقاعد المحجوزة / Reserved", 15], ["الحضور المؤكد / Confirmed", 15], ["الحالة / Status", 24], ["وقت الدخول / Checked in", 20], ["ملاحظات / Notes", 26]].map(([header, width]) => ({ header, width }));
+  styleHead(ws.getRow(1));
+  list.forEach(i => ws.addRow([i.id, i.name, SIDE_BIL[i.side] || "—", i.phone, +i.seats, attending(i) ?? "", REPLY_BIL[replyOf(i)], xlDate(i.checkedInAt), i.notes || ""]));
+  ws.getColumn(4).numFmt = "@";
+  const last = list.length + 1;
+  if (list.length) {
+    ws.autoFilter = { from: "A1", to: `I${last}` };
+    const rule = (word, argb) => ({ type: "expression", formulae: [`ISNUMBER(SEARCH("${word}",$G2))`], style: { fill: { type: "pattern", pattern: "solid", bgColor: { argb } } } });
+    ws.addConditionalFormatting({ ref: `A2:I${last}`, rules: [rule("Accepted", XL.green), rule("Declined", XL.red), rule("Pending", XL.blue)] });
+  }
+  return ws;
+}
+async function exportReport(btn) {
+  if (!window.ExcelJS) { toast(t("writeErr")); return; }
+  const label = btn && btn.innerHTML; if (btn) { btn.disabled = true; btn.textContent = t("exporting"); }
+  try {
+    const wb = new ExcelJS.Workbook(); wb.creator = "Wedding RSVP"; wb.created = new Date();
+    const all = [...S.invites.values()].sort((a, b) => String(a.id).localeCompare(String(b.id)));
+    const hasNone = all.some(i => !i.side);
+    // Summary
+    const ws = wb.addWorksheet("الملخص - Summary", { views: [{ rightToLeft: true }] });
+    ws.columns = [{ width: 36 }, { width: 16 }, { width: 16 }, { width: 16 }, { width: 16 }];
+    const s = S.settings, couple = [s.coupleAr, s.coupleEn].filter(Boolean).join(" | ");
+    ws.addRow([couple || "تقرير الحضور / RSVP report"]).font = { bold: true, size: 16 };
+    ws.addRow([`تاريخ التقرير / Report date: ${xlDate(new Date().toISOString())}`]).font = { color: { argb: "FF6B626E" } };
+    ws.addRow([]);
+    const cols = [["الإجمالي / Total", undefined], ["العروس / Bride", "bride"], ["العريس / Groom", "groom"]].concat(hasNone ? [["بدون جهة / No side", "none"]] : []);
+    styleHead(ws.addRow(["", ...cols.map(c => c[0])]));
+    const st = cols.map(c => sideStats(c[1]));
+    const capFor = c => c[1] === undefined ? capOf(null) : c[1] === "none" ? null : capOf(c[1]);
+    const lines = [
+      ["إجمالي الدعوات / Total invitations", x => x.inv],
+      ["مقبول / Accepted", x => x.accepted],
+      ["معتذر / Declined", x => x.declined],
+      ["بانتظار الرد / Pending", x => x.pending],
+      ["المقاعد المحجوزة / Reserved seats", x => x.seats],
+      ["الحضور المؤكد / Confirmed attendees", x => x.conf],
+      ["الحضور الفعلي / Arrived", x => x.arrived],
+    ];
+    lines.forEach(([name, f], k) => {
+      const r = ws.addRow([name, ...st.map(f)]);
+      const fill = k === 1 ? XL.green : k === 2 ? XL.red : k === 3 ? XL.blue : null;
+      if (fill) r.eachCell(c => c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: fill } });
+    });
+    ws.addRow(["السعة / Capacity", ...cols.map(c => capFor(c) ?? "غير محدود / Unlimited")]);
+    const rem = ws.addRow(["السعة المتبقية / Remaining capacity", ...cols.map((c, k) => capFor(c) == null ? "—" : capFor(c) - st[k].seats)]);
+    rem.eachCell(c => c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: XL.gold } });
+    ws.eachRow((row, n) => { if (n >= 4) row.eachCell(c => { c.border = { top: { style: "thin", color: { argb: "FFD7DBD3" } }, bottom: { style: "thin", color: { argb: "FFD7DBD3" } } }; if (c.col > 1) c.alignment = { horizontal: "center" }; }); });
+    // Guest sheets
+    guestSheet(wb, "كل الضيوف - All guests", all);
+    guestSheet(wb, "العروس - Bride", all.filter(i => i.side === "bride"));
+    guestSheet(wb, "العريس - Groom", all.filter(i => i.side === "groom"));
+    if (hasNone) guestSheet(wb, "بدون جهة - No side", all.filter(i => !i.side));
+    const buf = await wb.xlsx.writeBuffer();
+    await deliver(`wedding-report-${toLocalInput(new Date().toISOString()).slice(0, 10)}.xlsx`, new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+  } catch (e) { console.error(e); toast(t("writeErr")); }
+  if (btn) { btn.disabled = false; btn.innerHTML = label; }
+}
+const TPL_COLS = ["Family Name - اسم العائلة", "Reserved Seats - المقاعد المحجوزة", "Phone Number - رقم الجوال", "Notes - ملاحظات"];
+async function downloadTemplate() {
+  if (!window.ExcelJS) { toast(t("writeErr")); return; }
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet("Guests - الضيوف", { views: [{ rightToLeft: true, state: "frozen", ySplit: 1 }] });
+  ws.columns = [{ width: 34 }, { width: 22 }, { width: 22 }, { width: 28 }, { width: 3 }, { width: 34 }, { width: 14 }];
+  ws.getColumn(3).numFmt = "@";
+  ws.addTable({
+    name: "Guests", ref: "A1", headerRow: true, totalsRow: false,
+    style: { theme: "TableStyleMedium4", showRowStripes: true },
+    columns: TPL_COLS.map(name => ({ name, filterButton: true })),
+    rows: [["عائلة الحربي", 7, "0551234567", ""], ["نورة القحطاني", 1, "0509876543", ""]]
+  });
+  for (let r = 2; r <= 1000; r++) {
+    ws.getCell(`B${r}`).dataValidation = { type: "whole", operator: "greaterThanOrEqual", formulae: [1], allowBlank: true, showErrorMessage: true, errorTitle: "المقاعد / Seats", error: "أدخل رقمًا صحيحًا 1 أو أكثر / Enter a whole number, 1 or more" };
+    ws.getCell(`C${r}`).numFmt = "@";
+  }
+  const lab = (cell, text) => { const c = ws.getCell(cell); c.value = text; c.font = { bold: true }; c.alignment = { wrapText: true, vertical: "middle" }; };
+  lab("F1", "إجمالي المقاعد المحجوزة / Total reserved seats");
+  ws.getCell("G1").value = { formula: `SUBTOTAL(109,Guests[${TPL_COLS[1]}])`, result: 8 };
+  lab("F2", "عدد العائلات / Families");
+  ws.getCell("G2").value = { formula: `SUBTOTAL(103,Guests[${TPL_COLS[0]}])`, result: 2 };
+  ["G1", "G2"].forEach(a => { const c = ws.getCell(a); c.font = { bold: true, size: 14, color: { argb: "FF9A7330" } }; c.alignment = { horizontal: "center", vertical: "middle" }; });
+  ws.getRow(1).height = 36;
+  const buf = await wb.xlsx.writeBuffer();
+  await deliver("guest-list-template.xlsx", new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
 }
 
 /* ======================= GUEST ======================= */
