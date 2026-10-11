@@ -181,7 +181,6 @@ dialog::backdrop{background:rgba(25,12,30,.45)}
 .cd-hijri{margin:2px 0 12px;font-size:15px;color:var(--gold)}
 .cd-label{margin:0 0 10px;font-size:13px;color:var(--muted)}
 .cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;direction:ltr}
-[dir="rtl"] .cd-grid{direction:rtl}
 .cd-grid div{background:var(--gold-soft);border-radius:12px;padding:10px 4px 8px}
 .cd-grid b{display:block;font-family:var(--display);font-size:clamp(26px,7vw,34px);line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
 .cd-grid span{display:block;font-size:12px;color:var(--muted);margin-top:4px}
@@ -364,16 +363,65 @@ body.themed .g-foot{color:var(--wine)}
 .doors .hint{position:absolute;left:0;right:0;bottom:calc(36px + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--display);font-size:18px;color:#660D23;opacity:0;animation:hintIn .6s .5s ease-out forwards;z-index:2}
 @keyframes hintIn{to{opacity:.8}}
 .doors.open .hint{opacity:0;animation:none;transition:opacity .2s}
-.doors.open .door.l{animation:doorL 1.25s cubic-bezier(.55,.05,.35,1) forwards}
-.doors.open .door.r{animation:doorR 1.25s cubic-bezier(.55,.05,.35,1) forwards}
-.doors.open{animation:doorsFade .35s 1.05s ease-out forwards}
-.doors.crack .door.l img{animation:crackL .35s ease-out forwards}
-.doors.crack .door.r img{animation:crackR .35s ease-out forwards}
+.doors.open .door.l{animation:doorL 2.5s cubic-bezier(.45,.05,.3,1) forwards}
+.doors.open .door.r{animation:doorR 2.5s cubic-bezier(.45,.05,.3,1) forwards}
+.doors.open{animation:doorsFade .55s 2.1s ease-out forwards}
+.doors.crack .door.l img{animation:crackL .6s ease-out forwards}
+.doors.crack .door.r img{animation:crackR .6s ease-out forwards}
 @keyframes crackL{to{transform:translate(calc(50% - 4px),-50%) rotate(-2deg)}}
 @keyframes crackR{to{transform:translate(calc(-50% + 4px),-50%) rotate(2deg)}}
 @keyframes doorL{0%{transform:rotateY(0)}100%{transform:rotateY(-108deg)}}
 @keyframes doorR{0%{transform:rotateY(0)}100%{transform:rotateY(108deg)}}
 @keyframes doorsFade{to{opacity:0;visibility:hidden}}
+
+/* ===== revision: date block, burgundy panel, more burgundy ===== */
+.cd-dates{text-align:center}
+.cd-day{margin:0;font-size:16px;font-weight:600}
+.cd-day .sep{opacity:.55;margin:0 6px}
+.cd-big{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:clamp(34px,9.5vw,46px);line-height:1.15;letter-spacing:1px}
+.cd-hijri{margin:0 0 4px;font-size:14px}
+.cd-grid{direction:ltr}
+.pin{display:inline-flex;color:var(--wine,#660D23)}
+body.themed .arch{border:3px solid #660D23}
+body.themed .inv{color:var(--wine)}
+body.themed .facts{margin-top:16px}
+body.themed .facts dt{color:rgba(102,13,35,.75)}
+body.themed::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,rgba(102,13,35,.30),rgba(102,13,35,0) 15%,rgba(102,13,35,0) 85%,rgba(102,13,35,.30))}
+body.themed .cd{background:linear-gradient(165deg,#741430,#520A1C);border-radius:18px;padding:18px 14px 16px;margin:18px 0 4px;border:0;color:#FBF6F3;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 10px 22px rgba(79,6,24,.22)}
+body.themed .cd .cd-day,body.themed .cd .cd-big,body.themed .cd-date{color:#FBF6F3}
+body.themed .cd .cd-hijri,body.themed .cd .cd-label{color:rgba(251,246,243,.82)}
+body.themed .cd .cd-grid div{background:rgba(251,246,243,.12);border:1px solid rgba(251,246,243,.25);box-shadow:none}
+body.themed .cd .cd-grid b{color:#FBF6F3}
+body.themed .cd .cd-grid span{color:rgba(251,246,243,.82)}
+body.themed .cd-top .cd{margin:0 0 4px}
+/* ===== envelope reveal ===== */
+.envo{position:fixed;inset:0;z-index:110;display:grid;place-items:center;align-content:center;gap:22px;background:#EFE0D9 var(--paper) top center/600px auto repeat;cursor:pointer}
+.envo::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(102,13,35,.30),rgba(102,13,35,0) 18%,rgba(102,13,35,0) 82%,rgba(102,13,35,.30));pointer-events:none}
+.env{position:relative;width:min(300px,78vw);aspect-ratio:3/2;perspective:1200px;opacity:0;transform:scale(.9) translateY(10px);animation:envIn .7s .1s ease-out forwards}
+@keyframes envIn{to{opacity:1;transform:none}}
+.env-back{position:absolute;inset:0;border-radius:10px;background:linear-gradient(180deg,#F1E2DB,#E7D3CB);box-shadow:0 22px 44px rgba(79,6,24,.30)}
+.env-liner{position:absolute;inset:0;z-index:1;border-radius:10px 10px 0 0;background:linear-gradient(180deg,#741430,#520A1C);clip-path:polygon(0 0,100% 0,50% 64%);opacity:0;transition:opacity .4s ease}
+.envo.open .env-liner{opacity:1}
+.env-card{position:absolute;left:8%;right:8%;bottom:5%;height:90%;z-index:2;border-radius:8px;background:#FBF6F3;border:1px solid #E5D2CB;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;opacity:0;transition:transform 1.5s cubic-bezier(.22,.8,.25,1),opacity .25s ease}
+.envo.open .env-card{opacity:1}
+.env-card b{font-family:var(--display);color:#660D23;font-size:15px}
+.env-card .qr-mini{width:46%;background:#fff;padding:4px;border-radius:4px}
+.env-card .qr-mini svg{display:block;width:100%;height:auto}
+.env-pocket{position:absolute;inset:0;z-index:3;border-radius:10px;background:linear-gradient(165deg,#FAF3EF,#EBD8D0);clip-path:polygon(0 28%,50% 66%,100% 28%,100% 100%,0 100%);box-shadow:inset 0 -2px 0 rgba(102,13,35,.15)}
+.env-pocket::after{content:"";position:absolute;inset:0;border-radius:10px;border:2px solid rgba(102,13,35,.35)}
+.env-flap{position:absolute;left:0;right:0;top:0;height:64%;z-index:4;transform-origin:top center;transform-style:preserve-3d;transition:transform 1.1s ease-in-out}
+.env-flap i{position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);backface-visibility:hidden}
+.env-flap .f{background:linear-gradient(180deg,#F8EFEB,#E9D6CE)}
+.env-flap .b{background:linear-gradient(180deg,#741430,#520A1C);transform:rotateX(180deg)}
+.env-seal{position:absolute;left:50%;top:64%;width:30%;z-index:5;transform:translate(-50%,-50%);transition:opacity .7s ease,transform .7s ease;filter:drop-shadow(0 4px 6px rgba(79,6,24,.3))}
+.env-cap{margin:0;font-family:var(--display);font-size:20px;color:#660D23;opacity:0;transition:opacity .8s ease;text-align:center}
+.envo.unseal .env-seal{opacity:0;transform:translate(-50%,-75%) scale(1.12)}
+.envo.open .env-flap{transform:rotateX(180deg)}
+.envo.behind .env-flap{z-index:1}
+.envo.rise .env-card{transform:translateY(-58%)}
+.envo.rise .env-cap{opacity:1}
+.envo.out{animation:envOut .6s ease forwards}
+@keyframes envOut{to{opacity:0;visibility:hidden}}
 </style>
 </head>
 <body>
@@ -425,7 +473,7 @@ why_name:"name is missing",why_seats:"reserved seats must be a whole number, 1 o
 confirmDelete:"Delete the invitation for {name}? Their link and QR code will stop working.",confirmReset:"Clear the RSVP for {name}? They can reply again from the same link.",confirmUndo:"Undo check-in for {name}?",
 readOnly:"You can view these invitations but not change them.",writeErr:"Couldn't save. Check your connection and try again.",localNote:"Demo mode: invitations are saved in this browser only.",
 dear:"Dear {name}",inviteLine:"We are delighted to invite you to our wedding.",inviteOf:"We are delighted to invite you to the wedding of {c}.",replyBy:"Please reply by",
-g_yes:"✅ I will attend",g_no:"❌ I will not be attending",g_how:"How many of your reserved guests will attend?",g_choose:"Choose a number",g_zero:"0 — We will not be attending",g_send:"Send RSVP",
+g_yes:"Confirm attendance",g_no:"Unable to attend",g_how:"How many of your reserved guests will attend?",g_choose:"Choose a number",g_zero:"0 — Unable to attend",g_send:"Send RSVP",
 g_thanks:"Thank you.",g_recorded:"Your RSVP has been recorded.",g_look:"We look forward to celebrating with you.",g_miss:"We will miss you. Thank you for letting us know.",
 g_qrTitle:"Your entry QR code",g_qrHelp:"Show this code at the wedding entrance.",g_saveImg:"Save as image",g_change:"Change my RSVP",g_keep:"Keep my current RSVP",
 g_canChange:"You can change your RSVP until {date}.",g_closed:"RSVPs closed on {date}.",g_closedNo:"RSVPs closed on {date}. Please contact the hosts directly.",
@@ -433,7 +481,7 @@ g_notFound:"This invitation link is not valid.",g_notFoundSub:"Please check the 
 g_preview:"Preview of {name}'s page. Replies made here are saved to their invitation.",back:"Dashboard",entryPass:"Entry pass",ofSeats:"{c} of {s} reserved seats",
 c_title:"Scan an entry code",c_help:"Point the camera at the guest's QR code.",c_cameraOff:"The camera isn't available here. Scan from a photo or type the invitation ID.",c_startCam:"Start camera",c_photo:"Scan from a photo",c_manual:"Invitation ID or code",c_find:"Find",
 c_notFound:"This code doesn't match any invitation.",c_noQr:"No QR code found in that photo.",c_status:"RSVP status",c_check:"Check-in",c_notYet:"Not checked in",c_checkIn:"Check in",c_already:"✅ Already checked in",c_done:"✅ Checked in",c_date:"Date",c_time:"Time",
-c_next:"Scan next guest",c_noRsvp:"This guest has not replied yet.",c_declined:"This guest declined the invitation.",noReply:"No reply",inviteId:"Invitation",loading:"Loading…",q_batch:"Batch size",q_inBatch:"This batch: {k} of {n}",q_wait:"Next family in {s}s…",q_batchDone:"Batch done: {n} sent",q_batchSub:"Take a short break, then start the next batch. {left} families left.",q_nextBatch:"Start next batch",waOpenIn:"Open chats in",waModeWeb:"WhatsApp Web (one tab, reused)",waModeApp:"WhatsApp Desktop app (fastest)",danger:"Danger zone",delAll:"Delete all invitations",delAllHelp:"Removes every invitation, reply and check-in. Links and QR codes already sent will stop working. This can't be undone.",delAllType:"To confirm, type: {w}",delAllWord:"DELETE ALL",delAllGo:"Delete {n} invitations",delAllDone:"All invitations deleted",delAllNone:"There are no invitations to delete.",replies:"Replies",assignSide:"Assign side:",sideSet:"Side saved",staff:"Check-in staff",staffHelp:"Staff can only scan codes and check guests in. They can't see your dashboard, the guest list, or phone numbers.",staffName:"Name",staffEmail:"Email (their login)",staffPass:"Password (8+ characters)",staffAdd:"Add staff member",staffNone:"No staff yet.",staffRemove:"Remove",staffAdded:"Staff member added",staffRemoved:"Staff member removed",staffConfirmRemove:"Remove {name}? They will no longer be able to sign in.",se_EMAIL_TAKEN:"That email already has a login. Use a different email.",se_WEAK_PASSWORD:"Use a password of at least 8 characters.",se_BAD_INPUT:"Enter a name and a valid email.",se_IS_ADMIN:"That email is an organizer, not staff.",se_NOT_ALLOWED:"Only organizers can manage staff.",se_missing:"The staff function isn't installed yet in Supabase (Edge Functions → staff-admin).",log:"Check-in log",logNone:"Nothing logged yet.",lg_checkin:"Checked in",lg_undo:"Undone",lg_lookup:"Looked up",lg_time:"Time",lg_family:"Family",lg_action:"Action",lg_people:"People",lg_by:"By",lg_via:"How",via_scan:"Scan",via_manual:"Typed",via_dashboard:"Dashboard",staffMode:"Check-in staff",ci_of:"{a} of {m} arrived",ci_all:"Check in all ({n})",ci_some:"Arriving now:",ci_full:"✅ All {n} checked in",ci_first:"First arrival",ci_last:"Last update",ci_undo1:"Undo 1",ci_undone:"Undone",ci_allIn:"Everyone from this invitation has already checked in.",ci_maxNote:"Up to {n} can enter (reserved seats).",side_bride:"Bride",side_groom:"Groom",side_none:"No side",side:"Side",allSides:"All sides",sideStats:"By side",st_accepted:"Accepted",st_pending:"Pending",cap_title:"Capacity",cap_help:"Leave empty for unlimited. Only you can change these limits.",cap_total:"Total seats",cap_bride:"Bride's side seats",cap_groom:"Groom's side seats",cap_reserved:"Reserved",cap_confirmed:"Confirmed",cap_left:"Remaining",cap_unlimited:"Unlimited",cap_full_total:"This would go over the total capacity. Raise it in Settings first.",cap_full_bride:"This would go over the bride's side capacity. Raise it in Settings first.",cap_full_groom:"This would go over the groom's side capacity. Raise it in Settings first.",cap_onlyLeft:"Only {n} seats left for this side.",imp_side:"Which side is this list?",imp_pickSide:"Choose Bride or Groom first.",imp_tag:"{n} families already on your list will be marked as {side}",imp_conflict:"{n} families are already on the other side’s list (left unchanged)",imp_overcap:"{n} families not added: over capacity",imp_go2:"Import {n}, mark {m}",exportXlsx:"Export Excel report",exporting:"Preparing report…",g_confTitle:"Your attendance is confirmed",g_codeReady:"Your entry code is ready",g_qrHelp2:"Show this code at the entrance. Tap Save to keep it on your phone.",g_saveToPhone:"Save to phone",g_guestsOf:"{a} of {s} guests confirmed",g_moreBelow:"Invitation details",s_event:"Wedding date and time",s_eventHelp:"Guests see a countdown to this moment.",cd_until:"Until the big day",cd_d:"Days",cd_h:"Hours",cd_m:"Minutes",cd_s:"Seconds",cd_now:"The celebration has begun",s_venue:"Venue name",s_venuePh:"e.g. Al Faisaliah Ballroom",s_map:"Venue location (Google Maps link)",s_mapHelp:"In Google Maps, find the venue, tap Share, then Copy link, and paste it here. Guests see a button that opens it.",g_location:"Venue location",g_openMap:"Open in Google Maps",why_phone:"phone number is missing",why_phoneBad:"phone number looks incomplete",phoneReq:"Enter a complete phone number.",g_final:"Replies can't be changed after you send them.",g_confirmYes:"Confirm: we will attend",g_confirmNo:"Confirm: we will not be attending",g_confirmCount:"Confirm {n} attending",g_back:"Go back",g_youChose:"You are replying:",g_attendN:"{n} of {s} guests will attend",g_attend1:"I will attend",g_decline:"We will not be attending",g_contact:"Need to change your reply? Please contact the hosts directly.",imp_dupes:"{n} duplicates skipped (already on your list or repeated in the file)",dupPhone:"This phone number is already used by {name} ({id}).",dupGeneric:"This phone number is already on your list.",imp_none:"No rows could be read. Check that the first row has the column names and that every row has a name and a seat number.",signIn:"Sign in",signInTitle:"Organizer sign in",email:"Email",password:"Password",signInErr:"Email or password is incorrect.",signOut:"Sign out",notAdmin:"This account is not on the organizer list. Add its email to the admins table in Supabase.",g_loadErr:"The invitation could not be loaded. Check your connection and try again.",retry:"Try again",cfgMissing:"Setup is not finished: add your Supabase address and key to config.js, then upload the folder again.",sendInv:"Send invitations",q_title:"Send on WhatsApp",q_help:"Tap the green button, press send in WhatsApp, then come back here. The next guest will be ready.",q_open:"Open WhatsApp for this guest",q_pick:"Open WhatsApp and choose the contact",q_noPhone:"No phone number saved. You will pick the contact in WhatsApp.",q_skip:"Skip",q_of:"{i} of {n}",q_done:"All invitations have been sent",q_doneSub:"Statuses update automatically as guests open their links.",q_none:"Every invitation is already marked as sent.",q_close:"Done",q_showMsg:"Show message",q_resend:"Include already-sent invitations"},
+c_next:"Scan next guest",c_noRsvp:"This guest has not replied yet.",c_declined:"This guest declined the invitation.",noReply:"No reply",inviteId:"Invitation",loading:"Loading…",delAllCount:"This will delete all {n} invitations.",delAllWait:"Yes, delete all ({s})",delAllYes:"Yes, delete all",s_numStyle:"Numbers in dates (guest pages)",s_numHelp:"The countdown always uses 123.",q_batch:"Batch size",q_inBatch:"This batch: {k} of {n}",q_wait:"Next family in {s}s…",q_batchDone:"Batch done: {n} sent",q_batchSub:"Take a short break, then start the next batch. {left} families left.",q_nextBatch:"Start next batch",waOpenIn:"Open chats in",waModeWeb:"WhatsApp Web (one tab, reused)",waModeApp:"WhatsApp Desktop app (fastest)",danger:"Danger zone",delAll:"Delete all invitations",delAllHelp:"Removes every invitation, reply and check-in. Links and QR codes already sent will stop working. This can't be undone.",delAllType:"To confirm, type: {w}",delAllWord:"DELETE ALL",delAllGo:"Delete {n} invitations",delAllDone:"All invitations deleted",delAllNone:"There are no invitations to delete.",replies:"Replies",assignSide:"Assign side:",sideSet:"Side saved",staff:"Check-in staff",staffHelp:"Staff can only scan codes and check guests in. They can't see your dashboard, the guest list, or phone numbers.",staffName:"Name",staffEmail:"Email (their login)",staffPass:"Password (8+ characters)",staffAdd:"Add staff member",staffNone:"No staff yet.",staffRemove:"Remove",staffAdded:"Staff member added",staffRemoved:"Staff member removed",staffConfirmRemove:"Remove {name}? They will no longer be able to sign in.",se_EMAIL_TAKEN:"That email already has a login. Use a different email.",se_WEAK_PASSWORD:"Use a password of at least 8 characters.",se_BAD_INPUT:"Enter a name and a valid email.",se_IS_ADMIN:"That email is an organizer, not staff.",se_NOT_ALLOWED:"Only organizers can manage staff.",se_missing:"The staff function isn't installed yet in Supabase (Edge Functions → staff-admin).",log:"Check-in log",logNone:"Nothing logged yet.",lg_checkin:"Checked in",lg_undo:"Undone",lg_lookup:"Looked up",lg_time:"Time",lg_family:"Family",lg_action:"Action",lg_people:"People",lg_by:"By",lg_via:"How",via_scan:"Scan",via_manual:"Typed",via_dashboard:"Dashboard",staffMode:"Check-in staff",ci_of:"{a} of {m} arrived",ci_all:"Check in all ({n})",ci_some:"Arriving now:",ci_full:"✅ All {n} checked in",ci_first:"First arrival",ci_last:"Last update",ci_undo1:"Undo 1",ci_undone:"Undone",ci_allIn:"Everyone from this invitation has already checked in.",ci_maxNote:"Up to {n} can enter (reserved seats).",side_bride:"Bride",side_groom:"Groom",side_none:"No side",side:"Side",allSides:"All sides",sideStats:"By side",st_accepted:"Accepted",st_pending:"Pending",cap_title:"Capacity",cap_help:"Leave empty for unlimited. Only you can change these limits.",cap_total:"Total seats",cap_bride:"Bride's side seats",cap_groom:"Groom's side seats",cap_reserved:"Reserved",cap_confirmed:"Confirmed",cap_left:"Remaining",cap_unlimited:"Unlimited",cap_full_total:"This would go over the total capacity. Raise it in Settings first.",cap_full_bride:"This would go over the bride's side capacity. Raise it in Settings first.",cap_full_groom:"This would go over the groom's side capacity. Raise it in Settings first.",cap_onlyLeft:"Only {n} seats left for this side.",imp_side:"Which side is this list?",imp_pickSide:"Choose Bride or Groom first.",imp_tag:"{n} families already on your list will be marked as {side}",imp_conflict:"{n} families are already on the other side’s list (left unchanged)",imp_overcap:"{n} families not added: over capacity",imp_go2:"Import {n}, mark {m}",exportXlsx:"Export Excel report",exporting:"Preparing report…",g_confTitle:"Your attendance is confirmed",g_codeReady:"Your entry code is ready",g_qrHelp2:"Show this code at the entrance. Tap Save to keep it on your phone.",g_saveToPhone:"Save to phone",g_guestsOf:"{a} of {s} guests confirmed",g_moreBelow:"Invitation details",s_event:"Wedding date and time",s_eventHelp:"Guests see a countdown to this moment.",cd_until:"Until the night of a lifetime",cd_d:"Days",cd_h:"Hours",cd_m:"Minutes",cd_s:"Seconds",cd_now:"The celebration has begun",s_venue:"Venue name",s_venuePh:"e.g. Al Faisaliah Ballroom",s_map:"Venue location (Google Maps link)",s_mapHelp:"In Google Maps, find the venue, tap Share, then Copy link, and paste it here. Guests see a button that opens it.",g_location:"Venue location",g_openMap:"Open in Google Maps",why_phone:"phone number is missing",why_phoneBad:"phone number looks incomplete",phoneReq:"Enter a complete phone number.",g_final:"Replies can't be changed after you send them.",g_confirmYes:"Confirm: we will attend",g_confirmNo:"Confirm: we will not be attending",g_confirmCount:"Confirm {n} attending",g_back:"Go back",g_youChose:"You are replying:",g_attendN:"{n} of {s} guests will attend",g_attend1:"I will attend",g_decline:"We will not be attending",g_contact:"Need to change your reply? Please contact the hosts directly.",imp_dupes:"{n} duplicates skipped (already on your list or repeated in the file)",dupPhone:"This phone number is already used by {name} ({id}).",dupGeneric:"This phone number is already on your list.",imp_none:"No rows could be read. Check that the first row has the column names and that every row has a name and a seat number.",signIn:"Sign in",signInTitle:"Organizer sign in",email:"Email",password:"Password",signInErr:"Email or password is incorrect.",signOut:"Sign out",notAdmin:"This account is not on the organizer list. Add its email to the admins table in Supabase.",g_loadErr:"The invitation could not be loaded. Check your connection and try again.",retry:"Try again",cfgMissing:"Setup is not finished: add your Supabase address and key to config.js, then upload the folder again.",sendInv:"Send invitations",q_title:"Send on WhatsApp",q_help:"Tap the green button, press send in WhatsApp, then come back here. The next guest will be ready.",q_open:"Open WhatsApp for this guest",q_pick:"Open WhatsApp and choose the contact",q_noPhone:"No phone number saved. You will pick the contact in WhatsApp.",q_skip:"Skip",q_of:"{i} of {n}",q_done:"All invitations have been sent",q_doneSub:"Statuses update automatically as guests open their links.",q_none:"Every invitation is already marked as sent.",q_close:"Done",q_showMsg:"Show message",q_resend:"Include already-sent invitations"},
 ar:{appSub:"تأكيد حضور الزفاف",namesMissing:"أضيفوا أسماءكم من الإعدادات",scan:"مسح الدخول",settings:"الإعدادات",addInv:"إضافة دعوة",importList:"استيراد القائمة",exportCsv:"تصدير CSV",
 search:"ابحث بالاسم أو رقم الدعوة أو الجوال",all:"الكل",st_draft:"مسودة",st_sent:"أُرسلت",st_viewed:"شوهدت",st_confirmed:"مؤكدة",st_partial:"مؤكدة جزئيًا",st_declined:"معتذر",st_checkedin:"تم الدخول",
 invitations:"الدعوات",reservedSeats:"المقاعد المحجوزة",confirmedAtt:"الحضور المؤكد",arrived:"الضيوف الواصلون",copyMsg:"نسخ الرسالة",copyLink:"نسخ الرابط",openWa:"إرسال عبر واتساب",waOpenBtn:"فتح واتساب",waNoPhone:"لا يوجد رقم محفوظ، ستختار جهة الاتصال في واتساب",waHelp:"إذا لم يفتح واتساب، انسخ الرسالة والصقها في محادثة الضيف.",downloadQr:"تنزيل رمز QR",
@@ -445,8 +493,8 @@ imp_title:"استيراد الدعوات",imp_help:"الأعمدة: اسم ال�
 why_name:"الاسم مفقود",why_seats:"يجب أن يكون عدد المقاعد رقمًا صحيحًا من 1 فأكثر",row:"الصف",
 confirmDelete:"حذف دعوة {name}؟ سيتوقف رابطها ورمز QR الخاص بها عن العمل.",confirmReset:"مسح رد {name}؟ يمكنهم الرد مجددًا من الرابط نفسه.",confirmUndo:"إلغاء تسجيل دخول {name}؟",
 readOnly:"يمكنك عرض الدعوات دون تعديلها.",writeErr:"تعذّر الحفظ. تحقق من الاتصال وحاول مجددًا.",localNote:"وضع تجريبي: الدعوات محفوظة في هذا المتصفح فقط.",
-dear:"{name} الكرام",inviteLine:"يسعدنا دعوتكم لحضور حفل زفافنا.",inviteOf:"يسعدنا دعوتكم لحضور حفل زفاف {c}.",replyBy:"نأمل الرد قبل",
-g_yes:"✅ سأحضر",g_no:"❌ لن أتمكن من الحضور",g_how:"كم عدد الحضور من ضيوفكم المحجوزين؟",g_choose:"اختر العدد",g_zero:"0 — لن نتمكن من الحضور",g_send:"إرسال الرد",
+dear:"السيدة {name}",inviteLine:"يسعدنا دعوتكم لحضور حفل زفافنا.",inviteOf:"يسعدنا دعوتكم لحضور حفل زفاف {c}.",replyBy:"نأمل الرد قبل",
+g_yes:"تأكيد الحضور",g_no:"عدم التمكن من الحضور",g_how:"كم عدد الحضور من ضيوفكم المحجوزين؟",g_choose:"اختر العدد",g_zero:"0 — عدم التمكن من الحضور",g_send:"إرسال الرد",
 g_thanks:"شكرًا لكم.",g_recorded:"تم تسجيل ردكم.",g_look:"نتطلع للاحتفال معكم.",g_miss:"سنفتقدكم، ونشكركم على إبلاغنا.",
 g_qrTitle:"رمز الدخول الخاص بكم",g_qrHelp:"يُرجى إبراز هذا الرمز عند مدخل الحفل.",g_saveImg:"حفظ كصورة",g_change:"تعديل ردي",g_keep:"الإبقاء على ردي الحالي",
 g_canChange:"يمكنكم تعديل ردكم حتى {date}.",g_closed:"انتهى موعد الرد في {date}.",g_closedNo:"انتهى موعد الرد في {date}. يُرجى التواصل مع أصحاب الدعوة مباشرة.",
@@ -454,7 +502,7 @@ g_notFound:"رابط الدعوة غير صالح.",g_notFoundSub:"يُرجى ا
 g_preview:"معاينة صفحة {name}. الردود هنا تُحفظ في دعوتهم.",back:"لوحة التحكم",entryPass:"بطاقة الدخول",ofSeats:"{c} من {s} مقاعد محجوزة",
 c_title:"امسح رمز الدخول",c_help:"وجّه الكاميرا إلى رمز QR الخاص بالضيف.",c_cameraOff:"الكاميرا غير متاحة هنا. امسح من صورة أو اكتب رقم الدعوة.",c_startCam:"تشغيل الكاميرا",c_photo:"المسح من صورة",c_manual:"رقم الدعوة أو الرمز",c_find:"بحث",
 c_notFound:"هذا الرمز لا يطابق أي دعوة.",c_noQr:"لم يُعثر على رمز QR في الصورة.",c_status:"حالة الرد",c_check:"الدخول",c_notYet:"لم يسجّل الدخول",c_checkIn:"تسجيل الدخول",c_already:"✅ تم تسجيل الدخول مسبقًا",c_done:"✅ تم تسجيل الدخول",c_date:"التاريخ",c_time:"الوقت",
-c_next:"مسح الضيف التالي",c_noRsvp:"لم يرد هذا الضيف بعد.",c_declined:"اعتذر هذا الضيف عن الحضور.",noReply:"لا يوجد رد",inviteId:"الدعوة",loading:"جارٍ التحميل…",q_batch:"حجم الدفعة",q_inBatch:"هذه الدفعة: {k} من {n}",q_wait:"العائلة التالية بعد {s} ث…",q_batchDone:"اكتملت الدفعة: تم إرسال {n}",q_batchSub:"خذ استراحة قصيرة ثم ابدأ الدفعة التالية. متبقٍ {left} عائلة.",q_nextBatch:"ابدأ الدفعة التالية",waOpenIn:"فتح المحادثات في",waModeWeb:"واتساب ويب (تبويب واحد يُعاد استخدامه)",waModeApp:"تطبيق واتساب لسطح المكتب (الأسرع)",danger:"منطقة الخطر",delAll:"حذف جميع الدعوات",delAllHelp:"يحذف كل الدعوات والردود وتسجيلات الدخول. ستتوقف الروابط ورموز QR المرسلة عن العمل. لا يمكن التراجع عن ذلك.",delAllType:"للتأكيد اكتب: {w}",delAllWord:"حذف الكل",delAllGo:"حذف {n} دعوة",delAllDone:"تم حذف جميع الدعوات",delAllNone:"لا توجد دعوات لحذفها.",replies:"الردود",assignSide:"حدّد الجهة:",sideSet:"تم حفظ الجهة",staff:"فريق الاستقبال",staffHelp:"يستطيع فريق الاستقبال مسح الرموز وتسجيل دخول الضيوف فقط، دون رؤية لوحتك أو قائمة الضيوف أو أرقام الجوال.",staffName:"الاسم",staffEmail:"البريد الإلكتروني (لتسجيل الدخول)",staffPass:"كلمة المرور (8 أحرف أو أكثر)",staffAdd:"إضافة عضو",staffNone:"لا يوجد أعضاء بعد.",staffRemove:"إزالة",staffAdded:"تمت إضافة العضو",staffRemoved:"تمت إزالة العضو",staffConfirmRemove:"إزالة {name}؟ لن يتمكن من تسجيل الدخول بعد ذلك.",se_EMAIL_TAKEN:"هذا البريد لديه حساب مسبقًا. استخدم بريدًا آخر.",se_WEAK_PASSWORD:"استخدم كلمة مرور من 8 أحرف على الأقل.",se_BAD_INPUT:"أدخل الاسم وبريدًا إلكترونيًا صحيحًا.",se_IS_ADMIN:"هذا البريد لمنظِّم وليس لعضو استقبال.",se_NOT_ALLOWED:"المنظمون فقط يديرون فريق الاستقبال.",se_missing:"وظيفة الفريق غير مثبتة بعد في Supabase ‏(Edge Functions ← staff-admin).",log:"سجل الدخول",logNone:"لا يوجد سجل بعد.",lg_checkin:"دخول",lg_undo:"تراجع",lg_lookup:"بحث",lg_time:"الوقت",lg_family:"العائلة",lg_action:"الإجراء",lg_people:"الأشخاص",lg_by:"بواسطة",lg_via:"الطريقة",via_scan:"مسح",via_manual:"إدخال يدوي",via_dashboard:"اللوحة",staffMode:"فريق الاستقبال",ci_of:"وصل {a} من {m}",ci_all:"تسجيل دخول الجميع ({n})",ci_some:"الواصلون الآن:",ci_full:"✅ تم دخول الجميع ({n})",ci_first:"أول وصول",ci_last:"آخر تحديث",ci_undo1:"تراجع عن 1",ci_undone:"تم التراجع",ci_allIn:"تم تسجيل دخول جميع أفراد هذه الدعوة مسبقًا.",ci_maxNote:"يمكن دخول {n} كحد أقصى (المقاعد المحجوزة).",side_bride:"العروس",side_groom:"العريس",side_none:"بدون جهة",side:"الجهة",allSides:"كل الجهات",sideStats:"حسب الجهة",st_accepted:"مقبول",st_pending:"بانتظار الرد",cap_title:"السعة",cap_help:"اتركه فارغًا لعدد غير محدود. أنت فقط من يغيّر هذه الحدود.",cap_total:"إجمالي المقاعد",cap_bride:"مقاعد أهل العروس",cap_groom:"مقاعد أهل العريس",cap_reserved:"محجوز",cap_confirmed:"مؤكد",cap_left:"المتبقي",cap_unlimited:"غير محدود",cap_full_total:"هذا يتجاوز السعة الإجمالية. ارفع الحد من الإعدادات أولًا.",cap_full_bride:"هذا يتجاوز سعة أهل العروس. ارفع الحد من الإعدادات أولًا.",cap_full_groom:"هذا يتجاوز سعة أهل العريس. ارفع الحد من الإعدادات أولًا.",cap_onlyLeft:"تبقّى {n} مقاعد فقط لهذه الجهة.",imp_side:"لأي جهة هذه القائمة؟",imp_pickSide:"اختر العروس أو العريس أولًا.",imp_tag:"سيتم تصنيف {n} عائلة موجودة مسبقًا ضمن {side}",imp_conflict:"{n} عائلة موجودة في قائمة الجهة الأخرى (لم تتغير)",imp_overcap:"لم تُضف {n} عائلة: تجاوز السعة",imp_go2:"استيراد {n} وتصنيف {m}",exportXlsx:"تصدير تقرير Excel",exporting:"جارٍ تجهيز التقرير…",g_confTitle:"تم تأكيد حضوركم",g_codeReady:"رمز الدخول الخاص بكم جاهز",g_qrHelp2:"أبرزوا هذا الرمز عند المدخل، واضغطوا «حفظ في الجوال» للاحتفاظ به.",g_saveToPhone:"حفظ في الجوال",g_guestsOf:"تم تأكيد حضور {a} من أصل {s}",g_moreBelow:"تفاصيل الدعوة",s_event:"تاريخ ووقت الحفل",s_eventHelp:"يظهر للضيوف عدّ تنازلي حتى هذا الموعد.",cd_until:"على موعد الفرح",cd_d:"يوم",cd_h:"ساعة",cd_m:"دقيقة",cd_s:"ثانية",cd_now:"بدأ الاحتفال",s_venue:"اسم قاعة الحفل",s_venuePh:"مثال: قاعة الفيصلية",s_map:"موقع الحفل (رابط خرائط Google)",s_mapHelp:"افتح خرائط Google وابحث عن القاعة، ثم اضغط مشاركة ثم نسخ الرابط والصقه هنا. سيظهر للضيوف زر يفتح الموقع.",g_location:"موقع الحفل",g_openMap:"فتح في خرائط Google",why_phone:"رقم الجوال مفقود",why_phoneBad:"رقم الجوال غير مكتمل",phoneReq:"أدخل رقم جوال كاملًا.",g_final:"لا يمكن تعديل الرد بعد إرساله.",g_confirmYes:"تأكيد: سنحضر",g_confirmNo:"تأكيد: لن نتمكن من الحضور",g_confirmCount:"تأكيد حضور {n}",g_back:"رجوع",g_youChose:"ردّكم:",g_attendN:"سيحضر {n} من أصل {s}",g_attend1:"سأحضر",g_decline:"لن نتمكن من الحضور",g_contact:"لتعديل الرد، يُرجى التواصل مع أصحاب الدعوة مباشرة.",imp_dupes:"تم تجاوز {n} مكررات (موجودة مسبقًا أو مكررة في الملف)",dupPhone:"رقم الجوال مستخدم مسبقًا في دعوة {name} ({id}).",dupGeneric:"رقم الجوال موجود مسبقًا في القائمة.",imp_none:"تعذّرت قراءة أي صف. تأكد أن الصف الأول يحتوي أسماء الأعمدة وأن كل صف فيه اسم وعدد مقاعد.",signIn:"تسجيل الدخول",signInTitle:"دخول المنظِّم",email:"البريد الإلكتروني",password:"كلمة المرور",signInErr:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",signOut:"تسجيل الخروج",notAdmin:"هذا الحساب ليس ضمن قائمة المنظمين. أضف بريده إلى جدول admins في Supabase.",g_loadErr:"تعذّر تحميل الدعوة. تحقق من الاتصال وحاول مجددًا.",retry:"إعادة المحاولة",cfgMissing:"الإعداد غير مكتمل: أضف عنوان Supabase والمفتاح في config.js ثم ارفع المجلد مجددًا.",sendInv:"إرسال الدعوات",q_title:"الإرسال عبر واتساب",q_help:"اضغط الزر الأخضر، ثم اضغط إرسال في واتساب، وعُد إلى هنا. سيكون الضيف التالي جاهزًا.",q_open:"فتح واتساب لهذا الضيف",q_pick:"فتح واتساب واختيار جهة الاتصال",q_noPhone:"لا يوجد رقم جوال محفوظ. ستختار جهة الاتصال في واتساب.",q_skip:"تخطي",q_of:"{i} من {n}",q_done:"تم إرسال جميع الدعوات",q_doneSub:"تتحدث الحالات تلقائيًا عند فتح الضيوف لروابطهم.",q_none:"جميع الدعوات مُعلَّمة كمُرسلة.",q_close:"تم",q_showMsg:"عرض الرسالة",q_resend:"تضمين الدعوات المرسلة سابقًا"}
+c_next:"مسح الضيف التالي",c_noRsvp:"لم يرد هذا الضيف بعد.",c_declined:"اعتذر هذا الضيف عن الحضور.",noReply:"لا يوجد رد",inviteId:"الدعوة",loading:"جارٍ التحميل…",delAllCount:"سيتم حذف جميع الدعوات ({n}).",delAllWait:"نعم، احذف الكل ({s})",delAllYes:"نعم، احذف الكل",s_numStyle:"شكل الأرقام في التواريخ (صفحات الضيوف)",s_numHelp:"العدّاد التنازلي يبقى دائمًا بالأرقام 123.",q_batch:"حجم الدفعة",q_inBatch:"هذه الدفعة: {k} من {n}",q_wait:"العائلة التالية بعد {s} ث…",q_batchDone:"اكتملت الدفعة: تم إرسال {n}",q_batchSub:"خذ استراحة قصيرة ثم ابدأ الدفعة التالية. متبقٍ {left} عائلة.",q_nextBatch:"ابدأ الدفعة التالية",waOpenIn:"فتح المحادثات في",waModeWeb:"واتساب ويب (تبويب واحد يُعاد استخدامه)",waModeApp:"تطبيق واتساب لسطح المكتب (الأسرع)",danger:"منطقة الخطر",delAll:"حذف جميع الدعوات",delAllHelp:"يحذف كل الدعوات والردود وتسجيلات الدخول. ستتوقف الروابط ورموز QR المرسلة عن العمل. لا يمكن التراجع عن ذلك.",delAllType:"للتأكيد اكتب: {w}",delAllWord:"حذف الكل",delAllGo:"حذف {n} دعوة",delAllDone:"تم حذف جميع الدعوات",delAllNone:"لا توجد دعوات لحذفها.",replies:"الردود",assignSide:"حدّد الجهة:",sideSet:"تم حفظ الجهة",staff:"فريق الاستقبال",staffHelp:"يستطيع فريق الاستقبال مسح الرموز وتسجيل دخول الضيوف فقط، دون رؤية لوحتك أو قائمة الضيوف أو أرقام الجوال.",staffName:"الاسم",staffEmail:"البريد الإلكتروني (لتسجيل الدخول)",staffPass:"كلمة المرور (8 أحرف أو أكثر)",staffAdd:"إضافة عضو",staffNone:"لا يوجد أعضاء بعد.",staffRemove:"إزالة",staffAdded:"تمت إضافة العضو",staffRemoved:"تمت إزالة العضو",staffConfirmRemove:"إزالة {name}؟ لن يتمكن من تسجيل الدخول بعد ذلك.",se_EMAIL_TAKEN:"هذا البريد لديه حساب مسبقًا. استخدم بريدًا آخر.",se_WEAK_PASSWORD:"استخدم كلمة مرور من 8 أحرف على الأقل.",se_BAD_INPUT:"أدخل الاسم وبريدًا إلكترونيًا صحيحًا.",se_IS_ADMIN:"هذا البريد لمنظِّم وليس لعضو استقبال.",se_NOT_ALLOWED:"المنظمون فقط يديرون فريق الاستقبال.",se_missing:"وظيفة الفريق غير مثبتة بعد في Supabase ‏(Edge Functions ← staff-admin).",log:"سجل الدخول",logNone:"لا يوجد سجل بعد.",lg_checkin:"دخول",lg_undo:"تراجع",lg_lookup:"بحث",lg_time:"الوقت",lg_family:"العائلة",lg_action:"الإجراء",lg_people:"الأشخاص",lg_by:"بواسطة",lg_via:"الطريقة",via_scan:"مسح",via_manual:"إدخال يدوي",via_dashboard:"اللوحة",staffMode:"فريق الاستقبال",ci_of:"وصل {a} من {m}",ci_all:"تسجيل دخول الجميع ({n})",ci_some:"الواصلون الآن:",ci_full:"✅ تم دخول الجميع ({n})",ci_first:"أول وصول",ci_last:"آخر تحديث",ci_undo1:"تراجع عن 1",ci_undone:"تم التراجع",ci_allIn:"تم تسجيل دخول جميع أفراد هذه الدعوة مسبقًا.",ci_maxNote:"يمكن دخول {n} كحد أقصى (المقاعد المحجوزة).",side_bride:"العروس",side_groom:"العريس",side_none:"بدون جهة",side:"الجهة",allSides:"كل الجهات",sideStats:"حسب الجهة",st_accepted:"مقبول",st_pending:"بانتظار الرد",cap_title:"السعة",cap_help:"اتركه فارغًا لعدد غير محدود. أنت فقط من يغيّر هذه الحدود.",cap_total:"إجمالي المقاعد",cap_bride:"مقاعد أهل العروس",cap_groom:"مقاعد أهل العريس",cap_reserved:"محجوز",cap_confirmed:"مؤكد",cap_left:"المتبقي",cap_unlimited:"غير محدود",cap_full_total:"هذا يتجاوز السعة الإجمالية. ارفع الحد من الإعدادات أولًا.",cap_full_bride:"هذا يتجاوز سعة أهل العروس. ارفع الحد من الإعدادات أولًا.",cap_full_groom:"هذا يتجاوز سعة أهل العريس. ارفع الحد من الإعدادات أولًا.",cap_onlyLeft:"تبقّى {n} مقاعد فقط لهذه الجهة.",imp_side:"لأي جهة هذه القائمة؟",imp_pickSide:"اختر العروس أو العريس أولًا.",imp_tag:"سيتم تصنيف {n} عائلة موجودة مسبقًا ضمن {side}",imp_conflict:"{n} عائلة موجودة في قائمة الجهة الأخرى (لم تتغير)",imp_overcap:"لم تُضف {n} عائلة: تجاوز السعة",imp_go2:"استيراد {n} وتصنيف {m}",exportXlsx:"تصدير تقرير Excel",exporting:"جارٍ تجهيز التقرير…",g_confTitle:"تم تأكيد حضوركم",g_codeReady:"رمز الدخول الخاص بكم جاهز",g_qrHelp2:"أبرزوا هذا الرمز عند المدخل، واضغطوا «حفظ في الجوال» للاحتفاظ به.",g_saveToPhone:"حفظ في الجوال",g_guestsOf:"تم تأكيد حضور {a} من أصل {s}",g_moreBelow:"تفاصيل الدعوة",s_event:"تاريخ ووقت الحفل",s_eventHelp:"يظهر للضيوف عدّ تنازلي حتى هذا الموعد.",cd_until:"يتبقّى على ليلة العمر",cd_d:"يوم",cd_h:"ساعة",cd_m:"دقيقة",cd_s:"ثانية",cd_now:"بدأ الاحتفال",s_venue:"اسم قاعة الحفل",s_venuePh:"مثال: قاعة الفيصلية",s_map:"موقع الحفل (رابط خرائط Google)",s_mapHelp:"افتح خرائط Google وابحث عن القاعة، ثم اضغط مشاركة ثم نسخ الرابط والصقه هنا. سيظهر للضيوف زر يفتح الموقع.",g_location:"موقع الحفل",g_openMap:"فتح في خرائط Google",why_phone:"رقم الجوال مفقود",why_phoneBad:"رقم الجوال غير مكتمل",phoneReq:"أدخل رقم جوال كاملًا.",g_final:"لا يمكن تعديل الرد بعد إرساله.",g_confirmYes:"تأكيد: سنحضر",g_confirmNo:"تأكيد: لن نتمكن من الحضور",g_confirmCount:"تأكيد حضور {n}",g_back:"رجوع",g_youChose:"ردّكم:",g_attendN:"سيحضر {n} من أصل {s}",g_attend1:"سأحضر",g_decline:"لن نتمكن من الحضور",g_contact:"لتعديل الرد، يُرجى التواصل مع أصحاب الدعوة مباشرة.",imp_dupes:"تم تجاوز {n} مكررات (موجودة مسبقًا أو مكررة في الملف)",dupPhone:"رقم الجوال مستخدم مسبقًا في دعوة {name} ({id}).",dupGeneric:"رقم الجوال موجود مسبقًا في القائمة.",imp_none:"تعذّرت قراءة أي صف. تأكد أن الصف الأول يحتوي أسماء الأعمدة وأن كل صف فيه اسم وعدد مقاعد.",signIn:"تسجيل الدخول",signInTitle:"دخول المنظِّم",email:"البريد الإلكتروني",password:"كلمة المرور",signInErr:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",signOut:"تسجيل الخروج",notAdmin:"هذا الحساب ليس ضمن قائمة المنظمين. أضف بريده إلى جدول admins في Supabase.",g_loadErr:"تعذّر تحميل الدعوة. تحقق من الاتصال وحاول مجددًا.",retry:"إعادة المحاولة",cfgMissing:"الإعداد غير مكتمل: أضف عنوان Supabase والمفتاح في config.js ثم ارفع المجلد مجددًا.",sendInv:"إرسال الدعوات",q_title:"الإرسال عبر واتساب",q_help:"اضغط الزر الأخضر، ثم اضغط إرسال في واتساب، وعُد إلى هنا. سيكون الضيف التالي جاهزًا.",q_open:"فتح واتساب لهذا الضيف",q_pick:"فتح واتساب واختيار جهة الاتصال",q_noPhone:"لا يوجد رقم جوال محفوظ. ستختار جهة الاتصال في واتساب.",q_skip:"تخطي",q_of:"{i} من {n}",q_done:"تم إرسال جميع الدعوات",q_doneSub:"تتحدث الحالات تلقائيًا عند فتح الضيوف لروابطهم.",q_none:"جميع الدعوات مُعلَّمة كمُرسلة.",q_close:"تم",q_showMsg:"عرض الرسالة",q_resend:"تضمين الدعوات المرسلة سابقًا"}
 };
 let LANG = (() => { try { const l = localStorage.getItem("rsvp-lang"); if (l) return l; } catch (e) {} if (/[?&]i=/.test(location.search) || /^#\/?preview\//.test(location.hash)) return "ar"; return (navigator.language || "").startsWith("ar") ? "ar" : "en"; })();
 const t = (k, v = {}) => (T[LANG][k] ?? T.en[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? "");
@@ -491,14 +539,14 @@ function confirmDialog(text, okLabel, danger) {
 
 /* ---------- data layer: Supabase ---------- */
 const CFG = window.RSVP_CONFIG || {};
-const DEFAULT_SETTINGS = { coupleEn: "", coupleAr: "", deadline: "", baseUrl: "", msgLang: "both", venueName: "", venueMap: "", eventAt: "" };
+const DEFAULT_SETTINGS = { coupleEn: "", coupleAr: "", deadline: "", baseUrl: "", msgLang: "both", venueName: "", venueMap: "", eventAt: "", numStyle: "en" };
 const S = { mode: "loading", sb: null, session: null, invites: new Map(), settings: { ...DEFAULT_SETTINGS }, allLoaded: false, oneLoaded: {}, guestErr: {}, canWrite: true, notAdmin: false, subs: {} };
 const pad2 = n => String(n).padStart(2, "0");
 function toLocalInput(iso) { if (!iso) return ""; const d = new Date(iso); if (isNaN(d)) return ""; return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
 const fromRow = r => ({ token: r.token, id: r.inv_id, name: r.name, seats: r.seats, phone: r.phone || "", notes: r.notes || "", createdAt: r.created_at, sentAt: r.sent_at, viewedAt: r.viewed_at, rsvp: r.rsvp_count == null ? null : { count: r.rsvp_count, at: r.rsvp_at }, checkedInAt: r.checked_in_at, side: r.side || null, arrived: r.arrived || 0 });
 const COLS = { token: "token", id: "inv_id", name: "name", seats: "seats", phone: "phone", notes: "notes", createdAt: "created_at", sentAt: "sent_at", viewedAt: "viewed_at", checkedInAt: "checked_in_at", side: "side" };
 function toRow(p) { const o = {}; for (const k in p) { if (k === "rsvp") { o.rsvp_count = p.rsvp ? p.rsvp.count : null; o.rsvp_at = p.rsvp ? p.rsvp.at : null; } else if (COLS[k]) o[COLS[k]] = p[k]; } return o; }
-const settingsFrom = r => ({ coupleEn: r.couple_en || "", coupleAr: r.couple_ar || "", deadline: toLocalInput(r.deadline), baseUrl: r.base_url || "", msgLang: r.msg_lang || "both", venueName: r.venue_name || "", venueMap: r.venue_map_url || "", eventAt: toLocalInput(r.event_at), capTotal: r.cap_total ?? null, capBride: r.cap_bride ?? null, capGroom: r.cap_groom ?? null });
+const settingsFrom = r => ({ coupleEn: r.couple_en || "", coupleAr: r.couple_ar || "", deadline: toLocalInput(r.deadline), baseUrl: r.base_url || "", msgLang: r.msg_lang || "both", venueName: r.venue_name || "", venueMap: r.venue_map_url || "", eventAt: toLocalInput(r.event_at), capTotal: r.cap_total ?? null, capBride: r.cap_bride ?? null, capGroom: r.cap_groom ?? null, numStyle: r.num_style === "ar" ? "ar" : "en" });
 
 function atobSafe(s) { try { return atob((s || "").replace(/-/g, "+").replace(/_/g, "/")); } catch (e) { return ""; } }
 async function init() {
@@ -552,7 +600,7 @@ function resetAdminData() { if (S.subs.ch) S.sb.removeChannel(S.subs.ch); clearI
 function setGuestData(token, data) {
   if (data && data.invite) {
     S.invites.set(token, fromRow(data.invite));
-    S.settings = { ...S.settings, coupleEn: data.couple_en || "", coupleAr: data.couple_ar || "", deadline: toLocalInput(data.deadline), venueName: data.venue_name || "", venueMap: data.venue_map_url || "", eventAt: toLocalInput(data.event_at) };
+    S.settings = { ...S.settings, coupleEn: data.couple_en || "", coupleAr: data.couple_ar || "", deadline: toLocalInput(data.deadline), venueName: data.venue_name || "", venueMap: data.venue_map_url || "", eventAt: toLocalInput(data.event_at), numStyle: data.num_style === "ar" ? "ar" : "en" };
   } else S.invites.delete(token);
 }
 async function loadGuest(token, mark) {
@@ -579,7 +627,7 @@ async function patchInvite(token, patch) {
 }
 async function removeInvite(token) { const { error } = await S.sb.from("invites").delete().eq("token", token); if (error) throw error; S.invites.delete(token); refresh(); }
 async function putSettings(s) {
-  const { error } = await S.sb.from("settings").upsert({ id: 1, couple_en: s.coupleEn, couple_ar: s.coupleAr, deadline: s.deadline ? new Date(s.deadline).toISOString() : null, base_url: s.baseUrl, msg_lang: s.msgLang, venue_name: s.venueName || "", venue_map_url: s.venueMap || "", event_at: s.eventAt ? new Date(s.eventAt).toISOString() : null, cap_total: s.capTotal ?? null, cap_bride: s.capBride ?? null, cap_groom: s.capGroom ?? null });
+  const { error } = await S.sb.from("settings").upsert({ id: 1, couple_en: s.coupleEn, couple_ar: s.coupleAr, deadline: s.deadline ? new Date(s.deadline).toISOString() : null, base_url: s.baseUrl, msg_lang: s.msgLang, venue_name: s.venueName || "", venue_map_url: s.venueMap || "", event_at: s.eventAt ? new Date(s.eventAt).toISOString() : null, cap_total: s.capTotal ?? null, cap_bride: s.capBride ?? null, cap_groom: s.capGroom ?? null, num_style: s.numStyle === "ar" ? "ar" : "en" });
   if (error) throw error; S.settings = s; refresh();
 }
 
@@ -622,10 +670,10 @@ const linkFor = inv => S.settings.baseUrl ? S.settings.baseUrl.replace(/\/+$/, "
 const deadlinePassed = () => !!S.settings.deadline && Date.now() > new Date(S.settings.deadline).getTime();
 function messageFor(inv) {
   const s = S.settings, link = linkFor(inv);
-  const ar = [`${inv.name} الكرام،`, "", s.coupleAr ? `يسعدنا دعوتكم لحضور حفل زفاف ${s.coupleAr}.` : "يسعدنا دعوتكم لحضور حفل زفافنا.", "", `عدد المقاعد المحجوزة: ${inv.seats}`];
-  if (s.deadline) ar.push(`نأمل تأكيد الحضور قبل ${fmtDate(s.deadline, "ar")}.`);
+  const ar = [`السيدة ${inv.name}،`, "", s.coupleAr ? `يسعدنا دعوتكم لحضور حفل زفاف ${s.coupleAr}.` : "يسعدنا دعوتكم لحضور حفل زفافنا.", "", `عدد المقاعد المحجوزة: ${inv.seats}`];
+  if (s.deadline) ar.push(`نأمل تأكيد الحضور قبل ${numDate(s.deadline)}.`);
   const en = [`Dear ${inv.name},`, "", s.coupleEn ? `We are delighted to invite you to the wedding of ${s.coupleEn}.` : "We are delighted to invite you to our wedding.", "", `Reserved seats: ${inv.seats}`];
-  if (s.deadline) en.push(`Please RSVP by ${fmtDate(s.deadline, "en")}.`);
+  if (s.deadline) en.push(`Please RSVP by ${numDate(s.deadline)}.`);
   let body;
   if (s.msgLang === "ar") body = [...ar, "", "لتأكيد الحضور:", link];
   else if (s.msgLang === "en") body = [...en, "", "RSVP here:", link];
@@ -1023,21 +1071,19 @@ function editDialog(inv) {
 }
 
 function deleteAllDialog() {
-  const n = S.invites.size, word = t("delAllWord");
+  const n = S.invites.size;
   if (!n) { toast(t("delAllNone")); return; }
   openDialog(`<h2 style="color:var(--bad)">${t("delAll")}</h2>
-    <p style="margin:0 0 12px">${t("delAllHelp")}</p>
-    <label class="field"><span>${esc(t("delAllType", { w: word }))}</span><input id="daw" autocomplete="off" placeholder="${esc(word)}"></label>
-    <div class="dlg-acts"><button class="btn" data-x="c">${t("cancel")}</button><button class="btn" data-x="go" disabled style="background:var(--bad);border-color:var(--bad);color:#fff">${ICON.trash}${t("delAllGo", { n })}</button></div>`, d => {
-    const go = $('[data-x="go"]', d), inp = $("#daw", d);
-    $('[data-x="c"]', d).onclick = closeDialog;
-    inp.oninput = () => { go.disabled = inp.value.trim().toUpperCase() !== word.toUpperCase(); };
-    inp.focus();
+    <p style="margin:0 0 6px;font-size:17px"><b>${t("delAllCount", { n })}</b></p>
+    <p class="muted" style="margin:0 0 14px">${t("delAllHelp")}</p>
+    <div class="dlg-acts"><button class="btn" data-x="c">${t("cancel")}</button><button class="btn" data-x="go" disabled style="background:var(--bad);border-color:var(--bad);color:#fff">${ICON.trash}<span id="daLbl">${t("delAllWait", { s: 3 })}</span></button></div>`, d => {
+    const go = $('[data-x="go"]', d), lbl = $("#daLbl", d); let s = 3;
+    $('[data-x="c"]', d).onclick = () => { clearInterval(tm); closeDialog(); };
+    const tm = setInterval(() => { s--; if (!document.body.contains(go)) { clearInterval(tm); return; } if (s > 0) lbl.textContent = t("delAllWait", { s }); else { clearInterval(tm); go.disabled = false; lbl.textContent = t("delAllYes"); } }, 1000);
     go.onclick = async () => {
-      if (inp.value.trim().toUpperCase() !== word.toUpperCase()) return;
-      go.disabled = true; inp.disabled = true;
+      go.disabled = true;
       const { error } = await S.sb.from("invites").delete().neq("token", "");
-      if (error) { writeFailed(error); go.disabled = false; inp.disabled = false; return; }
+      if (error) { writeFailed(error); go.disabled = false; return; }
       S.invites = new Map(); S.ci = {}; refresh(); closeDialog(); toast(t("delAllDone"));
     };
   });
@@ -1058,6 +1104,7 @@ function settingsDialog() {
       <label class="field"><span>${t("cap_bride")}</span><input name="capBride" type="number" inputmode="numeric" min="1" placeholder="${t("cap_unlimited")}" value="${esc(s.capBride ?? "")}"></label>
       <label class="field"><span>${t("cap_groom")}</span><input name="capGroom" type="number" inputmode="numeric" min="1" placeholder="${t("cap_unlimited")}" value="${esc(s.capGroom ?? "")}"></label>
     </fieldset>
+    <label class="field"><span>${t("s_numStyle")}</span><select name="numStyle"><option value="en" ${s.numStyle !== "ar" ? "selected" : ""}>123 (11/11/2026)</option><option value="ar" ${s.numStyle === "ar" ? "selected" : ""}>١٢٣ (١١/١١/٢٠٢٦)</option></select><small>${t("s_numHelp")}</small></label>
     <label class="field"><span>${t("s_msgLang")}</span><select name="msgLang">
       <option value="both" ${s.msgLang === "both" ? "selected" : ""}>${t("both")}</option>
       <option value="ar" ${s.msgLang === "ar" ? "selected" : ""}>${t("arabic")}</option>
@@ -1071,7 +1118,7 @@ function settingsDialog() {
     const da = $('[data-x="delall"]', d); if (da) da.onclick = deleteAllDialog;
     $("#sf", d).onsubmit = async e => {
       e.preventDefault(); const fd = new FormData(e.target), n = {};
-      ["coupleEn", "coupleAr", "deadline", "eventAt", "baseUrl", "msgLang", "venueName", "venueMap"].forEach(k => n[k] = String(fd.get(k) || "").trim());
+      ["coupleEn", "coupleAr", "deadline", "eventAt", "numStyle", "baseUrl", "msgLang", "venueName", "venueMap"].forEach(k => n[k] = String(fd.get(k) || "").trim());
       if (!n.baseUrl) n.baseUrl = DEFAULT_SETTINGS.baseUrl;
       for (const k of ["capTotal", "capBride", "capGroom"]) { const v = parseInt(asciiDigits(String(fd.get(k) || "")), 10); n[k] = v > 0 ? v : null; }
       try { await putSettings({ ...DEFAULT_SETTINGS, ...n }); toast(t("saved")); closeDialog(); } catch (err) { writeFailed(err); }
@@ -1348,23 +1395,35 @@ function countdownParts(iso) {
   const s = Math.floor(ms / 1000);
   return { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 };
 }
-const cdNum = n => new Intl.NumberFormat(locale(LANG), { minimumIntegerDigits: 2, useGrouping: false }).format(n);
+const cdNum = n => String(n).padStart(2, "0");   // countdown: always English numerals
+const toArDigits = s => String(s).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+const digits = s => S.settings.numStyle === "ar" ? toArDigits(asciiDigits(s)) : asciiDigits(s);
+const RIYADH = { timeZone: "Asia/Riyadh" };
+function numDate(iso) {   // 11/11/2026 (Riyadh day)
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { ...RIYADH, day: "2-digit", month: "2-digit", year: "numeric" }).formatToParts(new Date(iso)).map(x => [x.type, x.value]));
+  return digits(`${p.day}/${p.month}/${p.year}`);
+}
+function numTime(iso, l = LANG) {   // 9:00 مساءً / 9:00 PM
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { ...RIYADH, hour: "numeric", minute: "2-digit", hour12: true }).formatToParts(new Date(iso)).map(x => [x.type, x.value]));
+  const pm = /p/i.test(p.dayPeriod || "");
+  return l === "ar" ? `${digits(p.hour + ":" + p.minute)} ${pm ? "مساءً" : "صباحًا"}` : `${digits(p.hour + ":" + p.minute)} ${pm ? "PM" : "AM"}`;
+}
+function hijriDate(iso, l = LANG) {
+  const s = new Intl.DateTimeFormat(l === "ar" ? "ar-SA-u-ca-islamic-umalqura-nu-latn" : "en-GB-u-ca-islamic-umalqura", { ...RIYADH, day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
+  return l === "ar" ? digits(s) : s;
+}
+const weekday = (iso, l = LANG) => new Intl.DateTimeFormat(l === "ar" ? "ar-SA" : "en-GB", { ...RIYADH, weekday: "long" }).format(new Date(iso));
+function dateBlock(iso) {
+  return `<div class="cd-dates"><p class="cd-day">${esc(weekday(iso))} <span class="sep">|</span> ${esc(numTime(iso))}</p><p class="cd-big" dir="ltr">${esc(numDate(iso))}</p><p class="cd-hijri">${esc(hijriDate(iso))}</p></div>`;
+}
 function countdownHtml(iso) {
   if (!iso) return "";
-  const d = new Date(iso), ar = LANG === "ar", TZ = { timeZone: "Asia/Riyadh" };
-  const hijri = new Intl.DateTimeFormat(ar ? "ar-SA-u-ca-islamic-umalqura" : "en-GB-u-ca-islamic-umalqura", { ...TZ, day: "numeric", month: "long", year: "numeric" }).format(d);
-  const greg = new Intl.DateTimeFormat(ar ? "ar-SA-u-ca-gregory" : "en-GB", { ...TZ, day: "numeric", month: "long", year: "numeric" }).format(d);
-  const wday = new Intl.DateTimeFormat(ar ? "ar-SA" : "en-GB", { ...TZ, weekday: "long" }).format(d);
-  const hm = new Intl.DateTimeFormat(ar ? "ar-SA-u-ca-gregory" : "en-US", { ...TZ, hour: "numeric", minute: "2-digit", hour12: true }).format(d);
-  const time = ar ? `الساعة ${hm.replace(/\s*[صم]$/, "")} ${/ص$/.test(hm) ? "صباحًا" : "مساءً"}` : hm;
-  const line1 = ar ? `${wday} ${hijri}` : `${wday}, ${greg} | ${time}`;
-  const line2 = ar ? `${greg} م | ${time}` : hijri;
   const p = countdownParts(iso);
-  const body = p ? `<p class="cd-label">${t("cd_until")}</p><div class="cd-grid" role="timer" aria-live="off">
+  const body = p ? `<p class="cd-label">${t("cd_until")}</p><div class="cd-grid" role="timer" aria-live="off" dir="ltr">
       <div><b data-cd="d">${cdNum(p.d)}</b><span>${t("cd_d")}</span></div><div><b data-cd="h">${cdNum(p.h)}</b><span>${t("cd_h")}</span></div>
       <div><b data-cd="m">${cdNum(p.m)}</b><span>${t("cd_m")}</span></div><div><b data-cd="s">${cdNum(p.s)}</b><span>${t("cd_s")}</span></div></div>`
     : `<p class="cd-now">${t("cd_now")}</p>`;
-  return `<div class="cd" data-cd-at="${esc(iso)}"><div class="cd-dates"><p class="cd-date">${esc(line1)}</p><p class="cd-hijri">${esc(line2)}</p></div>${body}</div>`;
+  return `<div class="cd" data-cd-at="${esc(iso)}">${dateBlock(iso)}${body}</div>`;
 }
 function tickCountdown() {
   const box = document.querySelector("[data-cd-at]"); if (!box) return;
@@ -1383,9 +1442,28 @@ function playDoors(token, force) {
   el.innerHTML = `<div class="door l"><img src="${SEAL_SRC}" alt=""></div><div class="door r"><img src="${SEAL_SRC}" alt=""></div><p class="hint">${LANG === "ar" ? "اضغطوا للفتح" : "Tap to open"}</p>`;
   document.body.appendChild(el);
   let started = false;
-  const open = () => { if (started) return; started = true; el.classList.add("crack"); setTimeout(() => el.classList.add("open"), 320); setTimeout(() => el.remove(), 1800); };
+  const open = () => { if (started) return; started = true; el.classList.add("crack"); setTimeout(() => el.classList.add("open"), 600); setTimeout(() => el.remove(), 3400); };
   el.addEventListener("click", open);
-  setTimeout(open, 1300);
+  setTimeout(open, 1500);
+}
+function playEnvelope(link) {
+  try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+  const el = document.createElement("div"); el.className = "envo"; el.setAttribute("aria-hidden", "true");
+  el.innerHTML = `<div class="env"><div class="env-back"></div><div class="env-liner"></div>
+      <div class="env-card"><b>${t("g_qrTitle")}</b><div class="qr-mini">${qrSvg(link)}</div></div>
+      <div class="env-pocket"></div><div class="env-flap"><i class="f"></i><i class="b"></i></div>
+      <img class="env-seal" src="${SEAL_SRC}" alt=""></div>
+    <p class="env-cap">${t("g_confTitle")}</p>`;
+  document.body.appendChild(el);
+  const T = [];
+  const at = (ms, fn) => T.push(setTimeout(fn, ms));
+  const end = () => { T.forEach(clearTimeout); el.classList.add("out"); setTimeout(() => el.remove(), 650); };
+  at(800, () => el.classList.add("unseal"));
+  at(1450, () => el.classList.add("open"));
+  at(2500, () => el.classList.add("behind"));
+  at(2550, () => el.classList.add("rise"));
+  at(4300, end);
+  el.addEventListener("click", end);
 }
 function GuestView(r) {
   let cdTimer = 0;
@@ -1408,9 +1486,9 @@ function GuestView(r) {
         <div class="orn" aria-hidden="true"><i></i><b></b><i></i></div>
         <p class="dear">${esc(t("dear", { name: inv.name }))}</p>
         <p class="inv">${couple ? esc(t("inviteOf", { c: couple })) : t("inviteLine")}</p>
-        <dl class="facts"><div><dt>${t("reservedSeats")}</dt><dd>${inv.seats}</dd></div>${s.deadline ? `<div><dt>${t("replyBy")}</dt><dd>${esc(fmtDate(s.deadline, LANG, false))}</dd></div>` : ""}</dl>
         ${countdownHtml(s.eventAt)}
-        ${a > 0 && /^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true">📍</span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
+        <dl class="facts"><div><dt>${t("reservedSeats")}</dt><dd>${inv.seats}</dd></div>${s.deadline ? `<div><dt>${t("replyBy")}</dt><dd dir="ltr">${esc(numDate(s.deadline))}</dd></div>` : ""}</dl>
+        ${a > 0 && /^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true" class="pin"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
       </section>`;
     let body;
     if (a != null && !editing) body = confirmation(inv, a, closed);
@@ -1461,7 +1539,7 @@ function GuestView(r) {
       <p class="help">${t("g_qrHelp2")}</p>
       <button class="btn primary save" data-g="saveimg">${ICON.img}${t("g_saveToPhone")}</button>
       <button class="btn sm ghost" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button>
-      ${/^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true">📍</span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
+      ${/^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true" class="pin"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
       <p class="look">${t("g_look")}</p></section>${foot}`;
     return `<div class="g-card done ${justSaved ? "animate" : ""}">
       <svg class="tick" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28"/><path d="M18 31l8 8 16-17"/></svg>
@@ -1481,6 +1559,7 @@ function GuestView(r) {
       err = t("g_saveErr"); update(); return;
     }
     setGuestData(r.token, data); editing = false; pending = null; choice = ""; justSaved = true; update();
+    if (count > 0) playEnvelope(linkFor(S.invites.get(r.token)));
     try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); }
   }
   async function onClick(e) {
