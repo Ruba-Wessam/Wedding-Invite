@@ -556,6 +556,9 @@ function confirmDialog(text, okLabel, danger) {
 
 /* ---------- data layer: Supabase ---------- */
 const CFG = window.RSVP_CONFIG || {};
+// Supabase function addresses (the last part of each function's URL in Supabase → Edge Functions)
+const FN_WA_SEND = CFG.waSendFunction || "bright-handler";
+const FN_STAFF = CFG.staffFunction || "smooth-responder";
 const DEFAULT_SETTINGS = { coupleEn: "", coupleAr: "", deadline: "", baseUrl: "", msgLang: "both", venueName: "", venueMap: "", eventAt: "", numStyle: "en", msgTemplate: "" };
 const S = { mode: "loading", sb: null, session: null, invites: new Map(), settings: { ...DEFAULT_SETTINGS }, allLoaded: false, oneLoaded: {}, guestErr: {}, canWrite: true, notAdmin: false, subs: {} };
 const pad2 = n => String(n).padStart(2, "0");
@@ -1146,8 +1149,13 @@ function autoSendDialog() {
       while (!done && !stopFlag) {
         let res;
         try {
-          const { data, error } = await S.sb.functions.invoke("wa-send", { body: { to: waNumber(inv.phone), text: messageFor(inv) } });
-          if (error) { let j = null; try { j = await error.context.json(); } catch (e) {} res = j || { ok: false, error: "NO_FUNCTION" }; } else res = data;
+          const { data, error } = await S.sb.functions.invoke(FN_WA_SEND, { body: { to: waNumber(inv.phone), text: messageFor(inv) } });
+          if (error) {
+            let j = null, st = error.context && error.context.status;
+            try { j = await error.context.json(); } catch (e) {}
+            if (j && j.ok === false) res = j;
+            else res = { ok: false, error: "NO_FUNCTION", detail: [st ? "HTTP " + st : "", error.name || "", (j && (j.message || j.msg || j.code)) || error.message || ""].filter(Boolean).join(" · ") };
+          } else res = data;
         } catch (e) { res = { ok: false, error: "NETWORK" }; }
         if (res && res.ok) {
           sent++; inARow = 0; done = true; log.push(`✅ ${esc(inv.id)} ${esc(inv.name)}`);
@@ -1155,7 +1163,7 @@ function autoSendDialog() {
         } else if (res && res.error === "RATE_LIMIT" && tries < 3) {
           tries++; await sleep((res.retry_after || 60) + 3, waitMsg);
         } else if (res && ["NOT_ALLOWED", "NOT_SIGNED_IN", "NO_KEY", "NO_FUNCTION"].includes(res.error)) {
-          stopReason = t("as_err_" + res.error); stopFlag = true; done = true;
+          stopReason = t("as_err_" + res.error) + (res.detail ? " (" + res.detail + ")" : ""); stopFlag = true; done = true;
         } else {
           failed++; inARow++; done = true; log.push(`❌ ${esc(inv.id)} ${esc(inv.name)}: ${esc((res && (res.detail || res.error)) || "")}`);
           if (inARow >= 3) { stopReason = t("as_err_3"); stopFlag = true; }
@@ -1387,7 +1395,7 @@ async function staffDialog() {
       el.innerHTML = !data.length ? `<p class="muted" style="margin:0">${t("staffNone")}</p>` : data.map(s => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)"><div style="flex:1;min-width:0"><b>${esc(s.name)}</b><div class="muted" dir="ltr" style="font-size:13px;text-align:start">${esc(s.email)}</div></div><button class="btn sm" data-rm="${esc(s.user_id)}" data-nm="${esc(s.name)}">${t("staffRemove")}</button></div>`).join("");
     };
     const callFn = async body => {
-      const { data, error } = await S.sb.functions.invoke("staff-admin", { body });
+      const { data, error } = await S.sb.functions.invoke(FN_STAFF, { body });
       if (!error) return null;
       let code = "";
       try { const j = await error.context.json(); code = j && j.error || ""; } catch (e) {}
