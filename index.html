@@ -1684,10 +1684,10 @@ function envelopeInner(link) {
 const envelopeStatic = link => `<div class="env-stage"><div class="env env-open">${envelopeInner(link)}</div></div>`;
 // dropdown wording: 1 = entry card, 2 = companion, 3 = two companions, 4+ = n companions
 function countLabel(i, l = LANG) {
-  if (l !== "ar") return i === 1 ? "Entry card" : i === 2 ? "Companion" : `${i - 1} companions`;
-  if (i === 1) return "بطاقة دخول"; if (i === 2) return "مرافق"; if (i === 3) return "مرافقان";
-  const n = i - 1, d = String(n).replace(/\d/g, x => "٠١٢٣٤٥٦٧٨٩"[x]);   // always ٣ so "4.٣" never reads like a decimal
-  return n <= 10 ? `${d} مرافقين` : `${d} مرافقًا`;
+  if (l !== "ar") return i === 1 ? "Entry card" : i === 2 ? "Entry card with 1 companion" : `Entry card with ${i - 1} companions`;
+  if (i === 1) return "بطاقة دخول"; if (i === 2) return "بطاقة دخول مع مرافق"; if (i === 3) return "بطاقة دخول مع مرافقان";
+  const n = i - 1, d = String(n).replace(/\d/g, x => "٠١٢٣٤٥٦٧٨٩"[x]);
+  return n <= 10 ? `بطاقة دخول مع ${d} مرافقين` : `بطاقة دخول مع ${d} مرافقًا`;
 }
 // small themed pop-up after a reply (about 2.5 s), then continue
 function showReplyPop(msg, then) {
@@ -1759,8 +1759,8 @@ function GuestView(r) {
         <button class="btn primary" data-g="yes" ${busy ? "disabled" : ""}>${t("g_yes")}</button>
         <button class="btn" data-g="no" ${busy ? "disabled" : ""}>${t("g_no")}</button></div>${errHtml}</div>${keep}`;
     const cur = choice !== "" ? choice : (a != null ? String(a) : "");
-    let opts = `<option value="" disabled ${cur === "" ? "selected" : ""}>${t("g_choose")}</option><option value="0" ${cur === "0" ? "selected" : ""}>-${t("g_zero")}</option>`;
-    for (let i = 1; i <= inv.seats; i++) opts += `<option value="${i}" ${cur === String(i) ? "selected" : ""}>-${i > 3 ? " " : ""}${esc(countLabel(i))}</option>`;
+    let opts = `<option value="" disabled ${cur === "" ? "selected" : ""}>${t("g_choose")}</option><option value="0" ${cur === "0" ? "selected" : ""}>${t("g_zero")}</option>`;
+    for (let i = 1; i <= inv.seats; i++) opts += `<option value="${i}" ${cur === String(i) ? "selected" : ""}>${esc(countLabel(i))}</option>`;
     return `<div class="g-card"><h2 id="howlbl">${t("g_how")}</h2>
       <select class="g-select" id="g-count" aria-labelledby="howlbl">${opts}</select>
       <button class="btn primary big" data-g="send" ${cur === "" || busy ? "disabled" : ""}>${t("g_send")}</button>${errHtml}</div>${keep}`;
