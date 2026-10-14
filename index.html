@@ -495,7 +495,7 @@ s_coupleEn:"Your names in English",s_coupleAr:"Your names in Arabic",s_deadline:
 imp_title:"Import invitations",imp_help:"Columns: Family / Guest Name, Entry Cards, Phone Number, Notes. The first row should hold the column names.",imp_template:"Download template",imp_choose:"Choose an Excel or CSV file",imp_ready:"{n} invitations ready to import",imp_skipped:"{n} rows skipped",imp_go:"Import {n} invitations",imp_done:"{n} invitations imported",imp_working:"Importing {i} of {n}…",
 why_name:"name is missing",why_seats:"entry cards must be a whole number, 1 or more",row:"Row",
 confirmDelete:"Delete the invitation for {name}? Their link and QR code will stop working.",confirmReset:"Clear the RSVP for {name}? They can reply again from the same link.",confirmUndo:"Undo check-in for {name}?",
-readOnly:"You can view these invitations but not change them.",writeErr:"Couldn't save. Check your connection and try again.",localNote:"Demo mode: invitations are saved in this browser only.",
+readOnly:"You can view these invitations but not change them.",writeErr:"Couldn't save. Check your connection and try again.",s_needSql:"Saved, except: {cols}. Your database is missing an update. In Supabase → SQL Editor, run update-10-names-per-side.sql, then save again.",localNote:"Demo mode: invitations are saved in this browser only.",
 dear:"Dear {name}",inviteLine:"We are delighted to invite you to our wedding.",inviteOf:"We are delighted to invite you to the wedding of {c}.",replyBy:"Please reply by",
 g_yes:"Confirm attendance",g_no:"Decline attendance",g_how:"We would be honored to have you confirm",g_choose:"Choose",g_zero:"Decline attendance",g_popYes:"Your attendance has been confirmed",g_popNo:"Your apology has been recorded",g_send:"Send RSVP",
 g_thanks:"Thank you.",g_recorded:"Your RSVP has been recorded.",g_look:"We look forward to celebrating with you.",g_miss:"We will miss you. Thank you for letting us know.",
@@ -516,7 +516,7 @@ s_coupleEn:"أسماؤكم بالإنجليزية",s_coupleAr:"أسماؤكم ب
 imp_title:"استيراد الدعوات",imp_help:"الأعمدة: اسم العائلة / الضيف، بطاقات الدخول، رقم الجوال، ملاحظات. يجب أن يحتوي الصف الأول على أسماء الأعمدة.",imp_template:"تنزيل النموذج",imp_choose:"اختر ملف Excel أو CSV",imp_ready:"{n} دعوة جاهزة للاستيراد",imp_skipped:"تم تجاوز {n} صفوف",imp_go:"استيراد {n} دعوة",imp_done:"تم استيراد {n} دعوة",imp_working:"جارٍ استيراد {i} من {n}…",
 why_name:"الاسم مفقود",why_seats:"يجب أن يكون عدد بطاقات الدخول رقمًا صحيحًا من 1 فأكثر",row:"الصف",
 confirmDelete:"حذف دعوة {name}؟ سيتوقف رابطها ورمز QR الخاص بها عن العمل.",confirmReset:"مسح رد {name}؟ يمكنهم الرد مجددًا من الرابط نفسه.",confirmUndo:"إلغاء تسجيل دخول {name}؟",
-readOnly:"يمكنك عرض الدعوات دون تعديلها.",writeErr:"تعذّر الحفظ. تحقق من الاتصال وحاول مجددًا.",localNote:"وضع تجريبي: الدعوات محفوظة في هذا المتصفح فقط.",
+readOnly:"يمكنك عرض الدعوات دون تعديلها.",writeErr:"تعذّر الحفظ. تحقق من الاتصال وحاول مجددًا.",s_needSql:"تم الحفظ ما عدا: {cols}. قاعدة البيانات ينقصها تحديث. افتح Supabase ← SQL Editor وشغّل الملف update-10-names-per-side.sql ثم احفظ مرة أخرى.",localNote:"وضع تجريبي: الدعوات محفوظة في هذا المتصفح فقط.",
 dear:"السيدة {name}",inviteLine:"يسعدنا دعوتكم لحضور حفل زفافنا.",inviteOf:"يسعدنا دعوتكم لحضور حفل زفاف {c}.",replyBy:"نأمل الرد قبل",
 g_yes:"تأكيد الحضور",g_no:"الاعتذار عن الحضور",g_how:"نتشرّف بتأكيد حضوركم",g_choose:"اختر",g_zero:"الاعتذار عن الحضور",g_popYes:"تم تأكيد حضوركم بنجاح",g_popNo:"تم تسجيل اعتذاركم",g_send:"إرسال الرد",
 g_thanks:"شكرًا لكم.",g_recorded:"تم تسجيل ردكم.",g_look:"نتطلع للاحتفال معكم.",g_miss:"سنفتقدكم، ونشكركم على إبلاغنا.",
@@ -638,7 +638,7 @@ async function loadGuest(token, mark) {
   if (error) S.guestErr[token] = true; else setGuestData(token, data);
   S.oneLoaded[token] = true; refresh();
 }
-function writeFailed(e) { console.error(e); toast(t("writeErr")); }
+function writeFailed(e) { console.error(e); toast(t("writeErr") + (e && e.message ? " (" + String(e.message).slice(0, 120) + ")" : "")); }
 async function putInvite(inv) { const { error } = await S.sb.from("invites").insert(toRow(inv)); if (error) throw error; S.invites.set(inv.token, inv); refresh(); }
 async function putInvites(list, onProgress) {
   for (let i = 0; i < list.length; i += 200) {
@@ -656,8 +656,18 @@ async function patchInvite(token, patch) {
 }
 async function removeInvite(token) { const { error } = await S.sb.from("invites").delete().eq("token", token); if (error) throw error; S.invites.delete(token); refresh(); }
 async function putSettings(s) {
-  const { error } = await S.sb.from("settings").upsert({ id: 1, couple_en: s.coupleEn, couple_ar: s.coupleAr, deadline: s.deadline ? new Date(s.deadline).toISOString() : null, base_url: s.baseUrl, tpl_rem_rsvp: s.tplRemRsvp || "", hosts_bride: s.hostsBride || "", couple_bride: s.coupleBride || "", hosts_groom: s.hostsGroom || "", couple_groom: s.coupleGroom || "", tpl_rem_event: s.tplRemEvent || "", msg_template: s.msgTemplate || "", msg_lang: s.msgLang, venue_name: s.venueName || "", venue_map_url: s.venueMap || "", event_at: s.eventAt ? new Date(s.eventAt).toISOString() : null, cap_total: s.capTotal ?? null, cap_bride: s.capBride ?? null, cap_groom: s.capGroom ?? null, num_style: s.numStyle === "ar" ? "ar" : "en" });
-  if (error) throw error; S.settings = s; refresh();
+  const row = { id: 1, couple_en: s.coupleEn, couple_ar: s.coupleAr, deadline: s.deadline ? new Date(s.deadline).toISOString() : null, base_url: s.baseUrl, tpl_rem_rsvp: s.tplRemRsvp || "", hosts_bride: s.hostsBride || "", couple_bride: s.coupleBride || "", hosts_groom: s.hostsGroom || "", couple_groom: s.coupleGroom || "", tpl_rem_event: s.tplRemEvent || "", msg_template: s.msgTemplate || "", msg_lang: s.msgLang, venue_name: s.venueName || "", venue_map_url: s.venueMap || "", event_at: s.eventAt ? new Date(s.eventAt).toISOString() : null, cap_total: s.capTotal ?? null, cap_bride: s.capBride ?? null, cap_groom: s.capGroom ?? null, num_style: s.numStyle === "ar" ? "ar" : "en" };
+  // if the database is missing a newer column (an SQL update not run yet), save everything else and say which update is missing
+  const missing = [];
+  for (let k = 0; k < 15; k++) {
+    const { error } = await S.sb.from("settings").upsert(row);
+    if (!error) break;
+    const m = /'([a-z_]+)' column/.exec(error.message || "");
+    if ((error.code === "PGRST204" || m) && m && m[1] in row) { missing.push(m[1]); delete row[m[1]]; continue; }
+    throw error;
+  }
+  S.settings = s; refresh();
+  if (missing.length) { console.warn("settings columns missing:", missing); setTimeout(() => alert(t("s_needSql", { cols: missing.join(", ") })), 50); }
 }
 
 /* ---------- domain ---------- */
