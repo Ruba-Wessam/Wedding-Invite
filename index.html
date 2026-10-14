@@ -166,7 +166,7 @@ dialog::backdrop{background:rgba(25,12,30,.45)}
 .h-card .h-lbl{margin:0 0 4px;font-size:14px;opacity:.85}
 .h-card .h-name{margin:0 0 4px;font-size:27px;line-height:1.3}
 .h-card .h-note{margin:0 0 6px;font-size:16px;color:#F3D9DF!important}
-.h-inote{font-style:normal;opacity:.75;font-size:13px}
+.h-inote{font-style:normal;color:#F3D9DF;font-size:13px}
 .h-card .h-meta{margin:0 0 14px;font-size:14px;opacity:.85}
 .h-q{width:100%;min-height:52px;border-radius:12px;border:0;padding:0 14px;font:inherit;font-size:17px;margin:12px 0 8px;background:#FBF6F3;color:#2A1B2D}
 .h-hits{display:grid;gap:6px;max-height:360px;overflow:auto;padding:2px}
@@ -1440,14 +1440,17 @@ function parseRows(aoa, side) {
   return planImport(ok, bad, side);
 }
 // decide, for one side's list: new families to add, existing families to tag, conflicts, duplicates, over-capacity
+const nameKey = x => normAr(x.name) + "|" + normAr(x.notes) + "|" + (+x.seats || 0);
 function planImport(rows, bad, side) {
-  const byPhone = new Map(); S.invites.forEach(i => { const p = normPhone(i.phone); byPhone.set(p || "name:" + normAr(i.name), i); });
+  const byPhone = new Map(), byName = new Map(); S.invites.forEach(i => { const p = normPhone(i.phone); if (p) byPhone.set(p, i); else byName.set(nameKey(i), i); });
   const seen = new Set(); let dupes = 0; const tag = [], conflicts = [], fresh = [], overcap = [];
   const used = { total: seatsUsed(null), bride: seatsUsed("bride"), groom: seatsUsed("groom") };
   const fits = n => { const tc = capOf(null), sc = capOf(side); return (tc == null || used.total + n <= tc) && (sc == null || used[side] + n <= sc); };
   for (const x of rows) {
-    const p = normPhone(x.phone) || "name:" + normAr(x.name); if (seen.has(p)) { dupes++; continue; } seen.add(p);
-    const ex = byPhone.get(p);
+    const ph = normPhone(x.phone);
+    if (ph) { if (seen.has(ph)) { dupes++; continue; } seen.add(ph); }
+    let ex = ph ? byPhone.get(ph) : byName.get(nameKey(x));   // rows without a phone are all kept (same names are common)
+    if (!ph && ex && ex.side !== side) ex = null;   // only a true re-import of the same side counts as a duplicate
     if (ex) {
       if (ex.side === side) { dupes++; continue; }
       if (ex.side && ex.side !== side) { conflicts.push(ex); continue; }
@@ -1910,7 +1913,7 @@ function HelperView(r) {
   async function load() {
     const res = await S.sb.rpc("helper_list", { p_token: r.token });
     if (res.error) { loadErr = /HELPER_NOT_FOUND/.test(res.error.message || "") ? t("h_badLink") : t("g_loadErr"); data = null; }
-    else { data = res.data; loadErr = ""; if (!cur || !fams().some(f => f.id === cur)) cur = nextTodo(); }
+    else { data = res.data; loadErr = ""; ((data && data.families) || []).forEach(f => { f.group = (f.notes || "").trim(); });   /* a note belongs only to its own row */ if (!cur || !fams().some(f => f.id === cur)) cur = nextTodo(); }
     update();
   }
   function mount() { document.body.classList.add("themed"); app.addEventListener("click", onClick); app.addEventListener("input", onInput); app.addEventListener("change", onChange); app.addEventListener("submit", onSubmit); update(); load(); }
@@ -1937,7 +1940,7 @@ function HelperView(r) {
     }
     return `<div class="g-card h-card">
       <p class="h-lbl">${t("h_whoIs")}</p>
-      <h2 class="h-name">${esc(f.name)}</h2>${f.notes ? `<p class="h-note">${esc(f.notes)}</p>` : ""}
+      <h2 class="h-name">${esc(f.name)}</h2>${f.group ? `<p class="h-note">${esc(f.group)}</p>` : ""}
       <p class="h-meta">${esc(t("h_cards", { n: digits(String(f.seats)) }))}${f.side ? " · " + esc(sideTxt(f.side)) : ""}${f.has_phone ? ` · <span dir="ltr">…${esc(digits(f.tail))}</span>` : ""}</p>
       ${flash ? `<p class="h-flash ${flashBad ? "bad" : ""}">${esc(flash)}</p>` : ""}
       ${pickArea}</div>`;
@@ -1952,7 +1955,7 @@ function HelperView(r) {
   function list() {
     const items = tab === "todo" ? todo() : fams().filter(f => f.has_phone);
     if (!items.length) return `<p class="h-none">${tab === "todo" ? t("h_noneLeft") : t("h_noneYet")}</p>`;
-    return `<div class="h-list">${items.map(f => `<button class="h-item ${f.id === cur ? "on" : ""}" data-h="go" data-id="${esc(f.id)}"><span>${esc(f.name)}${f.notes ? `<em class="h-inote"> · ${esc(f.notes)}</em>` : ""}</span><small>${f.has_phone ? `<span dir="ltr">…${esc(digits(f.tail))}</span>` : skipped.has(f.id) ? t("h_skipped") : ""}</small></button>`).join("")}</div>`;
+    return `<div class="h-list">${items.map(f => `<button class="h-item ${f.id === cur ? "on" : ""}" data-h="go" data-id="${esc(f.id)}"><span>${esc(f.name)}${f.group ? `<em class="h-inote"> · ${esc(f.group)}</em>` : ""}</span><small>${f.has_phone ? `<span dir="ltr">…${esc(digits(f.tail))}</span>` : skipped.has(f.id) ? t("h_skipped") : ""}</small></button>`).join("")}</div>`;
   }
   function update() {
     if (!data && !loadErr) { app.innerHTML = `<main class="guest"><div class="loading">${t("loading")}</div></main>`; return; }
