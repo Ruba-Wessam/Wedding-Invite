@@ -1799,7 +1799,7 @@ function GuestView(r) {
     }
     setGuestData(r.token, data); editing = false; pending = null; choice = ""; justSaved = true; update();
     const lnk = linkFor(S.invites.get(r.token));
-    showReplyPop(count > 0 ? t("g_popYes") : t("g_popNo"), () => { if (count > 0) playEnvelope(lnk); });
+    if (count > 0) playEnvelope(lnk); else showReplyPop(t("g_popNo"));
     try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); }
   }
   async function onClick(e) {
