@@ -1639,7 +1639,8 @@ function numTime(iso, l = LANG) {   // 9:00 مساءً / 9:00 PM
 function hijriDate(iso, l = LANG) {   // 1.6.1448 هـ
   const p = Object.fromEntries(new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn", { ...RIYADH, day: "numeric", month: "numeric", year: "numeric" }).formatToParts(new Date(iso)).map(x => [x.type, x.value]));
   const y = String(p.year || "").replace(/\D/g, "");
-  return l === "ar" ? `${digits(`${+p.day}.${+p.month}.${y}`)} هـ` : `${+p.day}.${+p.month}.${y} AH`;
+  return l === "ar" ? `${digits(`${+p.day}\u200F.\u200F${+p.month}\u200F.\u200F${y}`)} هـ` :   // reads right to left: 1448.6.1
+    `${+p.day}.${+p.month}.${y} AH`;
 }
 const weekday = (iso, l = LANG) => new Intl.DateTimeFormat(l === "ar" ? "ar-SA" : "en-GB", { ...RIYADH, weekday: "long" }).format(new Date(iso));
 function dateBlock(iso) {
