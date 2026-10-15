@@ -1878,10 +1878,10 @@ function envelopeInner(link) {
 const envelopeStatic = link => `<div class="env-stage"><div class="env env-open">${envelopeInner(link)}</div></div>`;
 // dropdown wording: 1 = entry card, 2 = companion, 3 = two companions, 4+ = n companions
 function countLabel(i, l = LANG) {
-  if (l !== "ar") return i === 1 ? "Entry card, no companion" : i === 2 ? "Entry card with 1 companion" : `Entry card with ${i - 1} companions`;
-  if (i === 1) return "بطاقة دخول دون مرافق"; if (i === 2) return "بطاقة دخول مع مرافق"; if (i === 3) return "بطاقة دخول مع مرافقان";
+  if (l !== "ar") return i === 1 ? "Entry card" : i === 2 ? "Entry card and 1 companion" : `Entry card and ${i - 1} companions`;
+  if (i === 1) return "بطاقة دخول"; if (i === 2) return "بطاقة دخول ومرافق"; if (i === 3) return "بطاقة دخول ومرافقان";
   const n = i - 1, d = String(n).replace(/\d/g, x => "٠١٢٣٤٥٦٧٨٩"[x]);
-  return n <= 10 ? `بطاقة دخول مع ${d} مرافقين` : `بطاقة دخول مع ${d} مرافقًا`;
+  return n <= 10 ? `بطاقة دخول و${d} مرافقين` : `بطاقة دخول و${d} مرافقًا`;
 }
 // small themed pop-up after a reply (about 2.5 s), then continue
 function showReplyPop(msg, then) {
