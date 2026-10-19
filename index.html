@@ -2109,7 +2109,7 @@ function GuestView(r) {
         <button class="btn" data-g="no" ${dis}>${t("g_no")}</button></div>${errHtml}</div>`;
     let btns = "";
     // more than one card: first card = choose how many are coming; it then leaves and a second card asks to confirm
-    if (choice) return `<div class="g-card g-step2"><p class="g-chosen-lbl">${t("g_yourChoice")}</p>
+    if (choice) return `<div class="g-card g-step2"><p class="g-chosen-lbl" aria-hidden="true">&nbsp;</p>
       <p class="g-chosen">${esc(countLabel(+choice))}</p>
       <div class="choice"><button class="btn primary" data-g="confirmpick" ${dis}>${t("g_yes")}</button>
       <button class="btn ghost sm g-back" data-g="unpick" ${dis}>${t("g_back")}</button></div>${errHtml}</div>`;
