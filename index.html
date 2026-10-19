@@ -266,6 +266,7 @@ body.themed .env-card b,.env-card b{font-size:12.5px;line-height:1.6}
 .envo.rise .env-card,.env-open .env-card{height:108%}
 .qr-top .env-stage,.env-stage.tall{padding-top:54%}
 body.themed .env-card .env-cards,.env-card .env-cards{display:block;font-family:var(--display);color:#660D23;font-size:12px;line-height:1.5;margin:-4px 0 4px;opacity:.9}
+.conf-page .seal{height:150px;margin:0 auto 6px}.conf-page .dear{margin:0 0 4px;text-align:center}.conf-cd{margin:22px 0 10px}.conf-cd .cd{margin:0}
 .qr-top{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 18px}.qr-top .btn.save{width:100%;max-width:340px}
 body.themed .arch.entry .cd{margin:6px 0 18px}
 .cd-top .cd{margin:0;padding:0;border:0}
@@ -2110,11 +2111,11 @@ function GuestView(r) {
     else body = form(inv, a);
     if (a > 0 && !editing) {
       const note = r.preview ? `<div class="notice gold" style="font-size:14px">${esc(t("g_preview", { name: inv.name }))}</div>` : "";
-      const cd = `<div class="qr-top">${envelopeStatic(linkFor(inv), attending(inv))}
+      const cd = `<div class="qr-top conf-page">${sealImg()}<p class="dear">${esc(t("dear", { name: inv.name }))}</p>${envelopeStatic(linkFor(inv), attending(inv))}
         <button class="btn primary save" data-g="saveimg">${ICON.img}${t("g_saveToPhone")}</button>
         <button class="btn sm ghost" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button>
         ${/^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true" class="pin"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}</div>`;
-      app.innerHTML = `<main class="guest">${top}${note}${cd}${body}</main>`;
+      app.innerHTML = `<main class="guest">${top}${note}${cd}${s.eventAt ? `<div class="conf-cd">${countdownHtml(s.eventAt)}</div>` : ""}</main>`;
     } else app.innerHTML = `<main class="guest">${top}${header}${body}</main>`;
     justSaved = false;
   }
@@ -2144,13 +2145,7 @@ function GuestView(r) {
       <div class="qr-acts"><button class="btn" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button><button class="btn" data-g="saveimg">${ICON.img}${t("g_saveImg")}</button></div></div>` : "";
     const foot = `<p class="g-foot">${t("g_contact")}</p>`;
     const couple = coupleFor(LANG === "ar" ? (s.coupleAr || s.coupleEn) : (s.coupleEn || s.coupleAr), inv);
-    if (a > 0) return `<section class="arch entry ${justSaved ? "animate" : ""}">
-      ${sealImg()}${couple ? `<p class="names">${coupleHtml(couple)}</p>` : ""}<div class="orn" aria-hidden="true"><i></i><b></b><i></i></div>
-      <p class="dear">${esc(t("dear", { name: inv.name }))}</p>
-      <svg class="tick" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28"/><path d="M18 31l8 8 16-17"/></svg>
-      <h2>${t("g_confTitle")}</h2>
-      ${s.eventAt ? countdownHtml(s.eventAt) : ""}
-      </section>${foot}`;
+    if (a > 0) return "";   // the confirmed page is built in update(): logo, name, envelope, buttons, map, countdown
     return `<div class="g-card done ${justSaved ? "animate" : ""}">
       <svg class="tick" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28"/><path d="M18 31l8 8 16-17"/></svg>
       <h2>${t("g_thanks")}</h2>
