@@ -850,6 +850,8 @@ function upgradeNames(tpl) {
   [s.coupleBride, s.coupleGroom, DEF_NAMES.coupleBride, DEF_NAMES.coupleGroom].forEach(x => x && C.add(norm(x)));
   return String(tpl || "").split("\n").map(ln => H.has(norm(ln)) ? "{hosts}" : C.has(norm(ln)) ? "{couple}" : ln).join("\n");
 }
+// a name used inside a sentence: no wide gaps or invisible characters, and و joined to the next name
+const inl = x => String(x || "").replace(/[\u200B-\u200F\u2060\uFEFF]/g, "").replace(/\s+/g, " ").trim().replace(/ و /g, " و").replace(/ و$/, "");
 function namesFor(inv) {
   const s = S.settings, g = inv.side === "groom";
   return { hosts: (g ? s.hostsGroom : s.hostsBride) || (g ? DEF_NAMES.hostsGroom : DEF_NAMES.hostsBride),
@@ -863,7 +865,6 @@ function fillTemplate(tpl, inv) {
     deadline: s.deadline ? numDate(s.deadline) : "" };
   tpl = tpl.split("\n").filter(ln => ln.trim() !== "{map}").join("\n").replace("🗓 | {day} {date} - {time}", "🗓 | {day} {date}\n🗓 | {hijri}\n⏰ | {time}");
   vals.name = String(vals.name || "").trim();
-  const inl = x => String(x || "").replace(/\s+/g, " ").trim().replace(/ و /g, " و").replace(/ و$/, "");
   let out = tpl.split("\n").map(ln => { const alone = /^\s*\{(hosts|couple)\}\s*$/.test(ln);
     return ln.replace(/\{(name|seats|link|venue|map|date|day|time|hijri|deadline|hosts|couple)\}/g, (_, k) => (!alone && (k === "hosts" || k === "couple")) ? inl(vals[k]) : vals[k]); }).join("\n");
   out = out.split("\n").filter((ln, i, arr) => !(ln.trim() === "" && vals.map === "" && /\{map\}/.test(tpl.split("\n")[i] || ""))).join("\n");
@@ -2081,7 +2082,7 @@ function GuestView(r) {
         ${couple ? `<p class="names">${coupleHtml(couple)}</p>` : ""}
         <div class="orn" aria-hidden="true"><i></i><b></b><i></i></div>
         <p class="dear">${esc(t("dear", { name: inv.name }))}</p>
-        <p class="inv">${couple ? esc(t("inviteOf", { c: couple })) : t("inviteLine")}</p>
+        <p class="inv">${couple ? esc(t("inviteOf", { c: inl(couple) })) : t("inviteLine")}</p>
         ${countdownHtml(s.eventAt)}
         ${s.deadline ? `<dl class="facts"><div><dt>${t("replyBy")}</dt><dd dir="ltr">${esc(numDate(s.deadline))}</dd></div></dl>` : ""}
         ${a > 0 && /^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true" class="pin"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
