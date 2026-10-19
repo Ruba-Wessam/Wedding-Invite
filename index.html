@@ -298,6 +298,12 @@ body.themed .arch.entry .cd{margin:6px 0 18px}
 .choice{display:grid;gap:10px}
 .g-back{display:block;margin:14px auto 0}
 .choice .btn{min-height:56px;font-size:17px;border-radius:14px}
+.choice .btn.opt{position:relative;justify-content:center}
+.choice .btn.opt .dot{position:absolute;inset-inline-start:16px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;border:1.5px solid currentColor;opacity:.75}
+body.themed .g-card .choice .btn.opt.sel,.choice .btn.opt.sel{background:rgba(251,246,243,.18);color:#FBF6F3;border:2px solid #FBF6F3;box-shadow:0 0 0 3px rgba(251,246,243,.15)}
+.choice .btn.opt.sel .dot{opacity:1;background:radial-gradient(circle,currentColor 0 4px,transparent 5px)}
+.g-final{margin-top:18px;padding-top:16px;border-top:1px solid rgba(251,246,243,.25)}
+.g-final .btn.primary[disabled]{opacity:.45}
 .g-select{width:100%;min-height:56px;border:1px solid var(--line);border-radius:14px;padding:0 14px;background:var(--bg);font-size:17px;margin-bottom:12px}
 .big{width:100%;min-height:56px;font-size:17px;border-radius:14px}
 .done{text-align:center}
@@ -2094,14 +2100,16 @@ function GuestView(r) {
     const errHtml = err ? `<p style="color:var(--bad);margin:10px 0 0;font-size:15px">${esc(err)}</p>` : "";
     const keep = "";
     const dis = busy ? "disabled" : "";
-    if (inv.seats === 1 || !step2) return `<div class="g-card"><div class="choice">
+    if (inv.seats === 1) return `<div class="g-card"><div class="choice">
         <button class="btn primary" data-g="yes" ${dis}>${t("g_yes")}</button>
         <button class="btn" data-g="no" ${dis}>${t("g_no")}</button></div>${errHtml}</div>`;
     let btns = "";
-    for (let i = 1; i <= inv.seats; i++) btns += `<button class="btn" data-g="pick" data-n="${i}" ${dis}>${esc(countLabel(i))}</button>`;
+    // more than one card: first choose how many are coming, then press the confirm button
+    for (let i = 1; i <= inv.seats; i++) btns += `<button class="btn opt ${+choice === i ? "sel" : ""}" data-g="pick" data-n="${i}" role="radio" aria-checked="${+choice === i}" ${dis}><i class="dot" aria-hidden="true"></i>${esc(countLabel(i))}</button>`;
     return `<div class="g-card"><h2 id="howlbl">${t("g_how")}</h2>
-      <div class="choice" role="group" aria-labelledby="howlbl">${btns}</div>
-      <button class="btn ghost sm g-back" data-g="back2" ${dis}>${t("g_back")}</button>${errHtml}</div>`;
+      <div class="choice" role="radiogroup" aria-labelledby="howlbl">${btns}</div>
+      <div class="choice g-final"><button class="btn primary" data-g="confirmpick" ${choice && !busy ? "" : "disabled"}>${t("g_yes")}</button>
+      <button class="btn" data-g="no" ${dis}>${t("g_no")}</button></div>${errHtml}</div>`;
   }
   function confirmation(inv, a, closed) {
     const s = S.settings, link = linkFor(inv);
@@ -2144,7 +2152,8 @@ function GuestView(r) {
       case "demoreset": { const n = S.invites.get("DEMO"); if (n) n.rsvp = null; step2 = false; err = ""; justSaved = false; window.scrollTo(0, 0); playDoors("DEMO", true); update(); break; }
       case "retry": S.oneLoaded[r.token] = false; update(); loadGuest(r.token, !r.preview); break;
       case "yes": err = ""; if (inv && inv.seats > 1) { step2 = true; update(); } else submit(1); break;
-      case "pick": { const n = parseInt(g.dataset.n, 10); if (n > 0) { err = ""; submit(n); } break; }
+      case "pick": { const n = parseInt(g.dataset.n, 10); if (n > 0) { err = ""; choice = String(n); update(); } break; }
+      case "confirmpick": { const n = parseInt(choice, 10); if (n > 0) { err = ""; submit(n); } break; }
       case "back2": step2 = false; err = ""; update(); break;
       case "no": err = ""; submit(0); break;
       case "send": { const v = $("#g-count")?.value; if (v !== "" && v != null) { err = ""; submit(parseInt(v, 10)); } break; }
