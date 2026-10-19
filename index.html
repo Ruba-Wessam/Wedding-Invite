@@ -961,7 +961,7 @@ async function passPngBlob(inv) {
   arch(92, 82, W - 184, H - 164, 20); ctx.strokeStyle = WHEX; ctx.lineWidth = 2; ctx.stroke();
   try { const im = new Image(); im.src = pairSrc(); await im.decode(); ctx.drawImage(im, W / 2 - 55, 112, 110, 110 * im.naturalHeight / im.naturalWidth); } catch (e) {}
   ctx.textAlign = "center"; ctx.direction = LANG === "ar" ? "rtl" : "ltr"; ctx.fillStyle = "#2A1B2D";
-  const couple = (LANG === "ar" ? S.settings.coupleAr : S.settings.coupleEn) || S.settings.coupleEn || S.settings.coupleAr || "";
+  const couple = coupleFor((LANG === "ar" ? S.settings.coupleAr : S.settings.coupleEn) || S.settings.coupleEn || S.settings.coupleAr || "", inv);
   ctx.fillStyle = WHEX; ctx.font = '700 118px "NamesFont", "Amiri", serif';
   if (couple) { const cp = coupleParts(couple); if (cp) { const g = 150, w0 = ctx.measureText(cp[0]).width, w1 = ctx.measureText(cp[1]).width, tot = w0 + g + w1; ctx.textAlign = "center";
     const rightFirst = LANG === "ar"; const xa = rightFirst ? W / 2 + tot / 2 - w0 / 2 : W / 2 - tot / 2 + w0 / 2, xb = rightFirst ? W / 2 - tot / 2 + w1 / 2 : W / 2 + tot / 2 - w1 / 2;
@@ -1948,6 +1948,9 @@ function gregRtl(iso) {
   return digits(`${p.day}\u200F.\u200F${p.month}\u200F.\u200F${p.year}`);
 }
 // the couple's names with a wide space instead of "و" between them
+// groom's-side families see the groom's name first (ربى و وسام → وسام و ربى)
+function coupleFor(c, inv) { c = String(c || ""); if (!inv || inv.side !== "groom") return c;
+  const m = c.match(/^(.*?)(\s+(?:و|&|and)\s+)(.*)$/i); return m ? m[3].trim() + m[2] + m[1].trim() : c; }
 function coupleParts(c) { const p = String(c || "").split(/\s+(?:و|&|and)\s+/i).map(x => x.trim()).filter(Boolean); return p.length === 2 ? p : null; }
 function coupleHtml(c) { const p = coupleParts(c); return p ? `<span>${esc(p[0])}</span><span class="nm-amp">&amp;</span><span>${esc(p[1])}</span>` : esc(c); }
 function dateBlock(iso) {
@@ -2074,7 +2077,7 @@ function GuestView(r) {
     if (S.guestErr[r.token]) { app.innerHTML = `<main class="guest">${top}<section class="arch"><p class="inv">${t("g_loadErr")}</p><button class="btn primary" data-g="retry">${t("retry")}</button></section></main>`; return; }
     const inv = S.invites.get(r.token);
     if (!inv) { app.innerHTML = `<main class="guest">${top}<section class="arch"><p class="dear">${t("g_notFound")}</p><p class="inv">${t("g_notFoundSub")}</p></section></main>`; return; }
-    const s = S.settings, couple = LANG === "ar" ? (s.coupleAr || s.coupleEn) : (s.coupleEn || s.coupleAr), closed = deadlinePassed(), a = attending(inv);
+    const s = S.settings, couple = coupleFor(LANG === "ar" ? (s.coupleAr || s.coupleEn) : (s.coupleEn || s.coupleAr), inv), closed = deadlinePassed(), a = attending(inv);
     const header = `
       ${r.preview ? `<div class="notice gold" style="font-size:14px">${esc(t("g_preview", { name: inv.name }))}</div>` : ""}
       <section class="arch">
@@ -2126,7 +2129,7 @@ function GuestView(r) {
     const qr = a > 0 ? `<div class="qrbox"><h3>${t("g_qrTitle")}</h3><div class="qr">${qrSvg(link)}</div><p class="muted" style="margin:0 0 14px">${t("g_qrHelp")}</p>
       <div class="qr-acts"><button class="btn" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button><button class="btn" data-g="saveimg">${ICON.img}${t("g_saveImg")}</button></div></div>` : "";
     const foot = `<p class="g-foot">${t("g_contact")}</p>`;
-    const couple = LANG === "ar" ? (s.coupleAr || s.coupleEn) : (s.coupleEn || s.coupleAr);
+    const couple = coupleFor(LANG === "ar" ? (s.coupleAr || s.coupleEn) : (s.coupleEn || s.coupleAr), inv);
     if (a > 0) return `<section class="arch entry ${justSaved ? "animate" : ""}">
       ${sealImg()}${couple ? `<p class="names">${coupleHtml(couple)}</p>` : ""}<div class="orn" aria-hidden="true"><i></i><b></b><i></i></div>
       <p class="dear">${esc(t("dear", { name: inv.name }))}</p>
