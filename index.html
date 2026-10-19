@@ -260,6 +260,8 @@ details.h-ios[open] summary{color:#FBF6F3}
 .arch.entry .dear{font-size:19px;margin:0 0 14px;color:var(--muted)}
 .map-btn,.map-btn:visited{color:var(--ink);text-decoration:none}
 .cd-top{text-align:center;margin-bottom:14px}
+.qr-top{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 18px}.qr-top .btn.save{width:100%;max-width:340px}
+body.themed .arch.entry .cd{margin:6px 0 18px}
 .cd-top .cd{margin:0;padding:0;border:0}
 .arch.entry .map-btn{margin-top:14px}
 .side-pill{display:inline-block;font-size:12px;font-weight:500;padding:1px 8px;border-radius:99px;margin-inline-start:6px;vertical-align:1px}
@@ -829,7 +831,10 @@ const pageBase = () => location.origin + location.pathname.replace(/[^\/]*$/, ""
 const linkFor = inv => S.settings.baseUrl ? S.settings.baseUrl.replace(/\/+$/, "") + "/" + inv.token : pageBase() + "?i=" + inv.token;
 const deadlinePassed = () => !!S.settings.deadline && Date.now() > new Date(S.settings.deadline).getTime();
 const CARDS_LINE = "🎟 | عدد بطاقات الدخول: {seats}";
-const DEFAULT_MSG_TPL = "المكرمة : {name}،\n\nبكل الود والمحبة تتشرف:\n{hosts}\n بحضوركم حفل زفاف \n{couple}\nو ذلك :\n🗓 | {day} {date}\n🗓 | {hijri}\n⏰ | {time}\n📍 | {venue}\n\nيرجى تأكيد أو الاعتذار عن الحضور عبر الرابط أدناه.\n{link}\n\n" + CARDS_LINE;
+const DEFAULT_MSG_TPL = "*المكرمة/ {name}*\n\nتتشرف *{hosts}* بدعوتك لحضور *حفل زفاف {couple}*.\n\nيسرنا حضورك وتلبية الدعوة.\nيمكنك الرد على الدعوة والحصول على كود الدخول عن طريق الرابط أدناه :\n\n{link}\n\nيومـك سعيـد..\nInovyé..";
+// a saved copy of the old wording is replaced by the final wording above
+const OLD_TPL_MARK = "بكل الود والمحبة تتشرف";
+const inviteTpl = x => (x && x.trim() && !x.includes(OLD_TPL_MARK)) ? x : DEFAULT_MSG_TPL;
 // old saved texts had the names typed in; turn those lines into {hosts} / {couple}
 function upgradeNames(tpl) {
   const norm = x => String(x || "").replace(/\s+/g, " ").trim();
@@ -850,7 +855,10 @@ function fillTemplate(tpl, inv) {
     date: ev ? numDate(ev) : "", day: ev ? weekday(ev, "ar") : "", time: ev ? numTime(ev, "ar") : "", hijri: ev ? hijriDate(ev, "ar") : "",
     deadline: s.deadline ? numDate(s.deadline) : "" };
   tpl = tpl.split("\n").filter(ln => ln.trim() !== "{map}").join("\n").replace("🗓 | {day} {date} - {time}", "🗓 | {day} {date}\n🗓 | {hijri}\n⏰ | {time}");
-  let out = tpl.replace(/\{(name|seats|link|venue|map|date|day|time|hijri|deadline|hosts|couple)\}/g, (_, k) => vals[k]);
+  vals.name = String(vals.name || "").trim();
+  const inl = x => String(x || "").replace(/\s+/g, " ").trim().replace(/ و /g, " و").replace(/ و$/, "");
+  let out = tpl.split("\n").map(ln => { const alone = /^\s*\{(hosts|couple)\}\s*$/.test(ln);
+    return ln.replace(/\{(name|seats|link|venue|map|date|day|time|hijri|deadline|hosts|couple)\}/g, (_, k) => (!alone && (k === "hosts" || k === "couple")) ? inl(vals[k]) : vals[k]); }).join("\n");
   out = out.split("\n").filter((ln, i, arr) => !(ln.trim() === "" && vals.map === "" && /\{map\}/.test(tpl.split("\n")[i] || ""))).join("\n");
   if (!/\{link\}/.test(tpl)) out += "\n" + vals.link;
   return out;
@@ -875,8 +883,7 @@ function messageFor(inv, kind) {
   if (kind === "rsvp") return fillTemplate((S.settings.tplRemRsvp || "").trim() ? S.settings.tplRemRsvp : DEFAULT_REM_RSVP, inv);
   if (kind === "event") return fillTemplate((S.settings.tplRemEvent || "").trim() ? S.settings.tplRemEvent : DEFAULT_REM_EVENT, inv);
   const s = S.settings, link = linkFor(inv);
-  let tpl = (s.msgTemplate && s.msgTemplate.trim()) ? s.msgTemplate : DEFAULT_MSG_TPL;
-  if (!/\{seats\}/.test(tpl)) tpl = tpl.replace(/\s+$/, "") + "\n\n" + CARDS_LINE;   // number of entry cards at the bottom
+  const tpl = inviteTpl(s.msgTemplate);
   return fillTemplate(tpl, inv);
   const ar = [`السيدة ${inv.name}،`, "", s.coupleAr ? `يسعدنا دعوتكم لحضور حفل زفاف ${s.coupleAr}.` : "يسعدنا دعوتكم لحضور حفل زفافنا.", "", `عدد بطاقات الدخول: ${inv.seats}`];
   if (s.deadline) ar.push(`نأمل تأكيد الحضور قبل ${numDate(s.deadline)}.`);
@@ -1491,7 +1498,7 @@ function settingsDialog() {
       <label class="field"><span>${t("nm_hostsGroom")}</span><input name="hostsGroom" dir="rtl" value="${esc(s.hostsGroom)}"></label>
       <label class="field"><span>${t("nm_coupleGroom")}</span><input name="coupleGroom" dir="rtl" value="${esc(s.coupleGroom)}"></label>
     </fieldset>
-    <label class="field"><span>${t("s_tpl")}</span><textarea name="msgTemplate" rows="12" dir="rtl" style="font-size:14px;line-height:1.6">${esc((x => /\{seats\}/.test(x) ? x : x.replace(/\s+$/, "") + "\n\n" + CARDS_LINE)(upgradeNames(s.msgTemplate || DEFAULT_MSG_TPL)))}</textarea><small>${t("s_tplHelp")}</small></label>
+    <label class="field"><span>${t("s_tpl")}</span><textarea name="msgTemplate" rows="12" dir="rtl" style="font-size:14px;line-height:1.6">${esc(upgradeNames(inviteTpl(s.msgTemplate)))}</textarea><small>${t("s_tplHelp")}</small></label>
     <label class="field"><span>${t("s_tplRsvp")}</span><textarea name="tplRemRsvp" rows="9" dir="rtl" style="font-size:14px;line-height:1.6">${esc(upgradeNames(s.tplRemRsvp || DEFAULT_REM_RSVP))}</textarea></label>
     <label class="field"><span>${t("s_tplEvent")}</span><textarea name="tplRemEvent" rows="11" dir="rtl" style="font-size:14px;line-height:1.6">${esc(upgradeNames(s.tplRemEvent || DEFAULT_REM_EVENT))}</textarea></label>
     <label class="field"><span>${t("s_msgLang")}</span><select name="msgLang">
@@ -2026,8 +2033,7 @@ function showReplyPop(msg, then) {
 function playEnvelope(link) {
   try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
   const el = document.createElement("div"); el.className = "envo"; el.setAttribute("aria-hidden", "true");
-  el.innerHTML = `<div class="env">${envelopeInner(link)}
-      <img class="env-seal" src="${pairSrc()}" alt=""></div>
+  el.innerHTML = `<div class="env">${envelopeInner(link)}</div>
     <p class="env-cap">${t("g_confTitle")}</p>`;
   document.body.appendChild(el);
   const T = [];
@@ -2077,7 +2083,9 @@ function GuestView(r) {
     else body = form(inv, a);
     if (a > 0 && !editing) {
       const note = r.preview ? `<div class="notice gold" style="font-size:14px">${esc(t("g_preview", { name: inv.name }))}</div>` : "";
-      const cd = s.eventAt ? `<div class="cd-top">${countdownHtml(s.eventAt)}</div>` : "";
+      const cd = `<div class="qr-top">${envelopeStatic(linkFor(inv))}
+        <button class="btn primary save" data-g="saveimg">${ICON.img}${t("g_saveToPhone")}</button>
+        <button class="btn sm ghost" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button></div>`;
       app.innerHTML = `<main class="guest">${top}${note}${cd}${body}</main>`;
     } else app.innerHTML = `<main class="guest">${top}${header}${body}</main>`;
     justSaved = false;
@@ -2106,9 +2114,7 @@ function GuestView(r) {
       <p class="dear">${esc(t("dear", { name: inv.name }))}</p>
       <svg class="tick" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="28"/><path d="M18 31l8 8 16-17"/></svg>
       <h2>${t("g_confTitle")}</h2><p class="ready">${t("g_codeReady")}</p>
-      ${envelopeStatic(link)}
-      <button class="btn primary save" data-g="saveimg">${ICON.img}${t("g_saveToPhone")}</button>
-      <button class="btn sm ghost" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button>
+      ${s.eventAt ? countdownHtml(s.eventAt) : ""}
       ${/^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true" class="pin"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}
       </section>${foot}`;
     return `<div class="g-card done ${justSaved ? "animate" : ""}">
