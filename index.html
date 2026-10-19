@@ -261,6 +261,11 @@ details.h-ios[open] summary{color:#FBF6F3}
 .map-btn,.map-btn:visited{color:var(--ink);text-decoration:none}
 .cd-top{text-align:center;margin-bottom:14px}
 body.themed .env-card b,.env-card b{font-size:12.5px;line-height:1.6}
+/* taller card so the second line fits above the code */
+.env-card{transition:transform 1.5s cubic-bezier(.22,.8,.25,1),height 1.5s cubic-bezier(.22,.8,.25,1),opacity .25s ease}
+.envo.rise .env-card,.env-open .env-card{height:108%}
+.qr-top .env-stage,.env-stage.tall{padding-top:54%}
+body.themed .env-card .env-cards,.env-card .env-cards{display:block;font-family:var(--display);color:#660D23;font-size:12px;line-height:1.5;margin:-4px 0 4px;opacity:.9}
 .qr-top{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 0 18px}.qr-top .btn.save{width:100%;max-width:340px}
 body.themed .arch.entry .cd{margin:6px 0 18px}
 .cd-top .cd{margin:0;padding:0;border:0}
@@ -2020,12 +2025,21 @@ function playDoors(token, force) {
   el.addEventListener("click", open);
   setTimeout(open, 1500);
 }
-function envelopeInner(link) {
+// "تم تزويدكم ببطاقتين عبر الرمز أدناه" — follows the number of confirmed entry cards
+function cardsLine(n, l = LANG) {
+  n = +n || 0; if (n < 1) return "";
+  if (l !== "ar") return n === 1 ? "You have 1 entry card in the code below" : `You have ${n} entry cards in the code below`;
+  const d = String(n).replace(/\d/g, x => "٠١٢٣٤٥٦٧٨٩"[x]);
+  if (n === 1) return "تم تزويدكم ببطاقة الدخول عبر الرمز أدناه.";
+  const w = n === 2 ? "ببطاقتين" : n <= 10 ? `بـ${d} بطاقات` : `بـ${d} بطاقة`;
+  return `تم تزويدكم ${w} عبر الرمز أدناه`;
+}
+function envelopeInner(link, n) {
   return `<div class="env-back"></div><div class="env-liner"></div>
-      <div class="env-card"><b>${t("g_codeReady")}</b><div class="qr-mini">${qrSvg(link)}</div></div>
+      <div class="env-card"><b>${t("g_codeReady")}</b>${n ? `<small class="env-cards">${esc(cardsLine(n))}</small>` : ""}<div class="qr-mini">${qrSvg(link)}</div></div>
       <div class="env-pocket"></div><div class="env-flap"><i class="f"></i><i class="b"></i></div>`;
 }
-const envelopeStatic = link => `<div class="env-stage"><div class="env env-open">${envelopeInner(link)}</div></div>`;
+const envelopeStatic = (link, n) => `<div class="env-stage"><div class="env env-open">${envelopeInner(link, n)}</div></div>`;
 // dropdown wording: 1 = entry card, 2 = companion, 3 = two companions, 4+ = n companions
 function countLabel(i, l = LANG) {
   if (l !== "ar") return i === 1 ? "Entry card" : i === 2 ? "Entry card and 1 companion" : `Entry card and ${i - 1} companions`;
@@ -2043,10 +2057,10 @@ function showReplyPop(msg, then) {
   const finish = () => { if (done) return; done = true; el.classList.remove("on"); setTimeout(() => el.remove(), 350); then && then(); };
   setTimeout(finish, 2500); el.onclick = finish;
 }
-function playEnvelope(link) {
+function playEnvelope(link, n) {
   try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
   const el = document.createElement("div"); el.className = "envo"; el.setAttribute("aria-hidden", "true");
-  el.innerHTML = `<div class="env">${envelopeInner(link)}</div>
+  el.innerHTML = `<div class="env">${envelopeInner(link, n)}</div>
     <p class="env-cap">${t("g_confTitle")}</p>`;
   document.body.appendChild(el);
   const T = [];
@@ -2096,7 +2110,7 @@ function GuestView(r) {
     else body = form(inv, a);
     if (a > 0 && !editing) {
       const note = r.preview ? `<div class="notice gold" style="font-size:14px">${esc(t("g_preview", { name: inv.name }))}</div>` : "";
-      const cd = `<div class="qr-top">${envelopeStatic(linkFor(inv))}
+      const cd = `<div class="qr-top">${envelopeStatic(linkFor(inv), attending(inv))}
         <button class="btn primary save" data-g="saveimg">${ICON.img}${t("g_saveToPhone")}</button>
         <button class="btn sm ghost" data-g="dlqr">${ICON.dl}${t("downloadQr")}</button>
         ${/^https:\/\//i.test(s.venueMap || "") ? `<a class="btn map-btn" href="${esc(s.venueMap)}" target="_blank" rel="noopener"><span aria-hidden="true" class="pin"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>${esc(s.venueName || t("g_location"))}<small>${t("g_openMap")}</small></span></a>` : ""}</div>`;
@@ -2154,7 +2168,7 @@ function GuestView(r) {
     }
     if (!r.demo) setGuestData(r.token, data); editing = false; pending = null; step2 = false; choice = ""; justSaved = true; update();
     const lnk = linkFor(S.invites.get(r.token));
-    if (count > 0) playEnvelope(lnk);
+    if (count > 0) playEnvelope(lnk, count);
     try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); }
   }
   async function onClick(e) {
