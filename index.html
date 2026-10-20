@@ -1275,11 +1275,16 @@ function kindPicker(kind, id) {
 }
 // the invitation card picture sent with the WhatsApp invitation: upload "invitation.jpg" next to index.html on GitHub
 const INVITE_IMG_FILE = "invitation.jpg";
-const inviteImgUrl = () => pageBase() + INVITE_IMG_FILE;
+// the link carries a version taken from the file itself, so WhatsApp fetches the new picture
+// after you replace invitation.jpg (otherwise it can keep showing the old one from its cache)
+let IMG_VER = "";
+const inviteImgUrl = () => pageBase() + INVITE_IMG_FILE + (IMG_VER ? "?v=" + IMG_VER : "");
 let IMG_OK = null;
 async function checkInviteImg(force) {
   if (IMG_OK !== null && !force) return IMG_OK;
-  try { const r = await fetch(inviteImgUrl() + "?v=" + Date.now(), { method: "HEAD", cache: "no-store" }); IMG_OK = r.ok && /^image\/(jpeg|png)/i.test(r.headers.get("content-type") || ""); } catch (e) { IMG_OK = false; }
+  try { const r = await fetch(pageBase() + INVITE_IMG_FILE + "?t=" + Date.now(), { method: "HEAD", cache: "no-store" }); IMG_OK = r.ok && /^image\/(jpeg|png)/i.test(r.headers.get("content-type") || "");
+    const tag = [r.headers.get("etag"), r.headers.get("last-modified"), r.headers.get("content-length")].filter(Boolean).join("|");
+    let h = 0; for (const c of tag) h = (h * 31 + c.charCodeAt(0)) >>> 0; IMG_VER = tag ? h.toString(36) : String(Date.now()); } catch (e) { IMG_OK = false; }
   return IMG_OK;
 }
 const waBody = (inv, kind, withImg) => { const b = { to: waNumber(inv.phone), text: messageFor(inv, kind) }; if (withImg && IMG_OK) b.imageUrl = inviteImgUrl(); return b; };
@@ -1293,7 +1298,7 @@ function resendDialog(inv) {
     $("#rs-open", d).addEventListener("click", () => { patchInvite(inv.token, { sentAt: new Date().toISOString() }).catch(() => {}); setTimeout(closeDialog, 300); });
     $('[data-x="auto"]', d).onclick = async e => {
       const b = e.currentTarget; b.disabled = true;
-      await checkInviteImg();
+      await checkInviteImg(true);
       let res; try { const { data, error } = await S.sb.functions.invoke(FN_WA_SEND, { body: waBody(inv, "invite", true) }); res = error ? { ok: false } : data; } catch (x) { res = { ok: false }; }
       if (res && res.ok) { patchInvite(inv.token, { sentAt: new Date().toISOString() }).catch(() => {}); closeDialog(); toast(t("resendDone")); }
       else { b.disabled = false; toast((res && (res.detail || res.error)) || t("writeErr")); }
@@ -1375,7 +1380,7 @@ function sendQueue(includeSent, kind) {
 
 function autoSendDialog() {
   let side = "all", count = 25, running = false, stopFlag = false, waitTimer = 0, wakeUp = null, kind = "invite", withImg = true;
-  if (IMG_OK === null) checkInviteImg().then(() => { if (!running && $("#as-kind")) setup(); });
+  checkInviteImg(true).then(() => { if (!running && $("#as-kind")) setup(); });   // re-check every time, in case the picture was replaced
   let pace = 5; try { pace = +localStorage.getItem("auto-pace") || 5; if (pace === 7) pace = 5; } catch (e) {}
   const pick = () => [...S.invites.values()].filter(i => eligible(i, kind, false) && waNumber(i.phone) && (side === "all" || i.side === side)).sort((a, b) => String(a.id).localeCompare(String(b.id)));
   const sleep = (sec, onTick) => new Promise(res => { let left = sec; onTick && onTick(left); wakeUp = res; waitTimer = setInterval(() => { left--; onTick && onTick(left); if (left <= 0 || stopFlag) { clearInterval(waitTimer); res(); } }, 1000); });
