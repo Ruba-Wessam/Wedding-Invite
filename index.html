@@ -1374,11 +1374,11 @@ function sendQueue(includeSent, kind) {
         <details style="margin-top:8px"><summary style="cursor:pointer;font-size:14px">${t("q_showMsg")}</summary><div class="q-msg">${esc(messageFor(inv, kind))}</div></details>
       </div>
       ${IS_MOBILE ? "" : `<label class="field" style="margin:0 0 10px"><span style="font-size:13px;font-weight:500">${t("waOpenIn")}</span><select id="q-mode" style="min-height:38px;padding:6px 10px"><option value="web" ${waMode() === "web" ? "selected" : ""}>${t("waModeWeb")}</option><option value="app" ${waMode() === "app" ? "selected" : ""}>${t("waModeApp")}</option></select></label>`}
-      ${kind === "invite" && IMG_OK ? (IS_MOBILE
+      ${kind === "invite" && IMG_OK === false ? `<p class="q-pic-help" style="color:var(--amber)">${t("as_noImg", { file: INVITE_IMG_FILE })}</p>` : ""}${kind === "invite" && IMG_OK !== false ? (IS_MOBILE
         ? `<p class="q-pic-help">${t("q_picMobile")}</p>`
         : `<label class="q-pic"><input type="checkbox" id="q-pic" ${qPicOn() ? "checked" : ""}> ${t("q_picCopy")}</label>${qPicOn() ? `<p class="q-pic-help">${t("q_picPaste", { k: /Mac/i.test(navigator.platform) ? "⌘V" : "Ctrl+V" })}</p>` : ""}`) : ""}
       <a class="btn wa-btn ${wait ? "cooling" : ""}" id="q-open" href="${esc(waLink(inv, kind))}" target="${waTarget()}" ${wait ? 'aria-disabled="true" tabindex="-1"' : ""}>${ICON.wa}<span id="q-lbl">${wait ? t("q_wait", { s: wait }) : label}</span></a>
-      ${kind === "invite" && IMG_OK && IS_MOBILE ? `<button class="btn" data-x="sharepic" style="width:100%;margin-top:8px">${ICON.img}${t("q_picShare")}</button>` : ""}
+      ${kind === "invite" && IMG_OK !== false && IS_MOBILE ? `<button class="btn" data-x="sharepic" style="width:100%;margin-top:8px">${ICON.img}${t("q_picShare")}</button>` : ""}
       <div class="dlg-acts" style="margin-top:12px"><button class="btn" data-x="copy">${ICON.copy}${t("copyMsg")}</button><span style="flex:1"></span><button class="btn ghost" data-x="skip">${t("q_skip")}</button><button class="btn" data-x="c">${t("q_close")}</button></div>`, d => {
       $('[data-x="c"]', d).onclick = () => { clearInterval(tick); closeDialog(); };
       $('[data-x="skip"]', d).onclick = () => { lastTok = null; pos++; show(); };
@@ -1398,7 +1398,7 @@ function sendQueue(includeSent, kind) {
       }, 250);
       btn.addEventListener("click", e => {
         if (btn.classList.contains("cooling")) { e.preventDefault(); return; }
-        if (kind === "invite" && IMG_OK && !IS_MOBILE && qPicOn()) copyInvitePicture().then(ok => { if (!ok) toast(t("q_picFail")); });
+        if (kind === "invite" && IMG_OK !== false && !IS_MOBILE && qPicOn()) copyInvitePicture().then(ok => { if (!ok) toast(t("q_picFail")); });
         if (kind !== "invite") { if (S.canWrite) markDone(inv, kind).catch(() => {}); lastTok = null; }
         else if (!inv.sentAt && S.canWrite) { patchInvite(inv.token, { sentAt: new Date().toISOString() }).catch(() => {}); lastTok = inv.token; } else lastTok = null;
         pos++; inBatch++; coolUntil = Date.now() + PAUSE; setTimeout(show, 400);
