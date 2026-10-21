@@ -1051,7 +1051,7 @@ function AdminView() {
     if (S.subs.all) loadAll();
     ensureAll();
     app.innerHTML = `<div class="wrap">
-      <header class="top"><h1 id="a-title"></h1><div class="actions">
+      <header class="top"><h1 id="a-title"></h1><small class="muted" style="font-size:11px;align-self:center" title="page version">v21-10-1730</small><div class="actions">
         ${langBtn()}
         <button class="btn ghost sm" data-a="signout">${t("signOut")}</button>
         <button class="btn icon" data-a="log" title="${t("log")}" aria-label="${t("log")}">${ICON.log}</button>
