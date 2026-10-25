@@ -1055,7 +1055,7 @@ function AdminView() {
     if (S.subs.all) loadAll();
     ensureAll();
     app.innerHTML = `<div class="wrap">
-      <header class="top"><h1 id="a-title"></h1><small class="muted" style="font-size:11px;align-self:center" title="page version">v26-10-0200</small><div class="actions">
+      <header class="top"><h1 id="a-title"></h1><small class="muted" style="font-size:11px;align-self:center" title="page version">v26-10-0205</small><div class="actions">
         ${langBtn()}
         <button class="btn icon" data-a="theme" id="a-theme" title="${t("th_toggle")}" aria-label="${t("th_toggle")}">${dashDark() ? "☀️" : "🌙"}</button>
         <button class="btn ghost sm" data-a="signout">${t("signOut")}</button>
@@ -1134,7 +1134,8 @@ function AdminView() {
     const tot = grp(everyone);
     const lbl = sd => sd === "total" ? `<b>${t("tb_total")}</b>` : sidePill(sd === "none" ? null : sd);
     const lk = (sd, rf, n) => sd === "total" ? `<b>${n}</b>` : `<button class="linkbtn" style="padding:2px 6px" data-sf="${sd}" data-rf="${rf}">${n}</button>`;
-    const rowsAll = groups.concat([["total", tot]]);
+    // when a side is chosen above, the tables show only that side
+    const rowsAll = sideF === "all" ? groups.concat([["total", tot]]) : groups.filter(([sd]) => sd === sideF);
     const sideTable = everyone.length ? `<h3 class="tbl-h">${t("tb_byInv")}</h3><div class="tblwrap"><table class="sidetbl"><thead><tr><th></th><th>${t("invitations")}</th><th>${t("st_accepted")}</th><th>${t("st_declined")}</th><th>${t("tb_opened")}</th><th>${t("tb_notOpened")}</th><th>${t("wl_pill")}</th></tr></thead><tbody>
         ${rowsAll.map(([sd, r]) => `<tr class="${sd === "total" ? "tot" : ""}"><td>${lbl(sd)}</td><td>${lk(sd, "all", r.inv)}</td><td>${lk(sd, "accepted", r.acc)}</td><td>${lk(sd, "declined", r.dec)}</td><td>${r.op}</td><td>${r.no}</td><td>${r.wl}</td></tr>`).join("")}
       </tbody></table></div>
@@ -1153,7 +1154,7 @@ function AdminView() {
       <div class="chips" role="group">
         <button class="chip" data-f="all" aria-pressed="${filter === "all"}">${t("all")} <em>${all.length}</em></button>
         ${STATUSES.map(x => `<button class="chip" data-f="${x}" aria-pressed="${filter === x}"><span class="dot" style="background:${STATUS_COLOR[x]}"></span>${t("st_" + x)} <em>${counts[x]}</em></button>`).join("")}
-      </div>${sideF === "all" ? `<div style="margin-top:14px">${sideTable}</div>` : ""}
+      </div><div style="margin-top:14px">${sideTable}</div>
       <div class="chips replychips" role="group" aria-label="${t("replies")}" style="margin-top:14px">
         ${["all", "accepted", "declined", "pending"].map(x => { const n = x === "all" ? all.length : all.filter(i => replyOf(i) === x).length; return `<button class="chip" data-rf="${x}" aria-pressed="${replyF === x}">${x === "all" ? t("replies") + ": " + t("all") : `<span class="dot" style="background:${x === "accepted" ? "var(--ok)" : x === "declined" ? "var(--bad)" : "var(--slate)"}"></span>${t("st_" + x)}`} <em>${n}</em></button>`; }).join("")}
         <button class="chip" data-wf="1" aria-pressed="${wlF}"><span class="dot" style="background:#B7791F"></span>${t("wl_pill")} <em>${all.filter(i => i.waitlist).length}</em></button>
